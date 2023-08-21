@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Entity = WarStreamer.Models.EntityBase.EntityBase;
+using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models.Context
 {

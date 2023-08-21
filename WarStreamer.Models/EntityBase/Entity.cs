@@ -1,6 +1,6 @@
 ﻿namespace WarStreamer.Models.EntityBase
 {
-    public abstract class EntityBase
+    public abstract class Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -18,6 +18,6 @@
         |*             ABSTRACT            *|
         \* * * * * * * * * * * * * * * * * */
 
-        public abstract void CopyTo(ref EntityBase entity);
+        public abstract void CopyTo(ref Entity entity);
     }
 }

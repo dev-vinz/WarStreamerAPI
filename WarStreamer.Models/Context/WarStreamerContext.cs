@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Entity = WarStreamer.Models.EntityBase.EntityBase;
+using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models.Context
 {
@@ -16,7 +16,19 @@ namespace WarStreamer.Models.Context
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        public DbSet<Account> Accounts { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+
+        public DbSet<OverlaySetting> OverlaySettings { get; set; }
+
+        public DbSet<TeamLogo> TeamLogos { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<WarOverlay> WarOverlays { get; set; }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|

@@ -1,0 +1,153 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using WarStreamer.Models.EntityBase;
+
+namespace WarStreamer.Models
+{
+    public class OverlaySetting : Entity
+    {
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                             PROPERTIES                            *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        [Key]
+        [Column("Id")]
+        [Precision(30, 0)]
+        public decimal UserId { get; set; }
+
+        public string TextColor { get; set; } = null!;
+
+        public bool IsLogo { get; set; }
+
+        public int? LogoLocationX { get; set; }
+
+        public int? LogoLocationY { get; set; }
+
+        public bool IsClanName { get; set; }
+
+        public int? ClanNameLocationX { get; set; }
+
+        public int? ClanNameLocationY { get; set; }
+
+        public bool IsTotalStars { get; set; }
+
+        public int? TotalStarsLocationX { get; set; }
+
+        public int? TotalStarsLocationY { get; set; }
+
+        public bool IsTotalPercentage { get; set; }
+
+        public int? TotalPercentageLocationX { get; set; }
+
+        public int? TotalPercentageLocationY { get; set; }
+
+        public bool IsAverageDuration { get; set; }
+
+        public int? AverageDurationLocationX { get; set; }
+
+        public int? AverageDurationLocationY { get; set; }
+
+        public bool IsPlayerDetails { get; set; }
+
+        public int? PlayerDetailsLocationX { get; set; }
+
+        public int? PlayerDetailsLocationY { get; set; }
+
+        public bool MirrorReflection { get; set; }
+
+        /* * * * * * * * * * * * * * * * * *\
+        |*            SHORTCUTS            *|
+        \* * * * * * * * * * * * * * * * * */
+
+        public User User { get; set; } = null!;
+
+        public ICollection<Image> Images { get; set; } = new List<Image>();
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                           PUBLIC METHODS                          *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        /* * * * * * * * * * * * * * * * * *\
+        |*             OVERRIDE            *|
+        \* * * * * * * * * * * * * * * * * */
+
+        public override void CopyTo(ref Entity entity)
+        {
+            if (entity is OverlaySetting setting)
+            {
+                setting.TextColor = TextColor;
+
+                setting.IsLogo = IsLogo;
+                setting.LogoLocationX = LogoLocationX;
+                setting.LogoLocationY = LogoLocationY;
+
+                setting.IsClanName = IsClanName;
+                setting.ClanNameLocationX = ClanNameLocationX;
+                setting.ClanNameLocationY = ClanNameLocationY;
+
+                setting.IsTotalStars = IsTotalStars;
+                setting.TotalStarsLocationX = TotalStarsLocationX;
+                setting.TotalStarsLocationY = TotalStarsLocationY;
+
+                setting.IsTotalPercentage = IsTotalPercentage;
+                setting.TotalPercentageLocationX = TotalPercentageLocationX;
+                setting.TotalPercentageLocationY = TotalPercentageLocationY;
+
+                setting.IsAverageDuration = IsAverageDuration;
+                setting.AverageDurationLocationX = AverageDurationLocationX;
+                setting.AverageDurationLocationY = AverageDurationLocationY;
+
+                setting.IsPlayerDetails = IsPlayerDetails;
+                setting.PlayerDetailsLocationX = PlayerDetailsLocationX;
+                setting.PlayerDetailsLocationY = PlayerDetailsLocationY;
+
+                setting.MirrorReflection = MirrorReflection;
+
+                setting.UpdatedAt = UpdatedAt;
+            }
+            else
+            {
+                throw new ArgumentException("Cannot copy to a different type.");
+            }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            // Check for null and compare run-time types.
+            if ((obj == null) || !GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                OverlaySetting? setting = obj as OverlaySetting;
+
+                return setting?.UserId == UserId;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return UserId.GetHashCode();
+        }
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                         OPERATORS OVERLOAD                        *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public static bool operator ==(OverlaySetting? x, OverlaySetting? y)
+        {
+            if (x is null && y is null)
+            {
+                return true;
+            }
+            else
+            {
+                return x?.Equals(y) ?? false;
+            }
+        }
+
+        public static bool operator !=(OverlaySetting? x, OverlaySetting? y) => !(x == y);
+    }
+}
