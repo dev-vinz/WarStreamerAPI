@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WarStreamer.Commons\WarStreamer.Commons.csproj" />
+    <ProjectReference Include="..\WarStreamer.Interfaces\WarStreamer.Interfaces.csproj" />
+    <ProjectReference Include="..\WarStreamer.Maps\WarStreamer.Maps.csproj" />
+    <ProjectReference Include="..\WarStreamer.ViewModels\WarStreamer.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

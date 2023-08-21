@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WarStreamer.Commons\WarStreamer.Commons.csproj" />
+    <ProjectReference Include="..\WarStreamer.Interfaces\WarStreamer.Interfaces.csproj" />
+    <ProjectReference Include="..\WarStreamer.Models\WarStreamer.Models.csproj" />
+    <ProjectReference Include="..\WarStreamer.Repositories\WarStreamer.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
