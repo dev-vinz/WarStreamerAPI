@@ -71,5 +71,23 @@ namespace WarStreamer.Models
         {
             return HashCode.Combine(UserId, Id);
         }
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                         OPERATORS OVERLOAD                        *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public static bool operator ==(WarOverlay? x, WarOverlay? y)
+        {
+            if (x is null && y is null)
+            {
+                return true;
+            }
+            else
+            {
+                return x?.Equals(y) ?? false;
+            }
+        }
+
+        public static bool operator !=(WarOverlay? x, WarOverlay? y) => !(x == y);
     }
 }
