@@ -45,6 +45,7 @@ namespace WarStreamer.Models
             if (entity is User user)
             {
                 user.LanguageId = LanguageId;
+                user.TierLevel = TierLevel;
                 user.UpdatedAt = UpdatedAt;
             }
             else

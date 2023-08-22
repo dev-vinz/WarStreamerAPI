@@ -4,13 +4,13 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
 {
+    [PrimaryKey(nameof(TeamName), nameof(UserId))]
     public class TeamLogo : Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [Key]
         [MaxLength(50)]
         public string TeamName { get; set; } = null!;
 
@@ -60,13 +60,13 @@ namespace WarStreamer.Models
             {
                 TeamLogo? logo = obj as TeamLogo;
 
-                return logo?.TeamName.ToLower() == TeamName.ToLower();
+                return logo?.TeamName.ToLower() == TeamName.ToLower() && logo.UserId == UserId;
             }
         }
 
         public override int GetHashCode()
         {
-            return TeamName.ToLower().GetHashCode();
+            return HashCode.Combine(TeamName.ToLower().GetHashCode(), UserId);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

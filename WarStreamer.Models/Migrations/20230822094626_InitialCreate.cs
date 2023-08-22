@@ -122,7 +122,7 @@ namespace WarStreamer.Models.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamLogos", x => x.TeamName);
+                    table.PrimaryKey("PK_TeamLogos", x => new { x.TeamName, x.UserId });
                     table.ForeignKey(
                         name: "FK_TeamLogos_Users_UserId",
                         column: x => x.UserId,

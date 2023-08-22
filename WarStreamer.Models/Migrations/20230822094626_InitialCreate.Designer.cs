@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20230821220811_InitialCreate")]
+    [Migration("20230822094626_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -205,6 +205,10 @@ namespace WarStreamer.Models.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<decimal>("UserId")
+                        .HasPrecision(30)
+                        .HasColumnType("decimal(30,0)");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -214,14 +218,10 @@ namespace WarStreamer.Models.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<decimal>("UserId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
-
                     b.Property<int>("Width")
                         .HasColumnType("int");
 
-                    b.HasKey("TeamName");
+                    b.HasKey("TeamName", "UserId");
 
                     b.HasIndex("UserId");
 
