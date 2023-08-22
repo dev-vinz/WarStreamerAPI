@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WarStreamer.Models\WarStreamer.Models.csproj" />
+  </ItemGroup>
+
 </Project>
