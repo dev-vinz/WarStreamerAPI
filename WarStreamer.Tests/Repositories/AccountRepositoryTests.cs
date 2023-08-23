@@ -56,9 +56,7 @@ namespace WarStreamer.Tests.Repositories
         {
             List<Account> accounts = _repository.GetAll();
 
-            Assert.Single(accounts);
-
-            Account account = accounts.Single();
+            Account account = Assert.Single(accounts);
 
             Assert.Equal(TAG, account.Tag);
             Assert.Equal(USER_ID, account.UserId);
@@ -86,9 +84,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(4)]
         public void WhenGetAllAccountsByUserId_ThenReturnsEmpty()
         {
-            List<Account> accounts = _repository.GetByUserId(USER_ID + 1);
-
-            Assert.Empty(accounts);
+            Assert.Empty(_repository.GetByUserId(USER_ID + 1));
         }
 
         [Fact]
@@ -109,9 +105,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(6)]
         public void WhenGetAccountByTag_ThenReturnsNull()
         {
-            Account? account = _repository.GetByTag(string.Empty);
-
-            Assert.Null(account);
+            Assert.Null(_repository.GetByTag(string.Empty));
         }
 
         [Fact]

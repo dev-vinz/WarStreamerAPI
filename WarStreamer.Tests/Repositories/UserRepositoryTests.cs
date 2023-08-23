@@ -60,9 +60,7 @@ namespace WarStreamer.Tests.Repositories
         {
             List<User> users = _repository.GetAll();
 
-            Assert.Single(users);
-
-            User user = users.Single();
+            User user = Assert.Single(users);
 
             Assert.Equal(USER_ID, user.Id);
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
@@ -75,9 +73,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(3)]
         public void WhenGetUserById_ThenReturnsNull()
         {
-            User? user = _repository.GetById(USER_ID + 1);
-
-            Assert.Null(user);
+            Assert.Null(_repository.GetById(USER_ID + 1));
         }
 
         [Fact]
