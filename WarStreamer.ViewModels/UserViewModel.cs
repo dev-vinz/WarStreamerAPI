@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WarStreamer.ViewModels
+﻿namespace WarStreamer.ViewModels
 {
     public class UserViewModel
     {
@@ -16,7 +14,6 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [JsonIgnore]
         public decimal Id { get => _id; }
 
         public int LanguageId { get => _languageId; set => _languageId = value; }

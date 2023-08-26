@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Drawing;
 
 namespace WarStreamer.ViewModels
 {
@@ -10,227 +10,145 @@ namespace WarStreamer.ViewModels
 
         private readonly decimal _userId;
         private string _textColor;
-        private bool _isLogo;
-        private int? _logoLocationX;
-        private int? _logoLocationY;
-        private bool _isClanName;
-        private int? _clanNameLocationX;
-        private int? _clanNameLocationY;
-        private bool _isTotalStars;
-        private int? _totalStarsLocationX;
-        private int? _totalStarsLocationY;
-        private bool _isTotalPercentage;
-        private int? _totalPercentageLocationX;
-        private int? _totalPercentageLocationY;
-        private bool _isAverageDuration;
-        private int? _averageDurationLocationX;
-        private int? _averageDurationLocationY;
-        private bool _isPlayerDetails;
-        private int? _playerDetailsLocationX;
-        private int? _playerDetailsLocationY;
+        private bool _logoVisible;
+        private Point? _logoLocation;
+        private bool _clanNameVisible;
+        private Point? _clanNameLocation;
+        private bool _totalStarsVisible;
+        private Point? _totalStarsLocation;
+        private bool _totalPercentageVisible;
+        private Point? _totalPercentageLocation;
+        private bool _averageDurationVisible;
+        private Point? _averageDurationLocation;
+        private bool _playerDetailsVisible;
+        private Point? _playerDetailsLocation;
         private bool _mirrorReflection;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [JsonIgnore]
         public decimal UserId { get => _userId; }
 
-        public string TextColor
-        {
-            get => _textColor; set
-            {
-                if (_isLogo)
-                    _textColor = value;
-            }
-        }
+        public string TextColor { get => _textColor; set => _textColor = value; }
 
-        public bool IsLogo
+        public bool LogoVisible
         {
-            get => _isLogo;
+            get => _logoVisible;
             set
             {
-                _isLogo = value;
+                _logoVisible = value;
 
-                if (!_isLogo)
-                {
-                    _logoLocationX = null;
-                    _logoLocationY = null;
-                }
+                if (!_logoVisible) _logoLocation = null;
             }
         }
 
-        public int? LogoLocationX
+        public Point? LogoLocation
         {
-            get => _logoLocationX;
+            get => _logoLocation;
             set
             {
-                if (_isLogo) _logoLocationX = value;
+                if (_logoVisible) _logoLocation = value;
             }
         }
 
-        public int? LogoLocationY
+        public bool ClanNameVisible
         {
-            get => _logoLocationY;
+            get => _clanNameVisible;
             set
             {
-                if (_isLogo) _logoLocationY = value;
+                _clanNameVisible = value;
+
+                if (!_clanNameVisible) _clanNameLocation = null;
             }
         }
 
-        public bool IsClanName
+        public Point? ClanNameLocation
         {
-            get => _isClanName;
+            get => _clanNameLocation;
             set
             {
-                _isClanName = value;
-
-                if (!_isClanName)
-                {
-                    _clanNameLocationX = null;
-                    _clanNameLocationY = null;
-                }
+                if (_clanNameVisible) _clanNameLocation = value;
             }
         }
 
-        public int? ClanNameLocationX
+        public bool TotalStarsVisible
         {
-            get => _clanNameLocationX; set
-            {
-                if (_isClanName) _clanNameLocationX = value;
-            }
-        }
-
-        public int? ClanNameLocationY
-        {
-            get => _clanNameLocationY; set
-            {
-                if (_isClanName) _clanNameLocationY = value;
-            }
-        }
-
-        public bool IsTotalStars
-        {
-            get => _isTotalStars;
+            get => _totalStarsVisible;
             set
             {
-                _isTotalStars = value;
+                _totalStarsVisible = value;
 
-                if (!_isTotalStars)
-                {
-                    _totalStarsLocationX = null;
-                    _totalStarsLocationY = null;
-                }
+                if (!_totalStarsVisible) _totalStarsLocation = null;
             }
         }
 
-        public int? TotalStarsLocationX
+        public Point? TotalStarsLocation
         {
-            get => _totalStarsLocationX; set
-            {
-                if (_isTotalStars) _totalStarsLocationX = value;
-            }
-        }
-
-        public int? TotalStarsLocationY
-        {
-            get => _totalStarsLocationY; set
-            {
-                if (_isTotalStars) _totalStarsLocationY = value;
-            }
-        }
-
-        public bool IsTotalPercentage
-        {
-            get => _isTotalPercentage;
+            get => _totalStarsLocation;
             set
             {
-                _isTotalPercentage = value;
-
-                if (!_isTotalPercentage)
-                {
-                    _totalPercentageLocationX = null;
-                    _totalPercentageLocationY = null;
-                }
+                if (_totalStarsVisible) _totalStarsLocation = value;
             }
         }
 
-        public int? TotalPercentageLocationX
+        public bool TotalPercentageVisible
         {
-            get => _totalPercentageLocationX; set
-            {
-                if (_isTotalPercentage) _totalPercentageLocationX = value;
-            }
-        }
-
-        public int? TotalPercentageLocationY
-        {
-            get => _totalPercentageLocationY; set
-            {
-                if (_isTotalPercentage) _totalPercentageLocationY = value;
-            }
-        }
-
-        public bool IsAverageDuration
-        {
-            get => _isAverageDuration;
+            get => _totalPercentageVisible;
             set
             {
-                _isAverageDuration = value;
+                _totalPercentageVisible = value;
 
-                if (!_isAverageDuration)
-                {
-                    _averageDurationLocationX = null;
-                    _averageDurationLocationY = null;
-                }
+                if (!_totalPercentageVisible) _totalPercentageLocation = null;
             }
         }
 
-        public int? AverageDurationLocationX
+        public Point? TotalPercentageLocation
         {
-            get => _averageDurationLocationX; set
-            {
-                if (_isAverageDuration) _averageDurationLocationX = value;
-            }
-        }
-
-        public int? AverageDurationLocationY
-        {
-            get => _averageDurationLocationY; set
-            {
-                if (_isAverageDuration) _averageDurationLocationY = value;
-            }
-        }
-
-        public bool IsPlayerDetails
-        {
-            get => _isPlayerDetails;
+            get => _totalPercentageLocation;
             set
             {
-                _isPlayerDetails = value;
-
-                if (!_isPlayerDetails)
-                {
-                    _playerDetailsLocationX = null;
-                    _playerDetailsLocationY = null;
-                }
+                if (_totalPercentageVisible) _totalPercentageLocation = value;
             }
         }
 
-        public int? PlayerDetailsLocationX
+        public bool AverageDurationVisible
         {
-            get => _playerDetailsLocationX; set
+            get => _averageDurationVisible;
+            set
             {
-                if (_isPlayerDetails) _playerDetailsLocationX = value;
+                _averageDurationVisible = value;
+
+                if (!_averageDurationVisible) _averageDurationLocation = null;
             }
         }
 
-        public int? PlayerDetailsLocationY
+        public Point? AverageDurationLocation
         {
-            get => _playerDetailsLocationY; set
+            get => _averageDurationLocation;
+            set
             {
-                if (_isPlayerDetails) _playerDetailsLocationY = value;
+                if (_averageDurationVisible) _averageDurationLocation = value;
+            }
+        }
+
+        public bool PlayerDetailsVisible
+        {
+            get => _playerDetailsVisible;
+            set
+            {
+                _playerDetailsVisible = value;
+
+                if (!_playerDetailsVisible) _playerDetailsLocation = null;
+            }
+        }
+
+        public Point? PlayerDetailsLocation
+        {
+            get => _playerDetailsLocation;
+            set
+            {
+                if (_playerDetailsVisible) _playerDetailsLocation = value;
             }
         }
 

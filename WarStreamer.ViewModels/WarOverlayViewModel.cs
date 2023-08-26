@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WarStreamer.ViewModels
+﻿namespace WarStreamer.ViewModels
 {
     public class WarOverlayViewModel
     {
@@ -18,10 +16,8 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [JsonIgnore]
         public decimal UserId { get => _userId; }
 
-        [JsonIgnore]
         public int Id { get => _id; }
 
         public string ClanTag { get => _clanTag; }

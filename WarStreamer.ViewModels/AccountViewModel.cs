@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WarStreamer.ViewModels
+﻿namespace WarStreamer.ViewModels
 {
     public class AccountViewModel
     {
@@ -17,7 +15,6 @@ namespace WarStreamer.ViewModels
 
         public string Tag { get => _tag; }
 
-        [JsonIgnore]
         public decimal UserId { get => _userId; }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

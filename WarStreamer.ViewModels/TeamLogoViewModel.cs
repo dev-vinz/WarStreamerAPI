@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WarStreamer.ViewModels
+﻿namespace WarStreamer.ViewModels
 {
     public class TeamLogoViewModel
     {
@@ -19,7 +17,6 @@ namespace WarStreamer.ViewModels
 
         public string TeamName { get => _teamName; }
 
-        [JsonIgnore]
         public decimal UserId { get => _userId; }
 
         public int Width { get => _width; set => _width = value; }

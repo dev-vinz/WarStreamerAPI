@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace WarStreamer.ViewModels
+﻿namespace WarStreamer.ViewModels
 {
     public class ImageViewModel
     {
@@ -19,7 +17,6 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [JsonIgnore]
         public int Id { get => _id; }
 
         public decimal OverlaySettingId { get => _overlaySettingId; }
