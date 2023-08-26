@@ -80,10 +80,8 @@ namespace WarStreamer.Maps
 
         private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel)
         {
-            return new TeamLogo
+            return new(viewModel.TeamName, viewModel.UserId)
             {
-                UserId = viewModel.UserId,
-                TeamName = viewModel.TeamName,
                 Width = viewModel.Width,
                 Height = viewModel.Height,
             };

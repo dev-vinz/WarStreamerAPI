@@ -79,11 +79,7 @@ namespace WarStreamer.Maps
 
         private static Account ViewModelToDomain(AccountViewModel viewModel)
         {
-            return new Account
-            {
-                Tag = viewModel.Tag,
-                UserId = viewModel.UserId,
-            };
+            return new(viewModel.Tag, viewModel.UserId);
         }
     }
 }

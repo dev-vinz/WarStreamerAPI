@@ -64,7 +64,7 @@ namespace WarStreamer.Maps
 
         private static WarOverlayViewModel DomainToViewModel(WarOverlay domain)
         {
-            return new WarOverlayViewModel(domain.UserId, domain.Id, domain.ClanTag)
+            return new(domain.UserId, domain.Id, domain.ClanTag)
             {
                 LastCheckout = domain.LastCheckout,
                 IsEnded = domain.IsEnded,
@@ -80,11 +80,8 @@ namespace WarStreamer.Maps
 
         private static WarOverlay ViewModelToDomain(WarOverlayViewModel viewModel)
         {
-            return new WarOverlay
+            return new(viewModel.UserId, viewModel.Id, viewModel.ClanTag)
             {
-                UserId = viewModel.UserId,
-                Id = viewModel.Id,
-                ClanTag = viewModel.ClanTag,
                 LastCheckout = viewModel.LastCheckout,
                 IsEnded = viewModel.IsEnded,
             };

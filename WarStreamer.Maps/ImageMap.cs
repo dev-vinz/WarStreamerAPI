@@ -73,7 +73,7 @@ namespace WarStreamer.Maps
 
         private static ImageViewModel DomainToViewModel(Image domain)
         {
-            return new ImageViewModel(domain.Id, domain.OverlaySettingId)
+            return new(domain.Id, domain.OverlaySettingId)
             {
                 LocationX = domain.LocationX,
                 LocationY = domain.LocationY,
@@ -91,10 +91,8 @@ namespace WarStreamer.Maps
 
         private static Image ViewModelToDomain(ImageViewModel viewModel)
         {
-            return new Image
+            return new(viewModel.Id, viewModel.OverlaySettingId)
             {
-                Id = viewModel.Id,
-                OverlaySettingId = viewModel.OverlaySettingId,
                 LocationX = viewModel.LocationX,
                 LocationY = viewModel.LocationY,
                 Width = viewModel.Width,

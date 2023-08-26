@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Maps;
+﻿using System.Drawing;
+using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
 using WarStreamer.ViewModels;
@@ -68,27 +69,21 @@ namespace WarStreamer.Maps
 
         private static OverlaySettingViewModel DomainToViewModel(OverlaySetting domain)
         {
-            return new OverlaySettingViewModel(domain.UserId)
+            return new(domain.UserId)
             {
                 TextColor = domain.TextColor,
-                IsLogo = domain.IsLogo,
-                LogoLocationX = domain.LogoLocationX,
-                LogoLocationY = domain.LogoLocationY,
-                IsClanName = domain.IsClanName,
-                ClanNameLocationX = domain.ClanNameLocationX,
-                ClanNameLocationY = domain.ClanNameLocationY,
-                IsTotalStars = domain.IsTotalStars,
-                TotalStarsLocationX = domain.TotalStarsLocationX,
-                TotalStarsLocationY = domain.TotalStarsLocationY,
-                IsTotalPercentage = domain.IsTotalPercentage,
-                TotalPercentageLocationX = domain.TotalPercentageLocationX,
-                TotalPercentageLocationY = domain.TotalPercentageLocationY,
-                IsAverageDuration = domain.IsAverageDuration,
-                AverageDurationLocationX = domain.AverageDurationLocationX,
-                AverageDurationLocationY = domain.AverageDurationLocationY,
-                IsPlayerDetails = domain.IsPlayerDetails,
-                PlayerDetailsLocationX = domain.PlayerDetailsLocationX,
-                PlayerDetailsLocationY = domain.PlayerDetailsLocationY,
+                LogoVisible = domain.IsLogo,
+                LogoLocation = new Point(domain.LogoLocationX ?? 0, domain.LogoLocationY ?? 0),
+                ClanNameVisible = domain.IsClanName,
+                ClanNameLocation = new Point(domain.ClanNameLocationX ?? 0, domain.ClanNameLocationY ?? 0),
+                TotalStarsVisible = domain.IsTotalStars,
+                TotalStarsLocation = new Point(domain.TotalStarsLocationX ?? 0, domain.TotalStarsLocationY ?? 0),
+                TotalPercentageVisible = domain.IsTotalPercentage,
+                TotalPercentageLocation = new Point(domain.TotalPercentageLocationX ?? 0, domain.TotalPercentageLocationY ?? 0),
+                AverageDurationVisible = domain.IsAverageDuration,
+                AverageDurationLocation = new Point(domain.AverageDurationLocationX ?? 0, domain.AverageDurationLocationY ?? 0),
+                PlayerDetailsVisible = domain.IsPlayerDetails,
+                PlayerDetailsLocation = new Point(domain.PlayerDetailsLocationX ?? 0, domain.PlayerDetailsLocationY ?? 0),
                 MirrorReflection = domain.MirrorReflection,
             };
         }
@@ -102,28 +97,27 @@ namespace WarStreamer.Maps
 
         private static OverlaySetting ViewModelToDomain(OverlaySettingViewModel viewModel)
         {
-            return new OverlaySetting
+            return new(viewModel.UserId)
             {
-                UserId = viewModel.UserId,
                 TextColor = viewModel.TextColor,
-                IsLogo = viewModel.IsLogo,
-                LogoLocationX = viewModel.LogoLocationX,
-                LogoLocationY = viewModel.LogoLocationY,
-                IsClanName = viewModel.IsClanName,
-                ClanNameLocationX = viewModel.ClanNameLocationX,
-                ClanNameLocationY = viewModel.ClanNameLocationY,
-                IsTotalStars = viewModel.IsTotalStars,
-                TotalStarsLocationX = viewModel.TotalStarsLocationX,
-                TotalStarsLocationY = viewModel.TotalStarsLocationY,
-                IsTotalPercentage = viewModel.IsTotalPercentage,
-                TotalPercentageLocationX = viewModel.TotalPercentageLocationX,
-                TotalPercentageLocationY = viewModel.TotalPercentageLocationY,
-                IsAverageDuration = viewModel.IsAverageDuration,
-                AverageDurationLocationX = viewModel.AverageDurationLocationX,
-                AverageDurationLocationY = viewModel.AverageDurationLocationY,
-                IsPlayerDetails = viewModel.IsPlayerDetails,
-                PlayerDetailsLocationX = viewModel.PlayerDetailsLocationX,
-                PlayerDetailsLocationY = viewModel.PlayerDetailsLocationY,
+                IsLogo = viewModel.LogoVisible,
+                LogoLocationX = viewModel.LogoLocation?.X,
+                LogoLocationY = viewModel.LogoLocation?.Y,
+                IsClanName = viewModel.ClanNameVisible,
+                ClanNameLocationX = viewModel.ClanNameLocation?.X,
+                ClanNameLocationY = viewModel.ClanNameLocation?.Y,
+                IsTotalStars = viewModel.TotalStarsVisible,
+                TotalStarsLocationX = viewModel.TotalStarsLocation?.X,
+                TotalStarsLocationY = viewModel.TotalStarsLocation?.Y,
+                IsTotalPercentage = viewModel.TotalPercentageVisible,
+                TotalPercentageLocationX = viewModel.TotalPercentageLocation?.X,
+                TotalPercentageLocationY = viewModel.TotalPercentageLocation?.Y,
+                IsAverageDuration = viewModel.AverageDurationVisible,
+                AverageDurationLocationX = viewModel.AverageDurationLocation?.X,
+                AverageDurationLocationY = viewModel.AverageDurationLocation?.Y,
+                IsPlayerDetails = viewModel.PlayerDetailsVisible,
+                PlayerDetailsLocationX = viewModel.PlayerDetailsLocation?.X,
+                PlayerDetailsLocationY = viewModel.PlayerDetailsLocation?.Y,
                 MirrorReflection = viewModel.MirrorReflection,
             };
         }
