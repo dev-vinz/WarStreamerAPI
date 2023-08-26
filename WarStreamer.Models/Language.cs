@@ -12,21 +12,37 @@ namespace WarStreamer.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
-        public string CultureInfo { get; set; } = null!;
+        public string CultureInfo { get; private set; }
 
-        public string DisplayValue { get; set; } = null!;
+        public string DisplayValue { get; private set; }
 
-        public string ShortcutValue { get; set; } = null!;
+        public string ShortcutValue { get; private set; }
 
-        public string FlagEmoji { get; set; } = null!;
+        public string FlagEmoji { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
 
         public ICollection<User> Users { get; } = new List<User>();
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public Language(int id, string cultureInfo, string displayValue, string shortcutValue, string flagEmoji)
+        {
+            // Inputs
+            {
+                Id = id;
+                CultureInfo = cultureInfo;
+                DisplayValue = displayValue;
+                ShortcutValue = shortcutValue;
+                FlagEmoji = flagEmoji;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

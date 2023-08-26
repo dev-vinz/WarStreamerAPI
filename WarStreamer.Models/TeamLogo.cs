@@ -12,10 +12,10 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [MaxLength(50)]
-        public string TeamName { get; set; } = null!;
+        public string TeamName { get; private set; } = null!;
 
         [Precision(30, 0)]
-        public decimal UserId { get; set; }
+        public decimal UserId { get; private set; }
 
         public int Width { get; set; }
 
@@ -26,6 +26,19 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * */
 
         public User User { get; set; } = null!;
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public TeamLogo(string teamName, decimal userId)
+        {
+            // Inputs
+            {
+                TeamName = teamName;
+                UserId = userId;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

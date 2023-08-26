@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20230822094626_InitialCreate")]
+    [Migration("20230826201253_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

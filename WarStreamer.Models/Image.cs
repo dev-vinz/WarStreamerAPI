@@ -13,10 +13,10 @@ namespace WarStreamer.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         [Precision(30, 0)]
-        public decimal OverlaySettingId { get; set; }
+        public decimal OverlaySettingId { get; private set; }
 
         public int LocationX { get; set; }
 
@@ -31,6 +31,19 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * */
 
         public OverlaySetting OverlaySetting { get; set; } = null!;
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public Image(int id, decimal overlaySettingId)
+        {
+            // Inputs
+            {
+                Id = id;
+                OverlaySettingId = overlaySettingId;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

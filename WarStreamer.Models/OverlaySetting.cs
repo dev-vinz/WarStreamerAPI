@@ -14,7 +14,7 @@ namespace WarStreamer.Models
         [Key]
         [Column("Id")]
         [Precision(30, 0)]
-        public decimal UserId { get; set; }
+        public decimal UserId { get; private set; }
 
         public string TextColor { get; set; } = null!;
 
@@ -63,6 +63,18 @@ namespace WarStreamer.Models
         public User User { get; set; } = null!;
 
         public ICollection<Image> Images { get; set; } = new List<Image>();
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public OverlaySetting(decimal userId)
+        {
+            // Inputs
+            {
+                UserId = userId;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

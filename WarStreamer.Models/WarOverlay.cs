@@ -13,12 +13,12 @@ namespace WarStreamer.Models
 
         [Precision(30, 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public decimal UserId { get; set; }
+        public decimal UserId { get; private set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
-        public string ClanTag { get; set; } = null!;
+        public string ClanTag { get; private set; }
 
         public DateTimeOffset LastCheckout { get; set; }
 
@@ -29,6 +29,20 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * */
 
         public User User { get; set; } = null!;
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public WarOverlay(decimal userId, int id, string clanTag)
+        {
+            // Inputs
+            {
+                UserId = userId;
+                Id = id;
+                ClanTag = clanTag;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

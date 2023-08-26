@@ -12,16 +12,29 @@ namespace WarStreamer.Models
 
         [Key]
         [MaxLength(50)]
-        public string Tag { get; set; } = null!;
+        public string Tag { get; private set; }
 
         [Precision(30, 0)]
-        public decimal UserId { get; set; }
+        public decimal UserId { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
 
         public User User { get; set; } = null!;
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public Account(string tag, decimal userId)
+        {
+            // Inputs
+            {
+                Tag = tag;
+                UserId = userId;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

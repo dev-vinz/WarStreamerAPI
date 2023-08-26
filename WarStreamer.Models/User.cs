@@ -14,7 +14,7 @@ namespace WarStreamer.Models
         [Key]
         [Precision(30, 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public decimal Id { get; set; }
+        public decimal Id { get; private set; }
 
         public int LanguageId { get; set; }
 
@@ -31,6 +31,18 @@ namespace WarStreamer.Models
         public ICollection<Account> Accounts { get; set; } = new List<Account>();
 
         public ICollection<TeamLogo> TeamLogos { get; set; } = new List<TeamLogo>();
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                            CONSTRUCTORS                           *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public User(decimal id)
+        {
+            // Inputs
+            {
+                Id = id;
+            }
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
