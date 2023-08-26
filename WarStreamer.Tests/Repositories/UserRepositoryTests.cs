@@ -126,9 +126,8 @@ namespace WarStreamer.Tests.Repositories
 
         private static User CreateUser()
         {
-            return new User
+            return new(USER_ID)
             {
-                Id = USER_ID,
                 LanguageId = LANGUAGE_ID,
                 TierLevel = TIER_LEVEL,
             };

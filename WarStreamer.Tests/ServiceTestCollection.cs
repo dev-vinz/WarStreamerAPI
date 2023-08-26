@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using WarStreamer.Interfaces.Repositories;
+using WarStreamer.Interfaces.Services;
 using WarStreamer.Models.Context;
 using WarStreamer.Repositories;
+using WarStreamer.Services;
 
 namespace WarStreamer.Tests
 {
@@ -50,24 +52,31 @@ namespace WarStreamer.Tests
             this.AddScoped<IWarStreamerContext, WarStreamerContext>();
 
             // Account
+            this.AddScoped<IAccountService, AccountService>();
             this.AddScoped<IAccountRepository, AccountRepository>();
 
             // Image
+            this.AddScoped<IImageService, ImageService>();
             this.AddScoped<IImageRepository, ImageRepository>();
 
             // Language
+            this.AddScoped<ILanguageService, LanguageService>();
             this.AddScoped<ILanguageRepository, LanguageRepository>();
 
             // Overlay setting
+            this.AddScoped<IOverlaySettingService, OverlaySettingService>();
             this.AddScoped<IOverlaySettingRepository, OverlaySettingRepository>();
 
             // Team logo
+            this.AddScoped<ITeamLogoService, TeamLogoService>();
             this.AddScoped<ITeamLogoRepository, TeamLogoRepository>();
 
             // User
+            this.AddScoped<IUserService, UserService>();
             this.AddScoped<IUserRepository, UserRepository>();
 
             // War overlay
+            this.AddScoped<IWarOverlayService, WarOverlayService>();
             this.AddScoped<IWarOverlayRepository, WarOverlayRepository>();
         }
     }

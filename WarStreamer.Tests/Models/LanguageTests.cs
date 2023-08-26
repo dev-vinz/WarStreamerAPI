@@ -69,7 +69,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingLanguage_ThenThrowError()
         {
             Language language = CreateLanguageOne();
-            Entity copy = new Language();
+            Entity copy = CreateLanguageTwo();
 
             Assert.NotNull(language);
 
@@ -86,26 +86,12 @@ namespace WarStreamer.Tests.Models
 
         private static Language CreateLanguageOne()
         {
-            return new Language
-            {
-                Id = ID_ONE,
-                CultureInfo = CULTURE_INFO,
-                DisplayValue = DISPLAY_VALUE,
-                ShortcutValue = SHORTCUT_VALUE,
-                FlagEmoji = FLAG_EMOJI,
-            };
+            return new(ID_ONE, CULTURE_INFO, DISPLAY_VALUE, SHORTCUT_VALUE, FLAG_EMOJI);
         }
 
         private static Language CreateLanguageTwo()
         {
-            return new Language
-            {
-                Id = ID_TWO,
-                CultureInfo = SHORTCUT_VALUE,
-                DisplayValue = CULTURE_INFO,
-                ShortcutValue = FLAG_EMOJI,
-                FlagEmoji = DISPLAY_VALUE,
-            };
+            return new(ID_TWO, SHORTCUT_VALUE, CULTURE_INFO, FLAG_EMOJI, DISPLAY_VALUE);
         }
     }
 }

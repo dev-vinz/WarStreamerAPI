@@ -75,7 +75,7 @@ namespace WarStreamer.Tests.Models
             WarOverlay overlay = CreateWarOverlayOne();
             overlay.LastCheckout = UTC_NOW;
 
-            Entity copy = new WarOverlay();
+            Entity copy = new WarOverlay(overlay.UserId, overlay.Id, overlay.ClanTag);
 
             Assert.NotNull(overlay);
 
@@ -97,22 +97,16 @@ namespace WarStreamer.Tests.Models
 
         private static WarOverlay CreateWarOverlayOne()
         {
-            return new WarOverlay
+            return new(USER_ID, ID_ONE, CLAN_TAG)
             {
-                UserId = USER_ID,
-                Id = ID_ONE,
-                ClanTag = CLAN_TAG,
                 IsEnded = IS_ENDED,
             };
         }
 
         private static WarOverlay CreateWarOverlayTwo()
         {
-            return new WarOverlay
+            return new(USER_ID, ID_TWO, CLAN_TAG)
             {
-                UserId = USER_ID,
-                Id = ID_TWO,
-                ClanTag = CLAN_TAG,
                 IsEnded = !IS_ENDED,
             };
         }

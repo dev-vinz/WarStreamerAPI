@@ -65,7 +65,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingUser_ThenUserCopied()
         {
             User user = CreateUserOne();
-            Entity copy = new User();
+            Entity copy = new User(user.Id);
 
             Assert.NotNull(user);
 
@@ -87,9 +87,8 @@ namespace WarStreamer.Tests.Models
 
         private static User CreateUserOne()
         {
-            return new User
+            return new(USER_ID_ONE)
             {
-                Id = USER_ID_ONE,
                 LanguageId = LANGUAGE_ID,
                 TierLevel = TIER_LEVEL,
             };
@@ -97,9 +96,8 @@ namespace WarStreamer.Tests.Models
 
         private static User CreateUserTwo()
         {
-            return new User
+            return new(USER_ID_TWO)
             {
-                Id = USER_ID_TWO,
                 LanguageId = (int)TIER_LEVEL,
                 TierLevel = LANGUAGE_ID
             };

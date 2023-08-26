@@ -29,4 +29,8 @@
     <ProjectReference Include="..\WarStreamer.Web.API\WarStreamer.Web.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

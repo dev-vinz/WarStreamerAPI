@@ -63,7 +63,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingAccount_ThenThrowError()
         {
             Account account = CreateAccountOne();
-            Entity copy = new Account();
+            Entity copy = new Account(account.Tag, account.UserId);
 
             Assert.NotNull(account);
 
@@ -80,20 +80,12 @@ namespace WarStreamer.Tests.Models
 
         private static Account CreateAccountOne()
         {
-            return new Account
-            {
-                UserId = USER_ID,
-                Tag = TAG_ONE,
-            };
+            return new(TAG_ONE, USER_ID);
         }
 
         private static Account CreateAccountTwo()
         {
-            return new Account
-            {
-                UserId = 1,
-                Tag = TAG_TWO,
-            };
+            return new(TAG_TWO, USER_ID);
         }
     }
 }

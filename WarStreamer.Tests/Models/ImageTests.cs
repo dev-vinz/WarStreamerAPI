@@ -71,7 +71,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingImage_ThenImageCopied()
         {
             Image image = CreateImageOne();
-            Entity copy = new Image();
+            Entity copy = new Image(image.Id, image.OverlaySettingId);
 
             Assert.NotNull(image);
 
@@ -95,10 +95,8 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageOne()
         {
-            return new Image
+            return new(ID_ONE, OVERLAY_SETTING_ID)
             {
-                Id = ID_ONE,
-                OverlaySettingId = OVERLAY_SETTING_ID,
                 LocationX = LOCATION_X,
                 LocationY = LOCATION_Y,
                 Width = WIDTH,
@@ -108,10 +106,8 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageTwo()
         {
-            return new Image
+            return new(ID_TWO, OVERLAY_SETTING_ID)
             {
-                Id = ID_TWO,
-                OverlaySettingId = OVERLAY_SETTING_ID,
                 LocationX = LOCATION_Y,
                 LocationY = LOCATION_X,
                 Width = HEIGHT,

@@ -217,9 +217,8 @@ namespace WarStreamer.Tests.Repositories
 
         private static OverlaySetting CreateOverlaySetting()
         {
-            return new OverlaySetting
+            return new(USER_ID)
             {
-                UserId = USER_ID,
                 TextColor = TEXT_COLOR,
                 IsLogo = IS_LOGO,
                 LogoLocationX = LOGO_LOCATION_X,

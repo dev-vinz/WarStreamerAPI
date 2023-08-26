@@ -170,10 +170,8 @@ namespace WarStreamer.Tests.Repositories
 
         private static Image CreateImage()
         {
-            return new Image
+            return new(ID, OVERLAY_SETTING_ID)
             {
-                Id = ID,
-                OverlaySettingId = OVERLAY_SETTING_ID,
                 LocationX = LOCATION_X,
                 LocationY = LOCATION_Y,
                 Width = WIDTH,

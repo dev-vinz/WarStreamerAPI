@@ -109,7 +109,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingOverlaySetting_ThenOverlaySettingCopied()
         {
             OverlaySetting setting = CreateOverlaySettingOne();
-            Entity copy = new OverlaySetting();
+            Entity copy = new OverlaySetting(setting.UserId);
 
             Assert.NotNull(setting);
 
@@ -156,9 +156,8 @@ namespace WarStreamer.Tests.Models
 
         private static OverlaySetting CreateOverlaySettingOne()
         {
-            return new OverlaySetting
+            return new(USER_ID_ONE)
             {
-                UserId = USER_ID_ONE,
                 TextColor = TEXT_COLOR,
                 IsLogo = IS_LOGO,
                 LogoLocationX = LOGO_LOCATION_X,
@@ -184,9 +183,8 @@ namespace WarStreamer.Tests.Models
 
         private static OverlaySetting CreateOverlaySettingTwo()
         {
-            return new OverlaySetting
+            return new(USER_ID_TWO)
             {
-                UserId = USER_ID_TWO,
                 TextColor = TEXT_COLOR,
                 IsLogo = !IS_LOGO,
                 IsClanName = IS_CLAN_NAME,

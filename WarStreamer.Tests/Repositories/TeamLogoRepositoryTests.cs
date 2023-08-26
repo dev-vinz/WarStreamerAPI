@@ -135,10 +135,8 @@ namespace WarStreamer.Tests.Repositories
 
         private static TeamLogo CreateTeamLogo()
         {
-            return new TeamLogo
+            return new(TEAM_NAME, USER_ID)
             {
-                TeamName = TEAM_NAME,
-                UserId = USER_ID,
                 Width = WIDTH,
                 Height = HEIGHT,
             };

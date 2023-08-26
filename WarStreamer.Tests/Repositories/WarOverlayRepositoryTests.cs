@@ -135,11 +135,8 @@ namespace WarStreamer.Tests.Repositories
 
         private static WarOverlay CreateWarOverlay(DateTimeOffset dateTime)
         {
-            return new WarOverlay
+            return new(USER_ID, ID, CLAN_TAG)
             {
-                UserId = USER_ID,
-                Id = ID,
-                ClanTag = CLAN_TAG,
                 LastCheckout = dateTime,
                 IsEnded = IS_ENDED,
             };

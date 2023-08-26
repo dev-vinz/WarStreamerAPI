@@ -129,11 +129,7 @@ namespace WarStreamer.Tests.Repositories
 
         private static Account CreateAccount()
         {
-            return new Account
-            {
-                Tag = TAG,
-                UserId = USER_ID,
-            };
+            return new(TAG, USER_ID);
         }
     }
 }
