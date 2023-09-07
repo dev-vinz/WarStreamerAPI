@@ -40,9 +40,9 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public Image? GetById(int id)
+        public Image? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name)
         {
-            return _repository.GetById(id);
+            return _repository.GetByOverlaySettingIdAndName(overlaySettingId, name);
         }
 
         public List<Image> GetByOverlaySettingId(decimal overlaySettingId)
