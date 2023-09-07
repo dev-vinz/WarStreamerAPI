@@ -43,9 +43,9 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public ImageViewModel? GetById(int id)
+        public ImageViewModel? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name)
         {
-            Image? image = _service.GetById(id);
+            Image? image = _service.GetByOverlaySettingIdAndName(overlaySettingId, name);
 
             if (image == null) return null;
 
@@ -73,10 +73,9 @@ namespace WarStreamer.Maps
 
         private static ImageViewModel DomainToViewModel(Image domain)
         {
-            return new(domain.Id, domain.OverlaySettingId)
+            return new(domain.OverlaySettingId, domain.Name)
             {
-                LocationX = domain.LocationX,
-                LocationY = domain.LocationY,
+                Location = new(domain.LocationX, domain.LocationY),
                 Width = domain.Width,
                 Height = domain.Height,
             };
@@ -91,10 +90,10 @@ namespace WarStreamer.Maps
 
         private static Image ViewModelToDomain(ImageViewModel viewModel)
         {
-            return new(viewModel.Id, viewModel.OverlaySettingId)
+            return new(viewModel.OverlaySettingId, viewModel.Name)
             {
-                LocationX = viewModel.LocationX,
-                LocationY = viewModel.LocationY,
+                LocationX = viewModel.Location.X,
+                LocationY = viewModel.Location.Y,
                 Width = viewModel.Width,
                 Height = viewModel.Height,
             };

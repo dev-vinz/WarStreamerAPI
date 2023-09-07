@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using WarStreamer.Commons.Tools;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
@@ -73,17 +73,17 @@ namespace WarStreamer.Maps
             {
                 TextColor = domain.TextColor,
                 LogoVisible = domain.IsLogo,
-                LogoLocation = new Point(domain.LogoLocationX ?? 0, domain.LogoLocationY ?? 0),
+                LogoLocation = new Location2D(domain.LogoLocationX ?? 0, domain.LogoLocationY ?? 0),
                 ClanNameVisible = domain.IsClanName,
-                ClanNameLocation = new Point(domain.ClanNameLocationX ?? 0, domain.ClanNameLocationY ?? 0),
+                ClanNameLocation = new Location2D(domain.ClanNameLocationX ?? 0, domain.ClanNameLocationY ?? 0),
                 TotalStarsVisible = domain.IsTotalStars,
-                TotalStarsLocation = new Point(domain.TotalStarsLocationX ?? 0, domain.TotalStarsLocationY ?? 0),
+                TotalStarsLocation = new Location2D(domain.TotalStarsLocationX ?? 0, domain.TotalStarsLocationY ?? 0),
                 TotalPercentageVisible = domain.IsTotalPercentage,
-                TotalPercentageLocation = new Point(domain.TotalPercentageLocationX ?? 0, domain.TotalPercentageLocationY ?? 0),
+                TotalPercentageLocation = new Location2D(domain.TotalPercentageLocationX ?? 0, domain.TotalPercentageLocationY ?? 0),
                 AverageDurationVisible = domain.IsAverageDuration,
-                AverageDurationLocation = new Point(domain.AverageDurationLocationX ?? 0, domain.AverageDurationLocationY ?? 0),
+                AverageDurationLocation = new Location2D(domain.AverageDurationLocationX ?? 0, domain.AverageDurationLocationY ?? 0),
                 PlayerDetailsVisible = domain.IsPlayerDetails,
-                PlayerDetailsLocation = new Point(domain.PlayerDetailsLocationX ?? 0, domain.PlayerDetailsLocationY ?? 0),
+                PlayerDetailsLocation = new Location2D(domain.PlayerDetailsLocationX ?? 0, domain.PlayerDetailsLocationY ?? 0),
                 MirrorReflection = domain.MirrorReflection,
             };
         }
