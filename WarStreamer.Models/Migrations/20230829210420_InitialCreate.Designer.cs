@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20230826201253_InitialCreate")]
+    [Migration("20230829210420_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,11 +50,12 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.Image", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<decimal>("OverlaySettingId")
+                        .HasPrecision(30)
+                        .HasColumnType("decimal(30,0)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -68,19 +69,13 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int>("LocationY")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("OverlaySettingId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
-
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Width")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OverlaySettingId");
+                    b.HasKey("OverlaySettingId", "Name");
 
                     b.ToTable("Images");
                 });
@@ -88,10 +83,7 @@ namespace WarStreamer.Models.Migrations
             modelBuilder.Entity("WarStreamer.Models.Language", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");

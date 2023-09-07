@@ -15,8 +15,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     CultureInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DisplayValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShortcutValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -158,9 +157,8 @@ namespace WarStreamer.Models.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     OverlaySettingId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LocationX = table.Column<int>(type: "int", nullable: false),
                     LocationY = table.Column<int>(type: "int", nullable: false),
                     Width = table.Column<int>(type: "int", nullable: false),
@@ -170,7 +168,7 @@ namespace WarStreamer.Models.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.PrimaryKey("PK_Images", x => new { x.OverlaySettingId, x.Name });
                     table.ForeignKey(
                         name: "FK_Images_OverlaySettings_OverlaySettingId",
                         column: x => x.OverlaySettingId,
@@ -183,11 +181,6 @@ namespace WarStreamer.Models.Migrations
                 name: "IX_Accounts_UserId",
                 table: "Accounts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_OverlaySettingId",
-                table: "Images",
-                column: "OverlaySettingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamLogos_UserId",

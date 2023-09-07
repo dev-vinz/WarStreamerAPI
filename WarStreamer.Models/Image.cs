@@ -1,22 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
 {
+    [PrimaryKey(nameof(OverlaySettingId), nameof(Name))]
     public class Image : Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; private set; }
-
         [Precision(30, 0)]
         public decimal OverlaySettingId { get; private set; }
+
+        public string Name { get; private set; }
 
         public int LocationX { get; set; }
 
@@ -36,12 +33,12 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image(int id, decimal overlaySettingId)
+        public Image(decimal overlaySettingId, string name)
         {
             // Inputs
             {
-                Id = id;
                 OverlaySettingId = overlaySettingId;
+                Name = name.ToUpper();
             }
         }
 
@@ -80,13 +77,13 @@ namespace WarStreamer.Models
             {
                 Image? image = obj as Image;
 
-                return image?.Id == Id;
+                return image?.OverlaySettingId == OverlaySettingId && image.Name == Name;
             }
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return HashCode.Combine(OverlaySettingId, Name);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

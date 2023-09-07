@@ -11,7 +11,7 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; private set; }
 
         public string CultureInfo { get; private set; }
