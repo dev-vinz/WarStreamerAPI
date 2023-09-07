@@ -12,7 +12,7 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const int ID = 1;
+        private const string NAME = "Image";
         private const decimal OVERLAY_SETTING_ID = 0;
         private const int LOCATION_X = 100;
         private const int LOCATION_X_UPDATED = 150;
@@ -52,7 +52,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.NotNull(image);
 
-            Assert.Equal(ID, image.Id);
+            Assert.Equal(NAME.ToUpper(), image.Name);
             Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
             Assert.Equal(LOCATION_X, image.LocationX);
             Assert.Equal(LOCATION_Y, image.LocationY);
@@ -72,7 +72,7 @@ namespace WarStreamer.Tests.Repositories
 
             Image image = images.Single();
 
-            Assert.Equal(ID, image.Id);
+            Assert.Equal(NAME.ToUpper(), image.Name);
             Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
             Assert.Equal(LOCATION_X, image.LocationX);
             Assert.Equal(LOCATION_Y, image.LocationY);
@@ -90,7 +90,7 @@ namespace WarStreamer.Tests.Repositories
 
             Image image = Assert.Single(images);
 
-            Assert.Equal(ID, image.Id);
+            Assert.Equal(NAME.ToUpper(), image.Name);
             Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
             Assert.Equal(LOCATION_X, image.LocationX);
             Assert.Equal(LOCATION_Y, image.LocationY);
@@ -111,7 +111,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(5)]
         public void WhenUpdateImage_ThenReturnsTrue()
         {
-            Image? image = _repository.GetById(ID);
+            Image? image = _repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID, NAME);
 
             Assert.NotNull(image);
 
@@ -127,11 +127,11 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(6)]
         public void WhenGetImageById_ThenReturnsImage()
         {
-            Image? image = _repository.GetById(ID);
+            Image? image = _repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID, NAME);
 
             Assert.NotNull(image);
 
-            Assert.Equal(ID, image.Id);
+            Assert.Equal(NAME.ToUpper(), image.Name);
             Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
             Assert.Equal(LOCATION_X_UPDATED, image.LocationX);
             Assert.Equal(LOCATION_Y_UPDATED, image.LocationY);
@@ -146,14 +146,14 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(7)]
         public void WhenGetImageById_ThenReturnsNull()
         {
-            Assert.Null(_repository.GetById(ID + 1));
+            Assert.Null(_repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID + 1, NAME));
         }
 
         [Fact]
         [TestOrder(8)]
         public void WhenDeleteImage_ThenReturnsTrue()
         {
-            Image? image = _repository.GetById(ID);
+            Image? image = _repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID, NAME);
 
             Assert.NotNull(image);
             Assert.True(_repository.Delete(image));
@@ -170,7 +170,7 @@ namespace WarStreamer.Tests.Repositories
 
         private static Image CreateImage()
         {
-            return new(ID, OVERLAY_SETTING_ID)
+            return new(OVERLAY_SETTING_ID, NAME)
             {
                 LocationX = LOCATION_X,
                 LocationY = LOCATION_Y,

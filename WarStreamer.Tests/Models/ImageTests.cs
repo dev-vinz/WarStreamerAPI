@@ -9,8 +9,8 @@ namespace WarStreamer.Tests.Models
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const int ID_ONE = 1;
-        private const int ID_TWO = 2;
+        private const string NAME_ONE = "Image 1";
+        private const string NAME_TWO = "Image 2";
         private const decimal OVERLAY_SETTING_ID = 0;
         private const int LOCATION_X = 100;
         private const int LOCATION_Y = 150;
@@ -27,7 +27,7 @@ namespace WarStreamer.Tests.Models
             Image image = CreateImageOne();
 
             Assert.NotNull(image);
-            Assert.Equal(ID_ONE, image.Id);
+            Assert.Equal(NAME_ONE.ToUpper(), image.Name);
             Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
             Assert.Equal(LOCATION_X, image.LocationX);
             Assert.Equal(LOCATION_Y, image.LocationY);
@@ -71,7 +71,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingImage_ThenImageCopied()
         {
             Image image = CreateImageOne();
-            Entity copy = new Image(image.Id, image.OverlaySettingId);
+            Entity copy = new Image(image.OverlaySettingId, image.Name);
 
             Assert.NotNull(image);
 
@@ -95,7 +95,7 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageOne()
         {
-            return new(ID_ONE, OVERLAY_SETTING_ID)
+            return new(OVERLAY_SETTING_ID, NAME_ONE)
             {
                 LocationX = LOCATION_X,
                 LocationY = LOCATION_Y,
@@ -106,7 +106,7 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageTwo()
         {
-            return new(ID_TWO, OVERLAY_SETTING_ID)
+            return new(OVERLAY_SETTING_ID, NAME_TWO)
             {
                 LocationX = LOCATION_Y,
                 LocationY = LOCATION_X,
