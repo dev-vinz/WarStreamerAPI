@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using WarStreamer.Commons.Tools;
 
 namespace WarStreamer.ViewModels
 {
@@ -11,17 +11,17 @@ namespace WarStreamer.ViewModels
         private readonly decimal _userId;
         private string _textColor;
         private bool _logoVisible;
-        private Point? _logoLocation;
+        private Location2D? _logoLocation;
         private bool _clanNameVisible;
-        private Point? _clanNameLocation;
+        private Location2D? _clanNameLocation;
         private bool _totalStarsVisible;
-        private Point? _totalStarsLocation;
+        private Location2D? _totalStarsLocation;
         private bool _totalPercentageVisible;
-        private Point? _totalPercentageLocation;
+        private Location2D? _totalPercentageLocation;
         private bool _averageDurationVisible;
-        private Point? _averageDurationLocation;
+        private Location2D? _averageDurationLocation;
         private bool _playerDetailsVisible;
-        private Point? _playerDetailsLocation;
+        private Location2D? _playerDetailsLocation;
         private bool _mirrorReflection;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -43,7 +43,7 @@ namespace WarStreamer.ViewModels
             }
         }
 
-        public Point? LogoLocation
+        public Location2D? LogoLocation
         {
             get => _logoLocation;
             set
@@ -63,7 +63,7 @@ namespace WarStreamer.ViewModels
             }
         }
 
-        public Point? ClanNameLocation
+        public Location2D? ClanNameLocation
         {
             get => _clanNameLocation;
             set
@@ -83,7 +83,7 @@ namespace WarStreamer.ViewModels
             }
         }
 
-        public Point? TotalStarsLocation
+        public Location2D? TotalStarsLocation
         {
             get => _totalStarsLocation;
             set
@@ -103,7 +103,7 @@ namespace WarStreamer.ViewModels
             }
         }
 
-        public Point? TotalPercentageLocation
+        public Location2D? TotalPercentageLocation
         {
             get => _totalPercentageLocation;
             set
@@ -123,7 +123,7 @@ namespace WarStreamer.ViewModels
             }
         }
 
-        public Point? AverageDurationLocation
+        public Location2D? AverageDurationLocation
         {
             get => _averageDurationLocation;
             set
@@ -143,7 +143,7 @@ namespace WarStreamer.ViewModels
             }
         }
 
-        public Point? PlayerDetailsLocation
+        public Location2D? PlayerDetailsLocation
         {
             get => _playerDetailsLocation;
             set

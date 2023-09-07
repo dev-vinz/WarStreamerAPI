@@ -1,4 +1,6 @@
-﻿namespace WarStreamer.ViewModels
+﻿using WarStreamer.Commons.Tools;
+
+namespace WarStreamer.ViewModels
 {
     public class ImageViewModel
     {
@@ -6,10 +8,9 @@
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly int _id;
         private readonly decimal _overlaySettingId;
-        private int _locationX;
-        private int _locationY;
+        private readonly string _name;
+        private Location2D _location;
         private int _width;
         private int _height;
 
@@ -17,13 +18,11 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public int Id { get => _id; }
-
         public decimal OverlaySettingId { get => _overlaySettingId; }
 
-        public int LocationX { get => _locationX; set => _locationX = value; }
+        public string Name { get => _name; }
 
-        public int LocationY { get => _locationY; set => _locationY = value; }
+        public Location2D Location { get => _location; set => _location = value; }
 
         public int Width { get => _width; set => _width = value; }
 
@@ -33,12 +32,13 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public ImageViewModel(int id, decimal overlaySettingId)
+        public ImageViewModel(decimal overlaySettingId, string name)
         {
             // Inputs
             {
-                _id = id;
                 _overlaySettingId = overlaySettingId;
+                _name = name;
+                _location = new(0, 0);
             }
         }
     }
