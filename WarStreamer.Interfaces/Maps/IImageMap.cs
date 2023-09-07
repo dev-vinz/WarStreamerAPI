@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Maps
 
         public List<ImageViewModel> GetAll();
 
-        public ImageViewModel? GetById(int id);
+        public ImageViewModel? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name);
 
         public List<ImageViewModel> GetByOverlaySettingId(decimal overlaySettingId);
 
