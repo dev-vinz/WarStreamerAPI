@@ -43,11 +43,11 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Image? GetById(int id)
+        public Image? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name)
         {
             try
             {
-                return Context.Set<Image>().FirstOrDefault(i => i.Id == id);
+                return Context.Set<Image>().FirstOrDefault(i => i.OverlaySettingId == overlaySettingId && i.Name == name.ToUpper());
             }
             catch (Exception)
             {
