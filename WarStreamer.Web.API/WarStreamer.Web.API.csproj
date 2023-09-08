@@ -20,14 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WarStreamer.Commons\WarStreamer.Commons.csproj" />
     <ProjectReference Include="..\WarStreamer.Interfaces\WarStreamer.Interfaces.csproj" />
     <ProjectReference Include="..\WarStreamer.Maps\WarStreamer.Maps.csproj" />
     <ProjectReference Include="..\WarStreamer.ViewModels\WarStreamer.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
