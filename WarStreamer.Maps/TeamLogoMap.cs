@@ -48,6 +48,15 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetByUserId(userId));
         }
 
+        public TeamLogoViewModel? GetByUserIdAndName(decimal userId, string name)
+        {
+            TeamLogo? logo = _service.GetByUserIdAndName(userId, name);
+
+            if (logo == null) return null;
+
+            return DomainToViewModel(logo);
+        }
+
         public bool Update(TeamLogoViewModel viewModel)
         {
             TeamLogo logo = ViewModelToDomain(viewModel);

@@ -48,6 +48,15 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetByUserId(userId));
         }
 
+        public WarOverlayViewModel? GetByUserIdAndId(decimal userId, int id)
+        {
+            WarOverlay? overlay = _service.GetByUserIdAndId(userId, id);
+
+            if (overlay == null) return null;
+
+            return DomainToViewModel(overlay);
+        }
+
         public bool Update(WarOverlayViewModel viewModel)
         {
             WarOverlay overlay = ViewModelToDomain(viewModel);
