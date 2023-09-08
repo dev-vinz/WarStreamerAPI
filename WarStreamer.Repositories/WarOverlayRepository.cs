@@ -57,6 +57,19 @@ namespace WarStreamer.Repositories
             }
         }
 
+        public WarOverlay? GetByUserIdAndId(decimal userId, int id)
+        {
+            try
+            {
+                return Context.Set<WarOverlay>()
+                              .FirstOrDefault(o => o.UserId == userId && o.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public WarOverlay Save(WarOverlay domain)
         {
             try

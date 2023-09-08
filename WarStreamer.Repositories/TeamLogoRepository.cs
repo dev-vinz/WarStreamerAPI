@@ -57,6 +57,18 @@ namespace WarStreamer.Repositories
             }
         }
 
+        public TeamLogo? GetByUserIdAndName(decimal userId, string name)
+        {
+            try
+            {
+                return Context.Set<TeamLogo>().FirstOrDefault(l => l.UserId == userId && l.TeamName == name.ToUpper());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public TeamLogo Save(TeamLogo domain)
         {
             try
