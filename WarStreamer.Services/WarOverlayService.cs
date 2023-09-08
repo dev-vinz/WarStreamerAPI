@@ -45,6 +45,11 @@ namespace WarStreamer.Services
             return _repository.GetByUserId(userId);
         }
 
+        public WarOverlay? GetByUserIdAndId(decimal userId, int id)
+        {
+            return _repository.GetByUserIdAndId(userId, id);
+        }
+
         public bool Update(WarOverlay domain)
         {
             return _repository.Update(domain);

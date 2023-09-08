@@ -45,6 +45,11 @@ namespace WarStreamer.Services
             return _repository.GetByUserId(userId);
         }
 
+        public TeamLogo? GetByUserIdAndName(decimal userId, string name)
+        {
+            return _repository.GetByUserIdAndName(userId, name);
+        }
+
         public bool Update(TeamLogo domain)
         {
             return _repository.Update(domain);
