@@ -16,6 +16,8 @@ namespace WarStreamer.Interfaces.Services
 
         public List<WarOverlay> GetByUserId(decimal userId);
 
+        public WarOverlay? GetByUserIdAndId(decimal userId, int id);
+
         public bool Update(WarOverlay domain);
     }
 }

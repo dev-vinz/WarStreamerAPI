@@ -16,6 +16,8 @@ namespace WarStreamer.Interfaces.Services
 
         public List<TeamLogo> GetByUserId(decimal userId);
 
+        public TeamLogo? GetByUserIdAndName(decimal userId, string name);
+
         public bool Update(TeamLogo domain);
     }
 }
