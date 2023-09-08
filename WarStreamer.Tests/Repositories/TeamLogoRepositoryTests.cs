@@ -48,7 +48,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.NotNull(logo);
 
-            Assert.Equal(TEAM_NAME, logo.TeamName);
+            Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
             Assert.Equal(WIDTH, logo.Width);
             Assert.Equal(HEIGHT, logo.Height);
@@ -64,7 +64,7 @@ namespace WarStreamer.Tests.Repositories
 
             TeamLogo logo = Assert.Single(logos);
 
-            Assert.Equal(TEAM_NAME, logo.TeamName);
+            Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
             Assert.Equal(WIDTH, logo.Width);
             Assert.Equal(HEIGHT, logo.Height);
@@ -80,7 +80,7 @@ namespace WarStreamer.Tests.Repositories
 
             TeamLogo logo = Assert.Single(logos);
 
-            Assert.Equal(TEAM_NAME, logo.TeamName);
+            Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
             Assert.Equal(WIDTH, logo.Width);
             Assert.Equal(HEIGHT, logo.Height);
@@ -97,6 +97,31 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(5)]
+        public void WhenGetTeamLogoByUserIdAndName_ThenReturnsTeamLogo()
+        {
+            TeamLogo? logo = _repository.GetByUserIdAndName(USER_ID, TEAM_NAME);
+
+            Assert.NotNull(logo);
+
+            Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
+            Assert.Equal(USER_ID, logo.UserId);
+            Assert.Equal(WIDTH, logo.Width);
+            Assert.Equal(HEIGHT, logo.Height);
+            Assert.NotEqual(DateTimeOffset.MinValue, logo.CreatedAt);
+            Assert.Equal(logo.CreatedAt, logo.UpdatedAt);
+        }
+
+        [Fact]
+        [TestOrder(6)]
+        public void WhenGetTeamLogoByUserIdAndName_ThenReturnsNull()
+        {
+            TeamLogo? logo = _repository.GetByUserIdAndName(USER_ID + 1, TEAM_NAME);
+
+            Assert.Null(logo);
+        }
+
+        [Fact]
+        [TestOrder(7)]
         public void WhenUpdateTeamLogo_ThenReturnsTrue()
         {
             List<TeamLogo> logos = _repository.GetByUserId(USER_ID);
@@ -116,7 +141,7 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(8)]
         public void WhenDeleteTeamLogo_ThenReturnsTrue()
         {
             TeamLogo logo = Assert.Single(_repository.GetAll());

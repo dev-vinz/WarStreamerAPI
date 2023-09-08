@@ -25,7 +25,7 @@ namespace WarStreamer.Tests.Models
             TeamLogo logo = CreateTeamLogoOne();
 
             Assert.NotNull(logo);
-            Assert.Equal(TEAM_NAME, logo.TeamName);
+            Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID_ONE, logo.UserId);
             Assert.Equal(WIDTH, logo.Width);
             Assert.Equal(HEIGHT, logo.Height);

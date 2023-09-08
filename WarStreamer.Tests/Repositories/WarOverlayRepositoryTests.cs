@@ -98,6 +98,31 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(5)]
+        public void WhenGetWarOverlayByUserIdAndId_ThenReturnsWarOverlay()
+        {
+            WarOverlay? overlay = _repository.GetByUserIdAndId(USER_ID, ID);
+
+            Assert.NotNull(overlay);
+
+            Assert.Equal(USER_ID, overlay.UserId);
+            Assert.Equal(ID, overlay.Id);
+            Assert.Equal(CLAN_TAG, overlay.ClanTag);
+            Assert.Equal(IS_ENDED, overlay.IsEnded);
+            Assert.NotEqual(DateTimeOffset.MinValue, overlay.CreatedAt);
+            Assert.Equal(overlay.CreatedAt, overlay.UpdatedAt);
+        }
+
+        [Fact]
+        [TestOrder(6)]
+        public void WhenGetOverlayByUserIdAndId_ThenReturnsNull()
+        {
+            WarOverlay? overlay = _repository.GetByUserIdAndId(USER_ID, ID + 1);
+
+            Assert.Null(overlay);
+        }
+
+        [Fact]
+        [TestOrder(7)]
         public void WhenUpdateWarOverlay_ThenReturnsTrue()
         {
             WarOverlay overlay = Assert.Single(_repository.GetByUserId(USER_ID));
@@ -116,7 +141,7 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(8)]
         public void WhenDeleteWarOverlay_ThenReturnsTrue()
         {
             WarOverlay overlay = Assert.Single(_repository.GetByUserId(USER_ID));
