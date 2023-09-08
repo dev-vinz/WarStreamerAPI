@@ -77,7 +77,7 @@ namespace WarStreamer.Models
             {
                 Image? image = obj as Image;
 
-                return image?.OverlaySettingId == OverlaySettingId && image.Name == Name;
+                return image?.OverlaySettingId == OverlaySettingId && image.Name.ToUpper() == Name;
             }
         }
 

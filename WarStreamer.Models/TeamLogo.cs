@@ -35,7 +35,7 @@ namespace WarStreamer.Models
         {
             // Inputs
             {
-                TeamName = teamName;
+                TeamName = teamName.ToUpper();
                 UserId = userId;
             }
         }
@@ -73,13 +73,13 @@ namespace WarStreamer.Models
             {
                 TeamLogo? logo = obj as TeamLogo;
 
-                return logo?.TeamName.ToLower() == TeamName.ToLower() && logo.UserId == UserId;
+                return logo?.TeamName.ToUpper() == TeamName && logo.UserId == UserId;
             }
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(TeamName.ToLower().GetHashCode(), UserId);
+            return HashCode.Combine(TeamName, UserId);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
