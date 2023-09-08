@@ -93,6 +93,9 @@ namespace WarStreamer.Models.Migrations
                     IsPlayerDetails = table.Column<bool>(type: "bit", nullable: false),
                     PlayerDetailsLocationX = table.Column<int>(type: "int", nullable: true),
                     PlayerDetailsLocationY = table.Column<int>(type: "int", nullable: true),
+                    IsLastAttackToWin = table.Column<bool>(type: "bit", nullable: false),
+                    LastAttackToWinLocationX = table.Column<int>(type: "int", nullable: true),
+                    LastAttackToWinLocationY = table.Column<int>(type: "int", nullable: true),
                     MirrorReflection = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)

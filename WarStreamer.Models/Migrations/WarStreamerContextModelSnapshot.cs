@@ -137,6 +137,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<bool>("IsClanName")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLastAttackToWin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsLogo")
                         .HasColumnType("bit");
 
@@ -148,6 +151,12 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<bool>("IsTotalStars")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("LastAttackToWinLocationX")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LastAttackToWinLocationY")
+                        .HasColumnType("int");
 
                     b.Property<int?>("LogoLocationX")
                         .HasColumnType("int");

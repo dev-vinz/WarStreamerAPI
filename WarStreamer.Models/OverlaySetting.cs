@@ -54,6 +54,12 @@ namespace WarStreamer.Models
 
         public int? PlayerDetailsLocationY { get; set; }
 
+        public bool IsLastAttackToWin { get; set; }
+
+        public int? LastAttackToWinLocationX { get; set; }
+
+        public int? LastAttackToWinLocationY { get; set; }
+
         public bool MirrorReflection { get; set; }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -113,6 +119,10 @@ namespace WarStreamer.Models
                 setting.IsPlayerDetails = IsPlayerDetails;
                 setting.PlayerDetailsLocationX = PlayerDetailsLocationX;
                 setting.PlayerDetailsLocationY = PlayerDetailsLocationY;
+
+                setting.IsLastAttackToWin = IsLastAttackToWin;
+                setting.LastAttackToWinLocationX = LastAttackToWinLocationX;
+                setting.LastAttackToWinLocationY = LastAttackToWinLocationY;
 
                 setting.MirrorReflection = MirrorReflection;
 

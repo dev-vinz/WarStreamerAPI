@@ -33,6 +33,9 @@ namespace WarStreamer.Tests.Repositories
         private const bool IS_PLAYER_DETAILS = true;
         private const int PLAYER_DETAILS_LOCATION_X = 600;
         private const int PLAYER_DETAILS_LOCATION_Y = 600;
+        private const bool IS_LAST_ATTACK_TO_WIN = true;
+        private const int LAST_ATTACK_TO_WIN_LOCATION_X = 700;
+        private const int LAST_ATTACK_TO_WIN_LOCATION_Y = 700;
         private const bool MIRROR_REFLECTION = false;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -91,6 +94,10 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(PLAYER_DETAILS_LOCATION_X, setting.PlayerDetailsLocationX);
             Assert.Equal(PLAYER_DETAILS_LOCATION_Y, setting.PlayerDetailsLocationY);
 
+            Assert.Equal(IS_LAST_ATTACK_TO_WIN, setting.IsLastAttackToWin);
+            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_X, setting.LastAttackToWinLocationX);
+            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_Y, setting.LastAttackToWinLocationY);
+
             Assert.Equal(MIRROR_REFLECTION, setting.MirrorReflection);
             Assert.NotEqual(DateTimeOffset.MinValue, setting.CreatedAt);
             Assert.Equal(setting.CreatedAt, setting.UpdatedAt);
@@ -131,6 +138,10 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(PLAYER_DETAILS_LOCATION_X, setting.PlayerDetailsLocationX);
             Assert.Equal(PLAYER_DETAILS_LOCATION_Y, setting.PlayerDetailsLocationY);
 
+            Assert.Equal(IS_LAST_ATTACK_TO_WIN, setting.IsLastAttackToWin);
+            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_X, setting.LastAttackToWinLocationX);
+            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_Y, setting.LastAttackToWinLocationY);
+
             Assert.Equal(MIRROR_REFLECTION, setting.MirrorReflection);
             Assert.NotEqual(DateTimeOffset.MinValue, setting.CreatedAt);
             Assert.Equal(setting.CreatedAt, setting.UpdatedAt);
@@ -170,6 +181,10 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(IS_PLAYER_DETAILS, setting.IsPlayerDetails);
             Assert.Equal(PLAYER_DETAILS_LOCATION_X, setting.PlayerDetailsLocationX);
             Assert.Equal(PLAYER_DETAILS_LOCATION_Y, setting.PlayerDetailsLocationY);
+
+            Assert.Equal(IS_LAST_ATTACK_TO_WIN, setting.IsLastAttackToWin);
+            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_X, setting.LastAttackToWinLocationX);
+            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_Y, setting.LastAttackToWinLocationY);
 
             Assert.Equal(MIRROR_REFLECTION, setting.MirrorReflection);
             Assert.NotEqual(DateTimeOffset.MinValue, setting.CreatedAt);
@@ -238,6 +253,9 @@ namespace WarStreamer.Tests.Repositories
                 IsPlayerDetails = IS_PLAYER_DETAILS,
                 PlayerDetailsLocationX = PLAYER_DETAILS_LOCATION_X,
                 PlayerDetailsLocationY = PLAYER_DETAILS_LOCATION_Y,
+                IsLastAttackToWin = IS_LAST_ATTACK_TO_WIN,
+                LastAttackToWinLocationX = LAST_ATTACK_TO_WIN_LOCATION_X,
+                LastAttackToWinLocationY = LAST_ATTACK_TO_WIN_LOCATION_Y,
                 MirrorReflection = MIRROR_REFLECTION,
             };
         }

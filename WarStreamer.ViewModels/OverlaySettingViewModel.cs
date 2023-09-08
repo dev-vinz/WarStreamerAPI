@@ -22,6 +22,8 @@ namespace WarStreamer.ViewModels
         private Location2D? _averageDurationLocation;
         private bool _playerDetailsVisible;
         private Location2D? _playerDetailsLocation;
+        private bool _lastAttackToWinVisible;
+        private Location2D? _lastAttackToWinLocation;
         private bool _mirrorReflection;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -149,6 +151,26 @@ namespace WarStreamer.ViewModels
             set
             {
                 if (_playerDetailsVisible) _playerDetailsLocation = value;
+            }
+        }
+
+        public bool LastAttackToWinVisible
+        {
+            get => _lastAttackToWinVisible;
+            set
+            {
+                _lastAttackToWinVisible = value;
+
+                if (!_lastAttackToWinVisible) _lastAttackToWinLocation = null;
+            }
+        }
+
+        public Location2D? LastAttackToWinLocation
+        {
+            get => _lastAttackToWinLocation;
+            set
+            {
+                if (_lastAttackToWinVisible) _lastAttackToWinLocation = value;
             }
         }
 

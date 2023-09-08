@@ -84,6 +84,8 @@ namespace WarStreamer.Maps
                 AverageDurationLocation = new Location2D(domain.AverageDurationLocationX ?? 0, domain.AverageDurationLocationY ?? 0),
                 PlayerDetailsVisible = domain.IsPlayerDetails,
                 PlayerDetailsLocation = new Location2D(domain.PlayerDetailsLocationX ?? 0, domain.PlayerDetailsLocationY ?? 0),
+                LastAttackToWinVisible = domain.IsLastAttackToWin,
+                LastAttackToWinLocation = new Location2D(domain.LastAttackToWinLocationX ?? 0, domain.LastAttackToWinLocationY ?? 0),
                 MirrorReflection = domain.MirrorReflection,
             };
         }
@@ -118,6 +120,9 @@ namespace WarStreamer.Maps
                 IsPlayerDetails = viewModel.PlayerDetailsVisible,
                 PlayerDetailsLocationX = viewModel.PlayerDetailsLocation?.X,
                 PlayerDetailsLocationY = viewModel.PlayerDetailsLocation?.Y,
+                IsLastAttackToWin = viewModel.LastAttackToWinVisible,
+                LastAttackToWinLocationX = viewModel.LastAttackToWinLocation?.X,
+                LastAttackToWinLocationY = viewModel.LastAttackToWinLocation?.Y,
                 MirrorReflection = viewModel.MirrorReflection,
             };
         }

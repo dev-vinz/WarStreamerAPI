@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20230829210420_InitialCreate")]
+    [Migration("20230908161302_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -140,6 +140,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<bool>("IsClanName")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLastAttackToWin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsLogo")
                         .HasColumnType("bit");
 
@@ -151,6 +154,12 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<bool>("IsTotalStars")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("LastAttackToWinLocationX")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LastAttackToWinLocationY")
+                        .HasColumnType("int");
 
                     b.Property<int?>("LogoLocationX")
                         .HasColumnType("int");
