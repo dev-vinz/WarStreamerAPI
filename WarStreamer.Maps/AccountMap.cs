@@ -67,7 +67,7 @@ namespace WarStreamer.Maps
 
         private static AccountViewModel DomainToViewModel(Account domain)
         {
-            return new(domain.Tag, domain.UserId);
+            return new(domain.Tag, domain.UserId.ToString());
         }
 
         private static List<AccountViewModel> DomainToViewModel(List<Account> domain)
@@ -79,7 +79,7 @@ namespace WarStreamer.Maps
 
         private static Account ViewModelToDomain(AccountViewModel viewModel)
         {
-            return new(viewModel.Tag, viewModel.UserId);
+            return new(viewModel.Tag, decimal.Parse(viewModel.UserId));
         }
     }
 }

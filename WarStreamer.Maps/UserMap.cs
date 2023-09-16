@@ -68,7 +68,7 @@ namespace WarStreamer.Maps
 
         private static UserViewModel DomainToViewModel(User domain)
         {
-            return new(domain.Id)
+            return new(domain.Id.ToString())
             {
                 LanguageId = domain.LanguageId,
                 TierLevel = domain.TierLevel,
@@ -84,7 +84,7 @@ namespace WarStreamer.Maps
 
         private static User ViewModelToDomain(UserViewModel viewModel)
         {
-            return new(viewModel.Id)
+            return new(decimal.Parse(viewModel.Id))
             {
                 LanguageId = viewModel.LanguageId,
                 TierLevel = viewModel.TierLevel,

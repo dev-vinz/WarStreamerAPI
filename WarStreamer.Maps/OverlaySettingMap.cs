@@ -69,7 +69,7 @@ namespace WarStreamer.Maps
 
         private static OverlaySettingViewModel DomainToViewModel(OverlaySetting domain)
         {
-            return new(domain.UserId)
+            return new(domain.UserId.ToString())
             {
                 TextColor = domain.TextColor,
                 LogoVisible = domain.IsLogo,
@@ -99,7 +99,7 @@ namespace WarStreamer.Maps
 
         private static OverlaySetting ViewModelToDomain(OverlaySettingViewModel viewModel)
         {
-            return new(viewModel.UserId)
+            return new(decimal.Parse(viewModel.UserId))
             {
                 TextColor = viewModel.TextColor,
                 IsLogo = viewModel.LogoVisible,

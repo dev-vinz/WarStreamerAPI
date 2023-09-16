@@ -73,7 +73,7 @@ namespace WarStreamer.Maps
 
         private static TeamLogoViewModel DomainToViewModel(TeamLogo domain)
         {
-            return new TeamLogoViewModel(domain.TeamName, domain.UserId)
+            return new TeamLogoViewModel(domain.TeamName, domain.UserId.ToString())
             {
                 Width = domain.Width,
                 Height = domain.Height,
@@ -89,7 +89,7 @@ namespace WarStreamer.Maps
 
         private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel)
         {
-            return new(viewModel.TeamName, viewModel.UserId)
+            return new(viewModel.TeamName, decimal.Parse(viewModel.UserId))
             {
                 Width = viewModel.Width,
                 Height = viewModel.Height,
