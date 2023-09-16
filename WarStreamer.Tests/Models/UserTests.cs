@@ -13,6 +13,7 @@ namespace WarStreamer.Tests.Models
         private const decimal USER_ID_TWO = 2;
         private const int LANGUAGE_ID = 1;
         private const uint TIER_LEVEL = 3;
+        private const bool NEWSLETTER = true;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -27,6 +28,7 @@ namespace WarStreamer.Tests.Models
             Assert.Equal(USER_ID_ONE, user.Id);
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
             Assert.Equal(TIER_LEVEL, user.TierLevel);
+            Assert.Equal(NEWSLETTER, user.NewsLetter);
         }
 
         [Fact]
@@ -75,6 +77,7 @@ namespace WarStreamer.Tests.Models
 
             Assert.Equal(user.LanguageId, copyUser.LanguageId);
             Assert.Equal(user.TierLevel, copyUser.TierLevel);
+            Assert.Equal(user.NewsLetter, copyUser.NewsLetter);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -91,6 +94,7 @@ namespace WarStreamer.Tests.Models
             {
                 LanguageId = LANGUAGE_ID,
                 TierLevel = TIER_LEVEL,
+                NewsLetter = NEWSLETTER,
             };
         }
 
@@ -99,7 +103,8 @@ namespace WarStreamer.Tests.Models
             return new(USER_ID_TWO)
             {
                 LanguageId = (int)TIER_LEVEL,
-                TierLevel = LANGUAGE_ID
+                TierLevel = LANGUAGE_ID,
+                NewsLetter = !NEWSLETTER,
             };
         }
     }

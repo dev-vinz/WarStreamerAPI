@@ -187,6 +187,7 @@ namespace WarStreamer.Web.API.Controllers
             {
                 LanguageId = user.LanguageId,
                 TierLevel = user.TierLevel,
+                NewsLetter = user.NewsLetter,
             };
 
             return Ok(_userMap.Update(user));

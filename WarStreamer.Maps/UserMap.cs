@@ -74,6 +74,7 @@ namespace WarStreamer.Maps
             {
                 LanguageId = domain.LanguageId,
                 TierLevel = domain.TierLevel,
+                NewsLetter = domain.NewsLetter,
             };
         }
 
@@ -90,6 +91,7 @@ namespace WarStreamer.Maps
             {
                 LanguageId = viewModel.LanguageId,
                 TierLevel = viewModel.TierLevel,
+                NewsLetter = viewModel.NewsLetter,
             };
         }
     }

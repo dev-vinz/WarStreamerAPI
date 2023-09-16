@@ -20,6 +20,8 @@ namespace WarStreamer.Models
 
         public uint TierLevel { get; set; }
 
+        public bool NewsLetter { get; set; }
+
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
@@ -58,6 +60,7 @@ namespace WarStreamer.Models
             {
                 user.LanguageId = LanguageId;
                 user.TierLevel = TierLevel;
+                user.NewsLetter = NewsLetter;
                 user.UpdatedAt = UpdatedAt;
             }
             else

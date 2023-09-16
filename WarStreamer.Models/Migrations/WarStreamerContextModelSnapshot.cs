@@ -238,6 +238,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("NewsLetter")
+                        .HasColumnType("bit");
+
                     b.Property<long>("TierLevel")
                         .HasColumnType("bigint");
 

@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20230908161302_InitialCreate")]
+    [Migration("20230916190607_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -240,6 +240,9 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("NewsLetter")
+                        .HasColumnType("bit");
 
                     b.Property<long>("TierLevel")
                         .HasColumnType("bigint");

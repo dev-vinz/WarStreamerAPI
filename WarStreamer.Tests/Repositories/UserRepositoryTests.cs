@@ -17,6 +17,8 @@ namespace WarStreamer.Tests.Repositories
         private const int LANGUAGE_ID_UPDATED = 0;
         private const uint TIER_LEVEL = 3;
         private const uint TIER_LEVEL_UPDATED = 1;
+        private const bool NEWSLETTER = true;
+        private const bool NEWSLETTER_UPDATED = false;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -50,6 +52,7 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(USER_ID, user.Id);
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
             Assert.Equal(TIER_LEVEL, user.TierLevel);
+            Assert.Equal(NEWSLETTER, user.NewsLetter);
             Assert.NotEqual(DateTimeOffset.MinValue, user.CreatedAt);
             Assert.Equal(user.CreatedAt, user.UpdatedAt);
         }
@@ -65,6 +68,7 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(USER_ID, user.Id);
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
             Assert.Equal(TIER_LEVEL, user.TierLevel);
+            Assert.Equal(NEWSLETTER, user.NewsLetter);
             Assert.NotEqual(DateTimeOffset.MinValue, user.CreatedAt);
             Assert.Equal(user.CreatedAt, user.UpdatedAt);
         }
@@ -86,6 +90,7 @@ namespace WarStreamer.Tests.Repositories
 
             user.LanguageId = LANGUAGE_ID_UPDATED;
             user.TierLevel = TIER_LEVEL_UPDATED;
+            user.NewsLetter = NEWSLETTER_UPDATED;
 
             Assert.True(_repository.Update(user));
         }
@@ -100,6 +105,7 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(USER_ID, user.Id);
             Assert.Equal(LANGUAGE_ID_UPDATED, user.LanguageId);
             Assert.Equal(TIER_LEVEL_UPDATED, user.TierLevel);
+            Assert.Equal(NEWSLETTER_UPDATED, user.NewsLetter);
             Assert.NotEqual(DateTimeOffset.MinValue, user.CreatedAt);
             Assert.NotEqual(DateTimeOffset.MinValue, user.UpdatedAt);
             Assert.NotEqual(user.CreatedAt, user.UpdatedAt);
@@ -130,6 +136,7 @@ namespace WarStreamer.Tests.Repositories
             {
                 LanguageId = LANGUAGE_ID,
                 TierLevel = TIER_LEVEL,
+                NewsLetter = NEWSLETTER,
             };
         }
     }

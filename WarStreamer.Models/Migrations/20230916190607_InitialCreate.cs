@@ -35,6 +35,7 @@ namespace WarStreamer.Models.Migrations
                     Id = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
                     TierLevel = table.Column<long>(type: "bigint", nullable: false),
+                    NewsLetter = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },

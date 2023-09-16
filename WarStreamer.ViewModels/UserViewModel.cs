@@ -9,6 +9,7 @@
         private readonly string _id;
         private int _languageId;
         private uint _tierLevel;
+        private bool _newsLetter;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -19,6 +20,8 @@
         public int LanguageId { get => _languageId; set => _languageId = value; }
 
         public uint TierLevel { get => _tierLevel; set => _tierLevel = value; }
+
+        public bool NewsLetter { get => _newsLetter; set => _newsLetter = value; }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
