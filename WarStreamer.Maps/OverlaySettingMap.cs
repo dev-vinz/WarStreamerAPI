@@ -44,9 +44,11 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public OverlaySettingViewModel? GetByUserId(decimal userId)
+        public OverlaySettingViewModel? GetByUserId(string userId)
         {
-            OverlaySetting? setting = _service.GetByUserId(userId);
+            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
+
+            OverlaySetting? setting = _service.GetByUserId(decimalUserId);
 
             if (setting == null) return null;
 

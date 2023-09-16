@@ -43,14 +43,18 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public List<WarOverlayViewModel> GetByUserId(decimal userId)
+        public List<WarOverlayViewModel> GetByUserId(string userId)
         {
-            return DomainToViewModel(_service.GetByUserId(userId));
+            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
+
+            return DomainToViewModel(_service.GetByUserId(decimalUserId));
         }
 
-        public WarOverlayViewModel? GetByUserIdAndId(decimal userId, int id)
+        public WarOverlayViewModel? GetByUserIdAndId(string userId, int id)
         {
-            WarOverlay? overlay = _service.GetByUserIdAndId(userId, id);
+            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
+
+            WarOverlay? overlay = _service.GetByUserIdAndId(decimalUserId, id);
 
             if (overlay == null) return null;
 

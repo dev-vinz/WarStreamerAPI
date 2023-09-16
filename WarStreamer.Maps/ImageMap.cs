@@ -43,18 +43,22 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public ImageViewModel? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name)
+        public ImageViewModel? GetByOverlaySettingIdAndName(string overlaySettingId, string name)
         {
-            Image? image = _service.GetByOverlaySettingIdAndName(overlaySettingId, name);
+            if (!decimal.TryParse(overlaySettingId, out decimal decimalOverlaySettingId)) throw new FormatException($"Cannot parse '{overlaySettingId}' to decimal");
+
+            Image? image = _service.GetByOverlaySettingIdAndName(decimalOverlaySettingId, name);
 
             if (image == null) return null;
 
             return DomainToViewModel(image);
         }
 
-        public List<ImageViewModel> GetByOverlaySettingId(decimal overlaySettingId)
+        public List<ImageViewModel> GetByOverlaySettingId(string overlaySettingId)
         {
-            return DomainToViewModel(_service.GetByOverlaySettingId(overlaySettingId));
+            if (!decimal.TryParse(overlaySettingId, out decimal decimalOverlaySettingId)) throw new FormatException($"Cannot parse '{overlaySettingId}' to decimal");
+
+            return DomainToViewModel(_service.GetByOverlaySettingId(decimalOverlaySettingId));
         }
 
         public bool Update(ImageViewModel viewModel)

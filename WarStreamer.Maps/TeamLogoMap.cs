@@ -43,14 +43,18 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public List<TeamLogoViewModel> GetByUserId(decimal userId)
+        public List<TeamLogoViewModel> GetByUserId(string userId)
         {
-            return DomainToViewModel(_service.GetByUserId(userId));
+            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
+
+            return DomainToViewModel(_service.GetByUserId(decimalUserId));
         }
 
-        public TeamLogoViewModel? GetByUserIdAndName(decimal userId, string name)
+        public TeamLogoViewModel? GetByUserIdAndName(string userId, string name)
         {
-            TeamLogo? logo = _service.GetByUserIdAndName(userId, name);
+            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
+
+            TeamLogo? logo = _service.GetByUserIdAndName(decimalUserId, name);
 
             if (logo == null) return null;
 

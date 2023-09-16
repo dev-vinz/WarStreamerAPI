@@ -52,9 +52,11 @@ namespace WarStreamer.Maps
             return DomainToViewModel(account);
         }
 
-        public List<AccountViewModel> GetByUserId(decimal userId)
+        public List<AccountViewModel> GetByUserId(string userId)
         {
-            return DomainToViewModel(_service.GetByUserId(userId));
+            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
+
+            return DomainToViewModel(_service.GetByUserId(decimalUserId));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

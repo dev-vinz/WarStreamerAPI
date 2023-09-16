@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Maps
 
         public List<OverlaySettingViewModel> GetAll();
 
-        public OverlaySettingViewModel? GetByUserId(decimal userId);
+        public OverlaySettingViewModel? GetByUserId(string userId);
 
         public bool Update(OverlaySettingViewModel viewModel);
     }

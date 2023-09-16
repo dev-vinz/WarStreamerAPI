@@ -16,6 +16,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public AccountViewModel? GetByTag(string tag);
 
-        public List<AccountViewModel> GetByUserId(decimal userId);
+        public List<AccountViewModel> GetByUserId(string userId);
     }
 }

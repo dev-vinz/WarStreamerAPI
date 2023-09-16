@@ -43,9 +43,11 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public UserViewModel? GetById(decimal id)
+        public UserViewModel? GetById(string id)
         {
-            User? user = _service.GetById(id);
+            if (!decimal.TryParse(id, out decimal decimalId)) throw new FormatException($"Cannot parse '{id}' to decimal");
+
+            User? user = _service.GetById(decimalId);
 
             if (user == null) return null;
 

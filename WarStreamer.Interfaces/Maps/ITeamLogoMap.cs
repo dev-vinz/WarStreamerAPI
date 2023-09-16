@@ -14,9 +14,9 @@ namespace WarStreamer.Interfaces.Maps
 
         public List<TeamLogoViewModel> GetAll();
 
-        public List<TeamLogoViewModel> GetByUserId(decimal userId);
+        public List<TeamLogoViewModel> GetByUserId(string userId);
 
-        public TeamLogoViewModel? GetByUserIdAndName(decimal userId, string name);
+        public TeamLogoViewModel? GetByUserIdAndName(string userId, string name);
 
         public bool Update(TeamLogoViewModel viewModel);
     }

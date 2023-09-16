@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Maps
 
         public List<UserViewModel> GetAll();
 
-        public UserViewModel? GetById(decimal id);
+        public UserViewModel? GetById(string id);
 
         public bool Update(UserViewModel viewModel);
     }
