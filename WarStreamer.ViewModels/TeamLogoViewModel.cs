@@ -7,7 +7,7 @@
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _teamName;
-        private readonly decimal _userId;
+        private readonly string _userId;
         private int _width;
         private int _height;
 
@@ -17,7 +17,7 @@
 
         public string TeamName { get => _teamName; }
 
-        public decimal UserId { get => _userId; }
+        public string UserId { get => _userId; }
 
         public int Width { get => _width; set => _width = value; }
 
@@ -27,7 +27,7 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogoViewModel(string teamName, decimal userId)
+        public TeamLogoViewModel(string teamName, string userId)
         {
             // Inputs
             {

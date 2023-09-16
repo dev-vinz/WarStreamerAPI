@@ -8,7 +8,7 @@ namespace WarStreamer.ViewModels
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly decimal _userId;
+        private readonly string _userId;
         private string _textColor;
         private bool _logoVisible;
         private Location2D? _logoLocation;
@@ -30,7 +30,7 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public decimal UserId { get => _userId; }
+        public string UserId { get => _userId; }
 
         public string TextColor { get => _textColor; set => _textColor = value; }
 
@@ -180,7 +180,7 @@ namespace WarStreamer.ViewModels
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public OverlaySettingViewModel(decimal userId)
+        public OverlaySettingViewModel(string userId)
         {
             // Inputs
             {

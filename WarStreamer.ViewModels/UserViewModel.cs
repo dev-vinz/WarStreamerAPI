@@ -6,7 +6,7 @@
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly decimal _id;
+        private readonly string _id;
         private int _languageId;
         private uint _tierLevel;
 
@@ -14,7 +14,7 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public decimal Id { get => _id; }
+        public string Id { get => _id; }
 
         public int LanguageId { get => _languageId; set => _languageId = value; }
 
@@ -24,7 +24,7 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public UserViewModel(decimal id)
+        public UserViewModel(string id)
         {
             // Inputs
             {

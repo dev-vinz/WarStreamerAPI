@@ -8,7 +8,7 @@ namespace WarStreamer.ViewModels
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly decimal _overlaySettingId;
+        private readonly string _overlaySettingId;
         private readonly string _name;
         private Location2D _location;
         private int _width;
@@ -18,7 +18,7 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public decimal OverlaySettingId { get => _overlaySettingId; }
+        public string OverlaySettingId { get => _overlaySettingId; }
 
         public string Name { get => _name; }
 
@@ -32,7 +32,7 @@ namespace WarStreamer.ViewModels
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public ImageViewModel(decimal overlaySettingId, string name)
+        public ImageViewModel(string overlaySettingId, string name)
         {
             // Inputs
             {

@@ -6,7 +6,7 @@
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly decimal _userId;
+        private readonly string _userId;
         private readonly int _id;
         private readonly string _clanTag;
         private DateTimeOffset _lastCheckout;
@@ -16,7 +16,7 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public decimal UserId { get => _userId; }
+        public string UserId { get => _userId; }
 
         public int Id { get => _id; }
 
@@ -30,7 +30,7 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlayViewModel(decimal userId, int id, string clanTag)
+        public WarOverlayViewModel(string userId, int id, string clanTag)
         {
             // Inputs
             {

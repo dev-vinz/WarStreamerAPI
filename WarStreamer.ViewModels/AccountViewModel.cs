@@ -7,7 +7,7 @@
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _tag;
-        private readonly decimal _userId;
+        private readonly string _userId;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -15,13 +15,13 @@
 
         public string Tag { get => _tag; }
 
-        public decimal UserId { get => _userId; }
+        public string UserId { get => _userId; }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public AccountViewModel(string tag, decimal userId)
+        public AccountViewModel(string tag, string userId)
         {
             // Inputs
             {
