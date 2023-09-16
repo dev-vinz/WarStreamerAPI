@@ -53,7 +53,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<OverlaySettingViewModel> GetByUserId(decimal userId)
+        public ActionResult<OverlaySettingViewModel> GetByUserId(string userId)
         {
             OverlaySettingViewModel? setting = _overlaySettingMap.GetByUserId(userId);
 
@@ -68,7 +68,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<ImageResponseModel>> GetImages(decimal userId)
+        public ActionResult<List<ImageResponseModel>> GetImages(string userId)
         {
             OverlaySettingViewModel? setting = _overlaySettingMap.GetByUserId(userId);
 
@@ -122,7 +122,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(decimal userId, [FromBody] OverlaySettingViewModel setting)
+        public ActionResult<bool> Update(string userId, [FromBody] OverlaySettingViewModel setting)
         {
             // Verifies if overlay setting exists
             if (_overlaySettingMap.GetByUserId(userId) == null) return NotFound(new { error = $"Overlay setting with user id '{userId}' not found" });
@@ -158,7 +158,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(decimal userId)
+        public ActionResult<bool> Delete(string userId)
         {
             OverlaySettingViewModel? setting = _overlaySettingMap.GetByUserId(userId);
 
@@ -172,14 +172,14 @@ namespace WarStreamer.Web.API.Controllers
         |*                          PRIVATE METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private byte[] GetImage(decimal overlaySettingId, string name)
+        private byte[] GetImage(string overlaySettingId, string name)
         {
             TryGetImage(overlaySettingId, name, out byte[] image);
 
             return image;
         }
 
-        private bool TryGetImage(decimal overlaySettingId, string name, out byte[] image)
+        private bool TryGetImage(string overlaySettingId, string name, out byte[] image)
         {
             // Default image
             image = null!;

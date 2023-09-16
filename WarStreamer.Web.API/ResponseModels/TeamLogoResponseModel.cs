@@ -4,7 +4,7 @@
     {
         public string TeamName { get; set; } = null!;
 
-        public decimal UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         public byte[] Logo { get; set; } = null!;
 

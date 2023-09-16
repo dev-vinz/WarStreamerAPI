@@ -57,7 +57,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<UserViewModel?> GetById(decimal userId)
+        public ActionResult<UserViewModel?> GetById(string userId)
         {
             UserViewModel? user = _userMap.GetById(userId);
 
@@ -72,14 +72,14 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<string[]> GetAccounts(decimal userId)
+        public ActionResult<string[]> GetAccounts(string userId)
         {
             UserViewModel? user = _userMap.GetById(userId);
 
             // Verifies user exists
             if (user == null) return NotFound(new { error = $"User with id '{userId}' not found" });
 
-            return Ok(_accountMap.GetByUserId(userId));
+            return Ok(_accountMap.GetByUserId(userId).Select(a => a.Tag));
         }
 
         [HttpGet]
@@ -88,7 +88,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<LanguageViewModel> GetLanguage(decimal userId)
+        public ActionResult<LanguageViewModel> GetLanguage(string userId)
         {
             UserViewModel? user = _userMap.GetById(userId);
 
@@ -108,7 +108,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<TeamLogoResponseModel>> GetTeamLogos(decimal userId)
+        public ActionResult<List<TeamLogoResponseModel>> GetTeamLogos(string userId)
         {
             // Verifies if user exists
             if (_userMap.GetById(userId) == null) return NotFound(new { error = $"User with id '{userId}' not found" });
@@ -132,7 +132,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<WarOverlayViewModel>> GetWarOverlays(decimal userId)
+        public ActionResult<List<WarOverlayViewModel>> GetWarOverlays(string userId)
         {
             // Verifies if user exists
             if (_userMap.GetById(userId) == null) return NotFound(new { error = $"User with id '{userId}' not found" });
@@ -174,7 +174,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(decimal userId, [FromBody] UserViewModel user)
+        public ActionResult<bool> Update(string userId, [FromBody] UserViewModel user)
         {
             // Verifies if user exists
             if (_userMap.GetById(userId) == null) return NotFound(new { error = $"User with id '{userId}' not found" });
@@ -201,7 +201,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(decimal userId)
+        public ActionResult<bool> Delete(string userId)
         {
             UserViewModel? user = _userMap.GetById(userId);
 
@@ -218,14 +218,14 @@ namespace WarStreamer.Web.API.Controllers
         |*                          PRIVATE METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private byte[] GetLogo(decimal userId, string name)
+        private byte[] GetLogo(string userId, string name)
         {
             TryGetLogo(userId, name, out byte[] logo);
 
             return logo;
         }
 
-        private bool TryGetLogo(decimal userId, string name, out byte[] logo)
+        private bool TryGetLogo(string userId, string name, out byte[] logo)
         {
             // Default image
             logo = null!;

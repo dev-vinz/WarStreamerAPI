@@ -5,7 +5,7 @@ namespace WarStreamer.Web.API.RequestModels
     public class ImageRequestModel
     {
         [Required]
-        public decimal OverlaySettingId { get; set; }
+        public string OverlaySettingId { get; set; } = null!;
 
         [Required]
         public string Name { get; set; } = null!;

@@ -69,7 +69,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<TeamLogoResponseModel>> GetAllByUserId(decimal userId)
+        public ActionResult<List<TeamLogoResponseModel>> GetAllByUserId(string userId)
         {
             List<TeamLogoResponseModel> result = _logoMap.GetByUserId(userId)
                 .Select(i => new TeamLogoResponseModel
@@ -141,7 +141,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<bool> Update(decimal userId, string name, [FromForm] TeamLogoRequestModel logoRequest)
+        public ActionResult<bool> Update(string userId, string name, [FromForm] TeamLogoRequestModel logoRequest)
         {
             // Verifies if logo exists
             if (_logoMap.GetByUserIdAndName(userId, name) == null) return NotFound(new { error = $"Team logo with user id '{userId}' and name '{name}' not found" });
@@ -168,7 +168,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(decimal userId, string name)
+        public ActionResult<bool> Delete(string userId, string name)
         {
             TeamLogoViewModel? logo = _logoMap.GetByUserIdAndName(userId, name);
 
@@ -186,14 +186,14 @@ namespace WarStreamer.Web.API.Controllers
         |*                          PRIVATE METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private byte[] GetLogo(decimal userId, string name)
+        private byte[] GetLogo(string userId, string name)
         {
             TryGetLogo(userId, name, out byte[] logo);
 
             return logo;
         }
 
-        private bool TryGetLogo(decimal userId, string name, out byte[] logo)
+        private bool TryGetLogo(string userId, string name, out byte[] logo)
         {
             // Default image
             logo = null!;
@@ -217,7 +217,7 @@ namespace WarStreamer.Web.API.Controllers
             return false;
         }
 
-        private bool TrySaveLogo(IFormFile? file, decimal userId, string name)
+        private bool TrySaveLogo(IFormFile? file, string userId, string name)
         {
             // OverlaySettingId = UserId in this case
 

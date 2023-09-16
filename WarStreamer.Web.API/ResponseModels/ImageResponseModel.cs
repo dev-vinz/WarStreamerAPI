@@ -2,7 +2,7 @@
 {
     public class ImageResponseModel
     {
-        public decimal OverlaySettingId { get; set; }
+        public string OverlaySettingId { get; set; } = null!;
 
         public string Name { get; set; } = null!;
 

@@ -8,7 +8,7 @@ namespace WarStreamer.Web.API.RequestModels
         public string TeamName { get; set; } = null!;
 
         [Required]
-        public decimal UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         [Required]
         public IFormFile Logo { get; set; } = null!;

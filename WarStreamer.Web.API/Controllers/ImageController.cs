@@ -72,7 +72,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{overlaySettingId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<ImageViewModel>> GetAllByOverlaySettingId(decimal overlaySettingId)
+        public ActionResult<List<ImageViewModel>> GetAllByOverlaySettingId(string overlaySettingId)
         {
             List<ImageResponseModel> result = _imageMap.GetByOverlaySettingId(overlaySettingId)
                 .Select(i => new ImageResponseModel
@@ -149,7 +149,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<bool> Update(decimal overlaySettingId, string name, [FromForm] ImageRequestModel imageRequest)
+        public ActionResult<bool> Update(string overlaySettingId, string name, [FromForm] ImageRequestModel imageRequest)
         {
             // Verifies if image exists
             if (_imageMap.GetByOverlaySettingIdAndName(overlaySettingId, name) == null) return NotFound(new { error = $"Image with overlay setting id '{overlaySettingId}' and name '{name}' not found" });
@@ -177,7 +177,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(decimal overlaySettingId, string name)
+        public ActionResult<bool> Delete(string overlaySettingId, string name)
         {
             ImageViewModel? image = _imageMap.GetByOverlaySettingIdAndName(overlaySettingId, name);
 
@@ -195,14 +195,14 @@ namespace WarStreamer.Web.API.Controllers
         |*                          PRIVATE METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private byte[] GetImage(decimal overlaySettingId, string name)
+        private byte[] GetImage(string overlaySettingId, string name)
         {
             TryGetImage(overlaySettingId, name, out byte[] image);
 
             return image;
         }
 
-        private bool TryGetImage(decimal overlaySettingId, string name, out byte[] image)
+        private bool TryGetImage(string overlaySettingId, string name, out byte[] image)
         {
             // Default image
             image = null!;
@@ -226,7 +226,7 @@ namespace WarStreamer.Web.API.Controllers
             return false;
         }
 
-        private bool TrySaveImage(IFormFile? file, decimal overlaySettingId, string name)
+        private bool TrySaveImage(IFormFile? file, string overlaySettingId, string name)
         {
             // OverlaySettingId = UserId in this case
 

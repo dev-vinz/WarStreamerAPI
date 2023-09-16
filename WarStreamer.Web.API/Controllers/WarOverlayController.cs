@@ -45,7 +45,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<WarOverlayViewModel>> GetAllByUserId(decimal userId)
+        public ActionResult<List<WarOverlayViewModel>> GetAllByUserId(string userId)
         {
             return Ok(_overlayMap.GetByUserId(userId));
         }
@@ -80,7 +80,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(decimal userId, int id, [FromBody] WarOverlayViewModel overlay)
+        public ActionResult<bool> Update(string userId, int id, [FromBody] WarOverlayViewModel overlay)
         {
             // Verifies if war overlay exists
             if (_overlayMap.GetByUserIdAndId(userId, id) == null) return NotFound(new { error = $"War overlay with user id '{userId}' and id '{id}' not found" });
@@ -104,7 +104,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(decimal userId, int id)
+        public ActionResult<bool> Delete(string userId, int id)
         {
             WarOverlayViewModel? overlay = _overlayMap.GetByUserIdAndId(userId, id);
 

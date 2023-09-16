@@ -43,7 +43,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<AccountViewModel>> GetAllByUserId(decimal userId)
+        public ActionResult<List<AccountViewModel>> GetAllByUserId(string userId)
         {
             return Ok(_accountMap.GetByUserId(userId));
         }
