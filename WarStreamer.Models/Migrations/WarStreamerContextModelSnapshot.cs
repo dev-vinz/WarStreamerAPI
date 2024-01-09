@@ -17,7 +17,7 @@ namespace WarStreamer.Models.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -27,12 +27,6 @@ namespace WarStreamer.Models.Migrations
                     b.Property<string>("Tag")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<decimal>("UserId")
                         .HasPrecision(30)
@@ -45,6 +39,24 @@ namespace WarStreamer.Models.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("WarStreamer.Models.Font", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fonts");
+                });
+
             modelBuilder.Entity("WarStreamer.Models.Image", b =>
                 {
                     b.Property<decimal>("OverlaySettingId")
@@ -54,9 +66,6 @@ namespace WarStreamer.Models.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("Height")
                         .HasColumnType("int");
 
@@ -65,9 +74,6 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<int>("LocationY")
                         .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Width")
                         .HasColumnType("int");
@@ -81,9 +87,6 @@ namespace WarStreamer.Models.Migrations
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CultureInfo")
                         .IsRequired()
@@ -100,9 +103,6 @@ namespace WarStreamer.Models.Migrations
                     b.Property<string>("ShortcutValue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -122,14 +122,20 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int?>("AverageDurationLocationY")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AverageDurationSize")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ClanNameLocationX")
                         .HasColumnType("int");
 
                     b.Property<int?>("ClanNameLocationY")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<int?>("ClanNameSize")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FontId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsAverageDuration")
                         .HasColumnType("bit");
@@ -158,10 +164,16 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int?>("LastAttackToWinLocationY")
                         .HasColumnType("int");
 
+                    b.Property<int?>("LastAttackToWinSize")
+                        .HasColumnType("int");
+
                     b.Property<int?>("LogoLocationX")
                         .HasColumnType("int");
 
                     b.Property<int?>("LogoLocationY")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LogoSize")
                         .HasColumnType("int");
 
                     b.Property<bool>("MirrorReflection")
@@ -171,6 +183,9 @@ namespace WarStreamer.Models.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("PlayerDetailsLocationY")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlayerDetailsSize")
                         .HasColumnType("int");
 
                     b.Property<string>("TextColor")
@@ -183,16 +198,21 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int?>("TotalPercentageLocationY")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TotalPercentageSize")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TotalStarsLocationX")
                         .HasColumnType("int");
 
                     b.Property<int?>("TotalStarsLocationY")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<int?>("TotalStarsSize")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("FontId");
 
                     b.ToTable("OverlaySettings");
                 });
@@ -207,18 +227,6 @@ namespace WarStreamer.Models.Migrations
                         .HasPrecision(30)
                         .HasColumnType("decimal(30,0)");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Width")
-                        .HasColumnType("int");
-
                     b.HasKey("TeamName", "UserId");
 
                     b.HasIndex("UserId");
@@ -232,9 +240,6 @@ namespace WarStreamer.Models.Migrations
                         .HasPrecision(30)
                         .HasColumnType("decimal(30,0)");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
 
@@ -243,9 +248,6 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<long>("TierLevel")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -267,16 +269,10 @@ namespace WarStreamer.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<bool>("IsEnded")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset>("LastCheckout")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("UserId", "Id");
@@ -308,11 +304,18 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.OverlaySetting", b =>
                 {
+                    b.HasOne("WarStreamer.Models.Font", "Font")
+                        .WithMany("OverlaySettings")
+                        .HasForeignKey("FontId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("WarStreamer.Models.User", "User")
                         .WithOne("OverlaySetting")
                         .HasForeignKey("WarStreamer.Models.OverlaySetting", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Font");
 
                     b.Navigation("User");
                 });
@@ -348,6 +351,11 @@ namespace WarStreamer.Models.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WarStreamer.Models.Font", b =>
+                {
+                    b.Navigation("OverlaySettings");
                 });
 
             modelBuilder.Entity("WarStreamer.Models.Language", b =>

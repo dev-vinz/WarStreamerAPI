@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -16,10 +16,6 @@ namespace WarStreamer.Models
 
         [Precision(30, 0)]
         public decimal UserId { get; private set; }
-
-        public int Width { get; set; }
-
-        public int Height { get; set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
@@ -50,16 +46,7 @@ namespace WarStreamer.Models
 
         public override void CopyTo(ref Entity entity)
         {
-            if (entity is TeamLogo logo)
-            {
-                logo.Width = Width;
-                logo.Height = Height;
-                logo.UpdatedAt = UpdatedAt;
-            }
-            else
-            {
-                throw new ArgumentException("Cannot copy to a different type.");
-            }
+            throw new InvalidOperationException("Cannot copy / update a TeamLogo entity");
         }
 
         public override bool Equals(object? obj)
@@ -73,7 +60,8 @@ namespace WarStreamer.Models
             {
                 TeamLogo? logo = obj as TeamLogo;
 
-                return logo?.TeamName.ToUpper() == TeamName && logo.UserId == UserId;
+                return logo?.UserId == UserId
+                    && logo.TeamName.Equals(TeamName, StringComparison.CurrentCultureIgnoreCase);
             }
         }
 

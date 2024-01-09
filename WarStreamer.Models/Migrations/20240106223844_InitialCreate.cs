@@ -12,6 +12,19 @@ namespace WarStreamer.Models.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Fonts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fonts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Languages",
                 columns: table => new
                 {
@@ -19,9 +32,7 @@ namespace WarStreamer.Models.Migrations
                     CultureInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DisplayValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShortcutValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FlagEmoji = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    FlagEmoji = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,9 +46,7 @@ namespace WarStreamer.Models.Migrations
                     Id = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
                     TierLevel = table.Column<long>(type: "bigint", nullable: false),
-                    NewsLetter = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    NewsLetter = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,9 +64,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     Tag = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,35 +82,47 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     Id = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
+                    FontId = table.Column<int>(type: "int", nullable: true),
                     TextColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsLogo = table.Column<bool>(type: "bit", nullable: false),
+                    LogoSize = table.Column<int>(type: "int", nullable: true),
                     LogoLocationX = table.Column<int>(type: "int", nullable: true),
                     LogoLocationY = table.Column<int>(type: "int", nullable: true),
                     IsClanName = table.Column<bool>(type: "bit", nullable: false),
+                    ClanNameSize = table.Column<int>(type: "int", nullable: true),
                     ClanNameLocationX = table.Column<int>(type: "int", nullable: true),
                     ClanNameLocationY = table.Column<int>(type: "int", nullable: true),
                     IsTotalStars = table.Column<bool>(type: "bit", nullable: false),
+                    TotalStarsSize = table.Column<int>(type: "int", nullable: true),
                     TotalStarsLocationX = table.Column<int>(type: "int", nullable: true),
                     TotalStarsLocationY = table.Column<int>(type: "int", nullable: true),
                     IsTotalPercentage = table.Column<bool>(type: "bit", nullable: false),
+                    TotalPercentageSize = table.Column<int>(type: "int", nullable: true),
                     TotalPercentageLocationX = table.Column<int>(type: "int", nullable: true),
                     TotalPercentageLocationY = table.Column<int>(type: "int", nullable: true),
                     IsAverageDuration = table.Column<bool>(type: "bit", nullable: false),
+                    AverageDurationSize = table.Column<int>(type: "int", nullable: true),
                     AverageDurationLocationX = table.Column<int>(type: "int", nullable: true),
                     AverageDurationLocationY = table.Column<int>(type: "int", nullable: true),
                     IsPlayerDetails = table.Column<bool>(type: "bit", nullable: false),
+                    PlayerDetailsSize = table.Column<int>(type: "int", nullable: true),
                     PlayerDetailsLocationX = table.Column<int>(type: "int", nullable: true),
                     PlayerDetailsLocationY = table.Column<int>(type: "int", nullable: true),
                     IsLastAttackToWin = table.Column<bool>(type: "bit", nullable: false),
+                    LastAttackToWinSize = table.Column<int>(type: "int", nullable: true),
                     LastAttackToWinLocationX = table.Column<int>(type: "int", nullable: true),
                     LastAttackToWinLocationY = table.Column<int>(type: "int", nullable: true),
-                    MirrorReflection = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    MirrorReflection = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OverlaySettings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OverlaySettings_Fonts_FontId",
+                        column: x => x.FontId,
+                        principalTable: "Fonts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_OverlaySettings_Users_Id",
                         column: x => x.Id,
@@ -117,11 +136,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
-                    Width = table.Column<int>(type: "int", nullable: false),
-                    Height = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,9 +157,7 @@ namespace WarStreamer.Models.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     ClanTag = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastCheckout = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    IsEnded = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    IsEnded = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,9 +179,7 @@ namespace WarStreamer.Models.Migrations
                     LocationX = table.Column<int>(type: "int", nullable: false),
                     LocationY = table.Column<int>(type: "int", nullable: false),
                     Width = table.Column<int>(type: "int", nullable: false),
-                    Height = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Height = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,6 +196,11 @@ namespace WarStreamer.Models.Migrations
                 name: "IX_Accounts_UserId",
                 table: "Accounts",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OverlaySettings_FontId",
+                table: "OverlaySettings",
+                column: "FontId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamLogos_UserId",
@@ -214,6 +230,9 @@ namespace WarStreamer.Models.Migrations
 
             migrationBuilder.DropTable(
                 name: "OverlaySettings");
+
+            migrationBuilder.DropTable(
+                name: "Fonts");
 
             migrationBuilder.DropTable(
                 name: "Users");

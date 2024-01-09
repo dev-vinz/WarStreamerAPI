@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -61,7 +61,6 @@ namespace WarStreamer.Models
                 user.LanguageId = LanguageId;
                 user.TierLevel = TierLevel;
                 user.NewsLetter = NewsLetter;
-                user.UpdatedAt = UpdatedAt;
             }
             else
             {

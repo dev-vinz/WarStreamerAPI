@@ -4,7 +4,7 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
 {
-    public class Language : Entity
+    public class Font : Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -14,39 +14,27 @@ namespace WarStreamer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; private set; }
 
-        public string CultureInfo { get; private set; }
+        public string DisplayName { get; private set; }
 
-        public string DisplayValue { get; private set; }
-
-        public string ShortcutValue { get; private set; }
-
-        public string FlagEmoji { get; private set; }
+        public string FileName { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
 
-        public ICollection<User> Users { get; } = new List<User>();
+        public ICollection<OverlaySetting> OverlaySettings { get; } = new List<OverlaySetting>();
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Language(
-            int id,
-            string cultureInfo,
-            string displayValue,
-            string shortcutValue,
-            string flagEmoji
-        )
+        public Font(int id, string displayName, string fileName)
         {
             // Inputs
             {
                 Id = id;
-                CultureInfo = cultureInfo;
-                DisplayValue = displayValue;
-                ShortcutValue = shortcutValue;
-                FlagEmoji = flagEmoji;
+                DisplayName = displayName;
+                FileName = fileName;
             }
         }
 
@@ -60,7 +48,7 @@ namespace WarStreamer.Models
 
         public override void CopyTo(ref Entity entity)
         {
-            throw new InvalidOperationException("Cannot copy / update a Language entity");
+            throw new InvalidOperationException("Cannot copy / update a Font entity");
         }
 
         public override bool Equals(object? obj)
@@ -72,9 +60,9 @@ namespace WarStreamer.Models
             }
             else
             {
-                Language? language = obj as Language;
+                Font? font = obj as Font;
 
-                return language?.Id == Id;
+                return font?.Id == Id;
             }
         }
 
@@ -87,7 +75,7 @@ namespace WarStreamer.Models
         |*                         OPERATORS OVERLOAD                        *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public static bool operator ==(Language? x, Language? y)
+        public static bool operator ==(Font? x, Font? y)
         {
             if (x is null && y is null)
             {
@@ -99,6 +87,6 @@ namespace WarStreamer.Models
             }
         }
 
-        public static bool operator !=(Language? x, Language? y) => !(x == y);
+        public static bool operator !=(Font? x, Font? y) => !(x == y);
     }
 }

@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models.Context
 {
-    public class WarStreamerContext : DbContext, IWarStreamerContext
+    public class WarStreamerContext(DbContextOptions options)
+        : DbContext(options),
+            IWarStreamerContext
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -18,6 +21,8 @@ namespace WarStreamer.Models.Context
 
         public DbSet<Account> Accounts { get; set; }
 
+        public DbSet<Font> Fonts { get; set; }
+
         public DbSet<Image> Images { get; set; }
 
         public DbSet<Language> Languages { get; set; }
@@ -29,12 +34,6 @@ namespace WarStreamer.Models.Context
         public DbSet<User> Users { get; set; }
 
         public DbSet<WarOverlay> WarOverlays { get; set; }
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public WarStreamerContext(DbContextOptions options) : base(options) { }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -65,9 +64,42 @@ namespace WarStreamer.Models.Context
             base.SaveChanges();
         }
 
-        public new DbSet<TEntity> Set<TEntity>() where TEntity : Entity
+        public new DbSet<TEntity> Set<TEntity>()
+            where TEntity : Entity
         {
             return base.Set<TEntity>();
+        }
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                         PROTECTED METHODS                         *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        /* * * * * * * * * * * * * * * * * *\
+        |*             OVERRIDE            *|
+        \* * * * * * * * * * * * * * * * * */
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            // Disable decimal warnings
+            optionsBuilder.ConfigureWarnings(warnings =>
+            {
+                warnings.Ignore(SqlServerEventId.DecimalTypeKeyWarning);
+            });
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Add onDelete: SET NULL on Font
+            modelBuilder
+                .Entity<Font>()
+                .HasMany(f => f.OverlaySettings)
+                .WithOne(os => os.Font)
+                .HasForeignKey(os => os.FontId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

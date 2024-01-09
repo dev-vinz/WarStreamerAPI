@@ -58,7 +58,6 @@ namespace WarStreamer.Models
                 image.LocationY = LocationY;
                 image.Width = Width;
                 image.Height = Height;
-                image.UpdatedAt = UpdatedAt;
             }
             else
             {
@@ -77,7 +76,8 @@ namespace WarStreamer.Models
             {
                 Image? image = obj as Image;
 
-                return image?.OverlaySettingId == OverlaySettingId && image.Name.ToUpper() == Name;
+                return image?.OverlaySettingId == OverlaySettingId
+                    && image.Name.Equals(Name, StringComparison.CurrentCultureIgnoreCase);
             }
         }
 

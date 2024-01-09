@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -58,7 +58,6 @@ namespace WarStreamer.Models
             {
                 overlay.LastCheckout = LastCheckout;
                 overlay.IsEnded = IsEnded;
-                overlay.UpdatedAt = UpdatedAt;
             }
             else
             {

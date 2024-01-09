@@ -19,6 +19,7 @@ namespace WarStreamer.Models.Context
 
         public void SaveChanges();
 
-        public DbSet<TEntity> Set<TEntity>() where TEntity : Entity;
+        public DbSet<TEntity> Set<TEntity>()
+            where TEntity : Entity;
     }
 }
