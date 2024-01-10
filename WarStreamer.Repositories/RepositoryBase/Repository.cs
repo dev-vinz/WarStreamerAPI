@@ -4,73 +4,107 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Repositories.RepositoryBase
 {
-    public class Repository
+    public class Repository(IWarStreamerContext context)
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IWarStreamerContext _context;
+        private readonly IWarStreamerContext _context = context;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public IWarStreamerContext Context { get => _context; }
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public Repository(IWarStreamerContext context)
+        public IWarStreamerContext Context
         {
-            _context = context;
+            get => _context;
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public void Remove<TEntity>(TEntity domain) where TEntity : Entity
+        public void Remove<TEntity>(TEntity domain)
+            where TEntity : Entity
         {
             _context.BeginTransaction();
 
-            Entity? existing = _context.Set<TEntity>().FirstOrDefault(t => t == domain);
+            try
+            {
+                Entity? existing = _context.Set<TEntity>().FirstOrDefault(t => t == domain);
 
-            if (existing != null) _context.Set<TEntity>().Remove((TEntity)existing);
+                if (existing != null)
+                    _context.Set<TEntity>().Remove((TEntity)existing);
 
-            _context.SaveChanges();
-            _context.CommitTransaction();
+                _context.SaveChanges();
+                _context.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                _context.RollbackTransaction();
 
-            _context.DisposeTransaction();
+                Console.Error.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _context.DisposeTransaction();
+            }
         }
 
-        public TEntity Insert<TEntity>(TEntity domain) where TEntity : Entity
+        public TEntity? Insert<TEntity>(TEntity domain)
+            where TEntity : Entity
         {
             _context.BeginTransaction();
 
-            EntityEntry<TEntity> addedDomain = _context.Set<TEntity>().Add(domain);
+            try
+            {
+                EntityEntry<TEntity> addedDomain = _context.Set<TEntity>().Add(domain);
 
-            _context.SaveChanges();
-            _context.CommitTransaction();
+                _context.SaveChanges();
+                _context.CommitTransaction();
 
-            _context.DisposeTransaction();
+                return addedDomain.Entity;
+            }
+            catch (Exception ex)
+            {
+                _context.RollbackTransaction();
 
-            return addedDomain.Entity;
+                Console.Error.WriteLine(ex.ToString());
+
+                return null;
+            }
+            finally
+            {
+                _context.DisposeTransaction();
+            }
         }
 
-        public void Update<TEntity>(TEntity domain) where TEntity : Entity
+        public void Update<TEntity>(TEntity domain)
+            where TEntity : Entity
         {
             _context.BeginTransaction();
 
-            Entity? existing = Context.Set<TEntity>().FirstOrDefault(t => t == domain);
+            try
+            {
+                Entity? existing = Context.Set<TEntity>().FirstOrDefault(t => t == domain);
 
-            if (existing != null) domain.CopyTo(ref existing);
+                if (existing != null)
+                    domain.CopyTo(ref existing);
 
-            _context.SaveChanges();
-            _context.CommitTransaction();
+                _context.SaveChanges();
+                _context.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                _context.RollbackTransaction();
 
-            _context.DisposeTransaction();
+                Console.Error.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _context.DisposeTransaction();
+            }
         }
     }
 }

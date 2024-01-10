@@ -5,14 +5,10 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class ImageRepository : Repository, IImageRepository
+    public class ImageRepository(IWarStreamerContext context)
+        : Repository(context),
+            IImageRepository
     {
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public ImageRepository(IWarStreamerContext context) : base(context) { }
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +31,7 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<Image>().ToList();
+                return [.. Context.Set<Image>()];
             }
             catch (Exception)
             {
@@ -47,7 +43,13 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<Image>().FirstOrDefault(i => i.OverlaySettingId == overlaySettingId && i.Name == name.ToUpper());
+                return Context
+                    .Set<Image>()
+                    .FirstOrDefault(
+                        i =>
+                            i.OverlaySettingId == overlaySettingId
+                            && i.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)
+                    );
             }
             catch (Exception)
             {
@@ -59,9 +61,12 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<Image>()
-                              .Where(i => i.OverlaySettingId == overlaySettingId)
-                              .ToList();
+                return
+                [
+                    .. Context
+                        .Set<Image>()
+                        .Where(i => i.OverlaySettingId == overlaySettingId),
+                ];
             }
             catch (Exception)
             {
@@ -69,13 +74,10 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Image Save(Image domain)
+        public Image? Save(Image domain)
         {
             try
             {
-                domain.CreatedAt = DateTimeOffset.UtcNow;
-                domain.UpdatedAt = domain.CreatedAt;
-
                 return Insert(domain);
             }
             catch (Exception)
@@ -88,7 +90,6 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                domain.UpdatedAt = DateTimeOffset.UtcNow;
                 Update<Image>(domain);
 
                 return true;

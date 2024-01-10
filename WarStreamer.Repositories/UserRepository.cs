@@ -5,14 +5,8 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class UserRepository : Repository, IUserRepository
+    public class UserRepository(IWarStreamerContext context) : Repository(context), IUserRepository
     {
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public UserRepository(IWarStreamerContext context) : base(context) { }
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +29,7 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<User>().ToList();
+                return [.. Context.Set<User>()];
             }
             catch (Exception)
             {
@@ -55,13 +49,10 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public User Save(User domain)
+        public User? Save(User domain)
         {
             try
             {
-                domain.CreatedAt = DateTimeOffset.UtcNow;
-                domain.UpdatedAt = domain.CreatedAt;
-
                 return Insert(domain);
             }
             catch (Exception)
@@ -74,7 +65,6 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                domain.UpdatedAt = DateTimeOffset.UtcNow;
                 Update<User>(domain);
 
                 return true;

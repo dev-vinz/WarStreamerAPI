@@ -5,14 +5,10 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class OverlaySettingRepository : Repository, IOverlaySettingRepository
+    public class OverlaySettingRepository(IWarStreamerContext context)
+        : Repository(context),
+            IOverlaySettingRepository
     {
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public OverlaySettingRepository(IWarStreamerContext context) : base(context) { }
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +31,7 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<OverlaySetting>().ToList();
+                return [.. Context.Set<OverlaySetting>()];
             }
             catch (Exception)
             {
@@ -55,13 +51,10 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public OverlaySetting Save(OverlaySetting domain)
+        public OverlaySetting? Save(OverlaySetting domain)
         {
             try
             {
-                domain.CreatedAt = DateTimeOffset.UtcNow;
-                domain.UpdatedAt = domain.CreatedAt;
-
                 return Insert(domain);
             }
             catch (Exception)
@@ -74,7 +67,6 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                domain.UpdatedAt = DateTimeOffset.UtcNow;
                 Update<OverlaySetting>(domain);
 
                 return true;

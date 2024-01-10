@@ -5,14 +5,10 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class TeamLogoRepository : Repository, ITeamLogoRepository
+    public class TeamLogoRepository(IWarStreamerContext context)
+        : Repository(context),
+            ITeamLogoRepository
     {
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public TeamLogoRepository(IWarStreamerContext context) : base(context) { }
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +31,7 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<TeamLogo>().ToList();
+                return [.. Context.Set<TeamLogo>()];
             }
             catch (Exception)
             {
@@ -47,9 +43,12 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<TeamLogo>()
-                              .Where(l => l.UserId == userId)
-                              .ToList();
+                return
+                [
+                    .. Context
+                        .Set<TeamLogo>()
+                        .Where(l => l.UserId == userId)
+                ];
             }
             catch (Exception)
             {
@@ -61,7 +60,13 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<TeamLogo>().FirstOrDefault(l => l.UserId == userId && l.TeamName == name.ToUpper());
+                return Context
+                    .Set<TeamLogo>()
+                    .FirstOrDefault(
+                        l =>
+                            l.UserId == userId
+                            && l.TeamName.Equals(name, StringComparison.CurrentCultureIgnoreCase)
+                    );
             }
             catch (Exception)
             {
@@ -69,13 +74,10 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public TeamLogo Save(TeamLogo domain)
+        public TeamLogo? Save(TeamLogo domain)
         {
             try
             {
-                domain.CreatedAt = DateTimeOffset.UtcNow;
-                domain.UpdatedAt = domain.CreatedAt;
-
                 return Insert(domain);
             }
             catch (Exception)
@@ -88,7 +90,6 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                domain.UpdatedAt = DateTimeOffset.UtcNow;
                 Update<TeamLogo>(domain);
 
                 return true;

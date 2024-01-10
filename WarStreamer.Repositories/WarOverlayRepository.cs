@@ -5,14 +5,10 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class WarOverlayRepository : Repository, IWarOverlayRepository
+    public class WarOverlayRepository(IWarStreamerContext context)
+        : Repository(context),
+            IWarOverlayRepository
     {
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public WarOverlayRepository(IWarStreamerContext context) : base(context) { }
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +31,7 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<WarOverlay>().ToList();
+                return [.. Context.Set<WarOverlay>()];
             }
             catch (Exception)
             {
@@ -47,9 +43,12 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<WarOverlay>()
-                              .Where(o => o.UserId == userId)
-                              .ToList();
+                return
+                [
+                    .. Context
+                        .Set<WarOverlay>()
+                        .Where(o => o.UserId == userId)
+                ];
             }
             catch (Exception)
             {
@@ -61,8 +60,9 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<WarOverlay>()
-                              .FirstOrDefault(o => o.UserId == userId && o.Id == id);
+                return Context
+                    .Set<WarOverlay>()
+                    .FirstOrDefault(o => o.UserId == userId && o.Id == id);
             }
             catch (Exception)
             {
@@ -70,13 +70,10 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public WarOverlay Save(WarOverlay domain)
+        public WarOverlay? Save(WarOverlay domain)
         {
             try
             {
-                domain.CreatedAt = DateTimeOffset.UtcNow;
-                domain.UpdatedAt = domain.CreatedAt;
-
                 return Insert(domain);
             }
             catch (Exception)
@@ -89,7 +86,6 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                domain.UpdatedAt = DateTimeOffset.UtcNow;
                 Update<WarOverlay>(domain);
 
                 return true;

@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public User? GetById(decimal id);
 
-        public User Save(User domain);
+        public User? Save(User domain);
 
         public bool Update(User domain);
     }

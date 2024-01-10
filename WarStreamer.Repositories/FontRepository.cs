@@ -5,19 +5,17 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class LanguageRepository(IWarStreamerContext context)
-        : Repository(context),
-            ILanguageRepository
+    public class FontRepository(IWarStreamerContext context) : Repository(context), IFontRepository
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public List<Language> GetAll()
+        public List<Font> GetAll()
         {
             try
             {
-                return [.. Context.Set<Language>()];
+                return [.. Context.Set<Font>()];
             }
             catch (Exception)
             {
@@ -25,11 +23,11 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Language? GetById(int id)
+        public Font? GetById(int id)
         {
             try
             {
-                return Context.Set<Language>().FirstOrDefault(l => l.Id == id);
+                return Context.Set<Font>().FirstOrDefault(l => l.Id == id);
             }
             catch (Exception)
             {

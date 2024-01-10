@@ -5,14 +5,10 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class AccountRepository : Repository, IAccountRepository
+    public class AccountRepository(IWarStreamerContext context)
+        : Repository(context),
+            IAccountRepository
     {
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public AccountRepository(IWarStreamerContext context) : base(context) { }
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +31,7 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<Account>().ToList();
+                return [.. Context.Set<Account>()];
             }
             catch (Exception)
             {
@@ -59,9 +55,11 @@ namespace WarStreamer.Repositories
         {
             try
             {
-                return Context.Set<Account>()
-                              .Where(a => a.UserId == userId)
-                              .ToList();
+                return
+                [
+                    .. Context.Set<Account>()
+                              .Where(a => a.UserId == userId),
+                ];
             }
             catch (Exception)
             {
@@ -69,13 +67,10 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Account Save(Account domain)
+        public Account? Save(Account domain)
         {
             try
             {
-                domain.CreatedAt = DateTimeOffset.UtcNow;
-                domain.UpdatedAt = domain.CreatedAt;
-
                 return Insert(domain);
             }
             catch (Exception)
