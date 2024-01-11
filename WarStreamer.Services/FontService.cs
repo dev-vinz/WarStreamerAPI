@@ -4,42 +4,26 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class OverlaySettingService(IOverlaySettingRepository repository)
-        : IOverlaySettingService
+    public class FontService(IFontRepository repository) : IFontService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IOverlaySettingRepository _repository = repository;
+        private readonly IFontRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public OverlaySetting? Create(OverlaySetting domain)
-        {
-            return _repository.Save(domain);
-        }
-
-        public bool Delete(OverlaySetting domain)
-        {
-            return _repository.Delete(domain);
-        }
-
-        public List<OverlaySetting> GetAll()
+        public List<Font> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public OverlaySetting? GetByUserId(decimal userId)
+        public Font? GetById(int id)
         {
-            return _repository.GetByUserId(userId);
-        }
-
-        public bool Update(OverlaySetting domain)
-        {
-            return _repository.Update(domain);
+            return _repository.GetById(id);
         }
     }
 }

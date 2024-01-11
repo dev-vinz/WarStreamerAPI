@@ -4,28 +4,19 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class UserService : IUserService
+    public class UserService(IUserRepository repository) : IUserService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IUserRepository _repository;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public UserService(IUserRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IUserRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public User Create(User domain)
+        public User? Create(User domain)
         {
             return _repository.Save(domain);
         }

@@ -4,28 +4,19 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService(IAccountRepository repository) : IAccountService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IAccountRepository _repository;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public AccountService(IAccountRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IAccountRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Account Create(Account domain)
+        public Account? Create(Account domain)
         {
             return _repository.Save(domain);
         }

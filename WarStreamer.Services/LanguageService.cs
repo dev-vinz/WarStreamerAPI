@@ -4,22 +4,13 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class LanguageService : ILanguageService
+    public class LanguageService(ILanguageRepository repository) : ILanguageService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly ILanguageRepository _repository;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public LanguageService(ILanguageRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly ILanguageRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

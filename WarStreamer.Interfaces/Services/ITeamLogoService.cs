@@ -8,7 +8,7 @@ namespace WarStreamer.Interfaces.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogo Create(TeamLogo domain);
+        public TeamLogo? Create(TeamLogo domain);
 
         public bool Delete(TeamLogo domain);
 

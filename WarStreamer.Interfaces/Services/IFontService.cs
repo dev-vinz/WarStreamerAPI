@@ -2,20 +2,14 @@
 
 namespace WarStreamer.Interfaces.Services
 {
-    public interface IUserService
+    public interface IFontService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public User? Create(User domain);
+        public List<Font> GetAll();
 
-        public bool Delete(User domain);
-
-        public List<User> GetAll();
-
-        public User? GetById(decimal id);
-
-        public bool Update(User domain);
+        public Font? GetById(int id);
     }
 }

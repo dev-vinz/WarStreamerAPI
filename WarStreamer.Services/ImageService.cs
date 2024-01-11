@@ -4,28 +4,19 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class ImageService : IImageService
+    public class ImageService(IImageRepository repository) : IImageService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IImageRepository _repository;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public ImageService(IImageRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IImageRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image Create(Image domain)
+        public Image? Create(Image domain)
         {
             return _repository.Save(domain);
         }

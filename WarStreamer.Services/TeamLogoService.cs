@@ -4,28 +4,19 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class TeamLogoService : ITeamLogoService
+    public class TeamLogoService(ITeamLogoRepository repository) : ITeamLogoService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly ITeamLogoRepository _repository;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public TeamLogoService(ITeamLogoRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly ITeamLogoRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogo Create(TeamLogo domain)
+        public TeamLogo? Create(TeamLogo domain)
         {
             return _repository.Save(domain);
         }

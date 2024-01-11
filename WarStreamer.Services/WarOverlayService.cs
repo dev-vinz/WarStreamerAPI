@@ -4,28 +4,19 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class WarOverlayService : IWarOverlayService
+    public class WarOverlayService(IWarOverlayRepository repository) : IWarOverlayService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IWarOverlayRepository _repository;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public WarOverlayService(IWarOverlayRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IWarOverlayRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlay Create(WarOverlay domain)
+        public WarOverlay? Create(WarOverlay domain)
         {
             return _repository.Save(domain);
         }
