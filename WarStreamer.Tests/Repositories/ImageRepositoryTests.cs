@@ -13,7 +13,7 @@ namespace WarStreamer.Tests.Repositories
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private const string NAME = "Image";
-        private const decimal OVERLAY_SETTING_ID = 0;
+        private const string OVERLAY_SETTING_ID = "0";
         private const int LOCATION_X = 100;
         private const int LOCATION_X_UPDATED = 150;
         private const int LOCATION_Y = 150;
@@ -58,8 +58,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LOCATION_Y, image.LocationY);
             Assert.Equal(WIDTH, image.Width);
             Assert.Equal(HEIGHT, image.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, image.CreatedAt);
-            Assert.Equal(image.CreatedAt, image.UpdatedAt);
         }
 
         [Fact]
@@ -78,8 +76,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LOCATION_Y, image.LocationY);
             Assert.Equal(WIDTH, image.Width);
             Assert.Equal(HEIGHT, image.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, image.CreatedAt);
-            Assert.Equal(image.CreatedAt, image.UpdatedAt);
         }
 
         [Fact]
@@ -96,8 +92,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LOCATION_Y, image.LocationY);
             Assert.Equal(WIDTH, image.Width);
             Assert.Equal(HEIGHT, image.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, image.CreatedAt);
-            Assert.Equal(image.CreatedAt, image.UpdatedAt);
         }
 
         [Fact]
@@ -137,9 +131,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LOCATION_Y_UPDATED, image.LocationY);
             Assert.Equal(WIDTH_UPDATED, image.Width);
             Assert.Equal(HEIGHT_UPDATED, image.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, image.CreatedAt);
-            Assert.NotEqual(DateTimeOffset.MinValue, image.UpdatedAt);
-            Assert.NotEqual(image.CreatedAt, image.UpdatedAt);
         }
 
         [Fact]

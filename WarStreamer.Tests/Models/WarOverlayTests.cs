@@ -9,7 +9,7 @@ namespace WarStreamer.Tests.Models
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const decimal USER_ID = 1;
+        private const string USER_ID = "1";
         private const int ID_ONE = 0;
         private const int ID_TWO = 1;
         private const string CLAN_TAG = "#ABCDEFG";
@@ -97,18 +97,12 @@ namespace WarStreamer.Tests.Models
 
         private static WarOverlay CreateWarOverlayOne()
         {
-            return new(USER_ID, ID_ONE, CLAN_TAG)
-            {
-                IsEnded = IS_ENDED,
-            };
+            return new(USER_ID, ID_ONE, CLAN_TAG) { IsEnded = IS_ENDED, };
         }
 
         private static WarOverlay CreateWarOverlayTwo()
         {
-            return new(USER_ID, ID_TWO, CLAN_TAG)
-            {
-                IsEnded = !IS_ENDED,
-            };
+            return new(USER_ID, ID_TWO, CLAN_TAG) { IsEnded = !IS_ENDED, };
         }
     }
 }

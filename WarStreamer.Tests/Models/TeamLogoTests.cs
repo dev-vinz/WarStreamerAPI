@@ -10,10 +10,8 @@ namespace WarStreamer.Tests.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private const string TEAM_NAME = "TeamLogoTest";
-        private const decimal USER_ID_ONE = 1;
-        private const decimal USER_ID_TWO = 2;
-        private const int WIDTH = 100;
-        private const int HEIGHT = 200;
+        private const string USER_ID_ONE = "1";
+        private const string USER_ID_TWO = "2";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -27,8 +25,6 @@ namespace WarStreamer.Tests.Models
             Assert.NotNull(logo);
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID_ONE, logo.UserId);
-            Assert.Equal(WIDTH, logo.Width);
-            Assert.Equal(HEIGHT, logo.Height);
         }
 
         [Fact]
@@ -64,19 +60,14 @@ namespace WarStreamer.Tests.Models
         }
 
         [Fact]
-        public void WhenCopyingTeamLogo_ThenTeamLogoCopied()
+        public void WhenCopyingTeamLogo_ThenThrowError()
         {
             TeamLogo logo = CreateTeamLogoOne();
             Entity copy = new TeamLogo(logo.TeamName, logo.UserId);
 
             Assert.NotNull(logo);
 
-            logo.CopyTo(ref copy);
-
-            TeamLogo copyLogo = (TeamLogo)copy;
-
-            Assert.Equal(logo.Width, copyLogo.Width);
-            Assert.Equal(logo.Height, copyLogo.Height);
+            Assert.Throws<InvalidOperationException>(() => logo.CopyTo(ref copy));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -89,20 +80,12 @@ namespace WarStreamer.Tests.Models
 
         private static TeamLogo CreateTeamLogoOne()
         {
-            return new(TEAM_NAME, USER_ID_ONE)
-            {
-                Width = WIDTH,
-                Height = HEIGHT,
-            };
+            return new(TEAM_NAME, USER_ID_ONE);
         }
 
         private static TeamLogo CreateTeamLogoTwo()
         {
-            return new(TEAM_NAME, USER_ID_TWO)
-            {
-                Width = HEIGHT,
-                Height = HEIGHT,
-            };
+            return new(TEAM_NAME, USER_ID_TWO);
         }
     }
 }

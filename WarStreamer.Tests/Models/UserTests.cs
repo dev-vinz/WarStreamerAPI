@@ -9,8 +9,8 @@ namespace WarStreamer.Tests.Models
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const decimal USER_ID_ONE = 1;
-        private const decimal USER_ID_TWO = 2;
+        private const string USER_ID_ONE = "1";
+        private const string USER_ID_TWO = "2";
         private const int LANGUAGE_ID = 1;
         private const uint TIER_LEVEL = 3;
         private const bool NEWSLETTER = true;

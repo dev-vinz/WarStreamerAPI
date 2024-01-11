@@ -9,7 +9,7 @@ namespace WarStreamer.Tests.Models
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const decimal USER_ID = 0;
+        private const string USER_ID = "0";
         private const string TAG_ONE = "#ABCDEFG";
         private const string TAG_TWO = "#ABCDEF";
 

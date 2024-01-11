@@ -11,7 +11,7 @@ namespace WarStreamer.Tests.Models
 
         private const string NAME_ONE = "Image 1";
         private const string NAME_TWO = "Image 2";
-        private const decimal OVERLAY_SETTING_ID = 0;
+        private const string OVERLAY_SETTING_ID = "0";
         private const int LOCATION_X = 100;
         private const int LOCATION_Y = 150;
         private const int WIDTH = 600;

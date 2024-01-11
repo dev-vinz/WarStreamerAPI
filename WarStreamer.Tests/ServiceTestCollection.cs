@@ -55,6 +55,10 @@ namespace WarStreamer.Tests
             this.AddScoped<IAccountService, AccountService>();
             this.AddScoped<IAccountRepository, AccountRepository>();
 
+            // Font
+            this.AddScoped<IFontService, FontService>();
+            this.AddScoped<IFontRepository, FontRepository>();
+
             // Image
             this.AddScoped<IImageService, ImageService>();
             this.AddScoped<IImageRepository, ImageRepository>();

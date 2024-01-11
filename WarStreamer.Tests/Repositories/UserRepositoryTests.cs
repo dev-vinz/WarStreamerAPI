@@ -12,7 +12,7 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const decimal USER_ID = 0;
+        private const string USER_ID = "1";
         private const int LANGUAGE_ID = 1;
         private const int LANGUAGE_ID_UPDATED = 0;
         private const uint TIER_LEVEL = 3;
@@ -53,8 +53,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
             Assert.Equal(TIER_LEVEL, user.TierLevel);
             Assert.Equal(NEWSLETTER, user.NewsLetter);
-            Assert.NotEqual(DateTimeOffset.MinValue, user.CreatedAt);
-            Assert.Equal(user.CreatedAt, user.UpdatedAt);
         }
 
         [Fact]
@@ -69,8 +67,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
             Assert.Equal(TIER_LEVEL, user.TierLevel);
             Assert.Equal(NEWSLETTER, user.NewsLetter);
-            Assert.NotEqual(DateTimeOffset.MinValue, user.CreatedAt);
-            Assert.Equal(user.CreatedAt, user.UpdatedAt);
         }
 
         [Fact]
@@ -106,9 +102,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(LANGUAGE_ID_UPDATED, user.LanguageId);
             Assert.Equal(TIER_LEVEL_UPDATED, user.TierLevel);
             Assert.Equal(NEWSLETTER_UPDATED, user.NewsLetter);
-            Assert.NotEqual(DateTimeOffset.MinValue, user.CreatedAt);
-            Assert.NotEqual(DateTimeOffset.MinValue, user.UpdatedAt);
-            Assert.NotEqual(user.CreatedAt, user.UpdatedAt);
         }
 
         [Fact]

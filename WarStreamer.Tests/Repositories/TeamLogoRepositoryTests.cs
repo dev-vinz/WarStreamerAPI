@@ -13,11 +13,7 @@ namespace WarStreamer.Tests.Repositories
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private const string TEAM_NAME = "TeamLogoTest";
-        private const decimal USER_ID = 1;
-        private const int WIDTH = 100;
-        private const int WIDTH_UPDATED = 200;
-        private const int HEIGHT = 200;
-        private const int HEIGHT_UPDATED = 300;
+        private const string USER_ID = "1";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -50,10 +46,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
-            Assert.Equal(WIDTH, logo.Width);
-            Assert.Equal(HEIGHT, logo.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, logo.CreatedAt);
-            Assert.Equal(logo.CreatedAt, logo.UpdatedAt);
         }
 
         [Fact]
@@ -66,10 +58,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
-            Assert.Equal(WIDTH, logo.Width);
-            Assert.Equal(HEIGHT, logo.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, logo.CreatedAt);
-            Assert.Equal(logo.CreatedAt, logo.UpdatedAt);
         }
 
         [Fact]
@@ -82,10 +70,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
-            Assert.Equal(WIDTH, logo.Width);
-            Assert.Equal(HEIGHT, logo.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, logo.CreatedAt);
-            Assert.Equal(logo.CreatedAt, logo.UpdatedAt);
         }
 
         [Fact]
@@ -105,10 +89,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
-            Assert.Equal(WIDTH, logo.Width);
-            Assert.Equal(HEIGHT, logo.Height);
-            Assert.NotEqual(DateTimeOffset.MinValue, logo.CreatedAt);
-            Assert.Equal(logo.CreatedAt, logo.UpdatedAt);
         }
 
         [Fact]
@@ -122,26 +102,6 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(7)]
-        public void WhenUpdateTeamLogo_ThenReturnsTrue()
-        {
-            List<TeamLogo> logos = _repository.GetByUserId(USER_ID);
-
-            TeamLogo logo = Assert.Single(logos);
-
-            logo.Width = WIDTH_UPDATED;
-            logo.Height = HEIGHT_UPDATED;
-
-            Assert.True(_repository.Update(logo));
-
-            TeamLogo updatedLogo = Assert.Single(_repository.GetAll());
-
-            Assert.Equal(WIDTH_UPDATED, updatedLogo.Width);
-            Assert.Equal(HEIGHT_UPDATED, updatedLogo.Height);
-            Assert.NotEqual(updatedLogo.CreatedAt, updatedLogo.UpdatedAt);
-        }
-
-        [Fact]
-        [TestOrder(8)]
         public void WhenDeleteTeamLogo_ThenReturnsTrue()
         {
             TeamLogo logo = Assert.Single(_repository.GetAll());
@@ -160,11 +120,7 @@ namespace WarStreamer.Tests.Repositories
 
         private static TeamLogo CreateTeamLogo()
         {
-            return new(TEAM_NAME, USER_ID)
-            {
-                Width = WIDTH,
-                Height = HEIGHT,
-            };
+            return new(TEAM_NAME, USER_ID);
         }
     }
 }

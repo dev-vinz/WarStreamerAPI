@@ -13,7 +13,7 @@ namespace WarStreamer.Tests.Repositories
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private const string TAG = "#ABCDEFG";
-        private const decimal USER_ID = 1;
+        private const string USER_ID = "1";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -46,8 +46,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TAG, account.Tag);
             Assert.Equal(USER_ID, account.UserId);
-            Assert.NotEqual(DateTimeOffset.MinValue, account.CreatedAt);
-            Assert.Equal(account.CreatedAt, account.UpdatedAt);
         }
 
         [Fact]
@@ -60,8 +58,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TAG, account.Tag);
             Assert.Equal(USER_ID, account.UserId);
-            Assert.NotEqual(DateTimeOffset.MinValue, account.CreatedAt);
-            Assert.Equal(account.CreatedAt, account.UpdatedAt);
         }
 
         [Fact]
@@ -76,8 +72,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TAG, account.Tag);
             Assert.Equal(USER_ID, account.UserId);
-            Assert.NotEqual(DateTimeOffset.MinValue, account.CreatedAt);
-            Assert.Equal(account.CreatedAt, account.UpdatedAt);
         }
 
         [Fact]
@@ -97,8 +91,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TAG, account.Tag);
             Assert.Equal(USER_ID, account.UserId);
-            Assert.NotEqual(DateTimeOffset.MinValue, account.CreatedAt);
-            Assert.Equal(account.CreatedAt, account.UpdatedAt);
         }
 
         [Fact]

@@ -12,7 +12,7 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const decimal USER_ID = 1;
+        private const string USER_ID = "1";
         private const int ID = 0;
         private const string CLAN_TAG = "#ABCDEFG";
         private const bool IS_ENDED = false;
@@ -53,8 +53,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(CLAN_TAG, overlay.ClanTag);
             Assert.Equal(now, overlay.LastCheckout);
             Assert.Equal(IS_ENDED, overlay.IsEnded);
-            Assert.NotEqual(DateTimeOffset.MinValue, overlay.CreatedAt);
-            Assert.Equal(overlay.CreatedAt, overlay.UpdatedAt);
         }
 
         [Fact]
@@ -69,8 +67,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(ID, overlay.Id);
             Assert.Equal(CLAN_TAG, overlay.ClanTag);
             Assert.Equal(IS_ENDED, overlay.IsEnded);
-            Assert.NotEqual(DateTimeOffset.MinValue, overlay.CreatedAt);
-            Assert.Equal(overlay.CreatedAt, overlay.UpdatedAt);
         }
 
         [Fact]
@@ -85,8 +81,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(ID, overlay.Id);
             Assert.Equal(CLAN_TAG, overlay.ClanTag);
             Assert.Equal(IS_ENDED, overlay.IsEnded);
-            Assert.NotEqual(DateTimeOffset.MinValue, overlay.CreatedAt);
-            Assert.Equal(overlay.CreatedAt, overlay.UpdatedAt);
         }
 
         [Fact]
@@ -108,8 +102,6 @@ namespace WarStreamer.Tests.Repositories
             Assert.Equal(ID, overlay.Id);
             Assert.Equal(CLAN_TAG, overlay.ClanTag);
             Assert.Equal(IS_ENDED, overlay.IsEnded);
-            Assert.NotEqual(DateTimeOffset.MinValue, overlay.CreatedAt);
-            Assert.Equal(overlay.CreatedAt, overlay.UpdatedAt);
         }
 
         [Fact]
@@ -137,7 +129,6 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(overlay.LastCheckout, updatedOverlay.LastCheckout);
             Assert.Equal(overlay.IsEnded, updatedOverlay.IsEnded);
-            Assert.NotEqual(updatedOverlay.CreatedAt, updatedOverlay.UpdatedAt);
         }
 
         [Fact]
@@ -160,11 +151,7 @@ namespace WarStreamer.Tests.Repositories
 
         private static WarOverlay CreateWarOverlay(DateTimeOffset dateTime)
         {
-            return new(USER_ID, ID, CLAN_TAG)
-            {
-                LastCheckout = dateTime,
-                IsEnded = IS_ENDED,
-            };
+            return new(USER_ID, ID, CLAN_TAG) { LastCheckout = dateTime, IsEnded = IS_ENDED, };
         }
     }
 }
