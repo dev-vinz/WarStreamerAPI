@@ -16,7 +16,7 @@ namespace WarStreamer.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Account? Create(Account domain)
+        public Account Create(Account domain)
         {
             return _repository.Save(domain);
         }

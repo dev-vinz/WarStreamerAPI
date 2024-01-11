@@ -51,11 +51,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public OverlaySetting? Save(OverlaySetting domain)
+        public OverlaySetting Save(OverlaySetting domain)
         {
             try
             {
-                return Insert(domain);
+                Insert(domain);
+
+                return domain;
             }
             catch (Exception)
             {

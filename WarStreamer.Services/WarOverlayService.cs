@@ -16,7 +16,7 @@ namespace WarStreamer.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlay? Create(WarOverlay domain)
+        public WarOverlay Create(WarOverlay domain)
         {
             return _repository.Save(domain);
         }

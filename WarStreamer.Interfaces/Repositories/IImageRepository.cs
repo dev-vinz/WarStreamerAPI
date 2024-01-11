@@ -16,7 +16,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<Image> GetByOverlaySettingId(decimal overlaySettingId);
 
-        public Image? Save(Image domain);
+        public Image Save(Image domain);
 
         public bool Update(Image domain);
     }

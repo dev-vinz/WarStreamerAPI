@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public OverlaySetting? GetByUserId(decimal userId);
 
-        public OverlaySetting? Save(OverlaySetting domain);
+        public OverlaySetting Save(OverlaySetting domain);
 
         public bool Update(OverlaySetting domain);
     }

@@ -17,7 +17,7 @@ namespace WarStreamer.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public OverlaySetting? Create(OverlaySetting domain)
+        public OverlaySetting Create(OverlaySetting domain)
         {
             return _repository.Save(domain);
         }

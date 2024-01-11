@@ -8,7 +8,7 @@ namespace WarStreamer.Interfaces.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public OverlaySetting? Create(OverlaySetting domain);
+        public OverlaySetting Create(OverlaySetting domain);
 
         public bool Delete(OverlaySetting domain);
 

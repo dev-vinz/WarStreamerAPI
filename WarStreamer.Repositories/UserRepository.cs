@@ -49,11 +49,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public User? Save(User domain)
+        public User Save(User domain)
         {
             try
             {
-                return Insert(domain);
+                Insert(domain);
+
+                return domain;
             }
             catch (Exception)
             {

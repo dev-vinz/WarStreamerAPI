@@ -8,7 +8,7 @@ namespace WarStreamer.Interfaces.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Account? Create(Account domain);
+        public Account Create(Account domain);
 
         public bool Delete(Account domain);
 

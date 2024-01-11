@@ -16,7 +16,7 @@ namespace WarStreamer.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image? Create(Image domain)
+        public Image Create(Image domain)
         {
             return _repository.Save(domain);
         }

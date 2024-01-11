@@ -74,11 +74,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public TeamLogo? Save(TeamLogo domain)
+        public TeamLogo Save(TeamLogo domain)
         {
             try
             {
-                return Insert(domain);
+                Insert(domain);
+
+                return domain;
             }
             catch (Exception)
             {

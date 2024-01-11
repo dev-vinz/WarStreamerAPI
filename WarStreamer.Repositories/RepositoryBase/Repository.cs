@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using WarStreamer.Models.Context;
+﻿using WarStreamer.Models.Context;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Repositories.RepositoryBase
@@ -42,11 +41,11 @@ namespace WarStreamer.Repositories.RepositoryBase
                 _context.SaveChanges();
                 _context.CommitTransaction();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _context.RollbackTransaction();
 
-                Console.Error.WriteLine(ex.ToString());
+                throw;
             }
             finally
             {
@@ -54,27 +53,23 @@ namespace WarStreamer.Repositories.RepositoryBase
             }
         }
 
-        public TEntity? Insert<TEntity>(TEntity domain)
+        public void Insert<TEntity>(TEntity domain)
             where TEntity : Entity
         {
             _context.BeginTransaction();
 
             try
             {
-                EntityEntry<TEntity> addedDomain = _context.Set<TEntity>().Add(domain);
+                _context.Set<TEntity>().Add(domain);
 
                 _context.SaveChanges();
                 _context.CommitTransaction();
-
-                return addedDomain.Entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _context.RollbackTransaction();
 
-                Console.Error.WriteLine(ex.ToString());
-
-                return null;
+                throw;
             }
             finally
             {
@@ -99,11 +94,11 @@ namespace WarStreamer.Repositories.RepositoryBase
                 _context.SaveChanges();
                 _context.CommitTransaction();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _context.RollbackTransaction();
 
-                Console.Error.WriteLine(ex.ToString());
+                throw;
             }
             finally
             {

@@ -8,7 +8,7 @@ namespace WarStreamer.Interfaces.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image? Create(Image domain);
+        public Image Create(Image domain);
 
         public bool Delete(Image domain);
 

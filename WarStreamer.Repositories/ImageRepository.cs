@@ -74,11 +74,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Image? Save(Image domain)
+        public Image Save(Image domain)
         {
             try
             {
-                return Insert(domain);
+                Insert(domain);
+
+                return domain;
             }
             catch (Exception)
             {

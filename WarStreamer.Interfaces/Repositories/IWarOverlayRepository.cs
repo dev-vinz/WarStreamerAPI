@@ -16,7 +16,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public WarOverlay? GetByUserIdAndId(decimal userId, int id);
 
-        public WarOverlay? Save(WarOverlay domain);
+        public WarOverlay Save(WarOverlay domain);
 
         public bool Update(WarOverlay domain);
     }

@@ -70,11 +70,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public WarOverlay? Save(WarOverlay domain)
+        public WarOverlay Save(WarOverlay domain)
         {
             try
             {
-                return Insert(domain);
+                Insert(domain);
+
+                return domain;
             }
             catch (Exception)
             {

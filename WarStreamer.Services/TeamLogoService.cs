@@ -16,7 +16,7 @@ namespace WarStreamer.Services
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogo? Create(TeamLogo domain)
+        public TeamLogo Create(TeamLogo domain)
         {
             return _repository.Save(domain);
         }
