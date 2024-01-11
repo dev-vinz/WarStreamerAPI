@@ -31,12 +31,12 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public List<TeamLogo> GetByUserId(decimal userId)
+        public List<TeamLogo> GetByUserId(string userId)
         {
             return _repository.GetByUserId(userId);
         }
 
-        public TeamLogo? GetByUserIdAndName(decimal userId, string name)
+        public TeamLogo? GetByUserIdAndName(string userId, string name)
         {
             return _repository.GetByUserIdAndName(userId, name);
         }

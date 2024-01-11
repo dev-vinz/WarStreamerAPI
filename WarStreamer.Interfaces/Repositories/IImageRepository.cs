@@ -12,9 +12,9 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<Image> GetAll();
 
-        public Image? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name);
+        public Image? GetByOverlaySettingIdAndName(string overlaySettingId, string name);
 
-        public List<Image> GetByOverlaySettingId(decimal overlaySettingId);
+        public List<Image> GetByOverlaySettingId(string overlaySettingId);
 
         public Image Save(Image domain);
 

@@ -31,12 +31,12 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public Image? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name)
+        public Image? GetByOverlaySettingIdAndName(string overlaySettingId, string name)
         {
             return _repository.GetByOverlaySettingIdAndName(overlaySettingId, name);
         }
 
-        public List<Image> GetByOverlaySettingId(decimal overlaySettingId)
+        public List<Image> GetByOverlaySettingId(string overlaySettingId)
         {
             return _repository.GetByOverlaySettingId(overlaySettingId);
         }

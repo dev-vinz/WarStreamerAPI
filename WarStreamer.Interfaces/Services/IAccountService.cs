@@ -16,6 +16,6 @@ namespace WarStreamer.Interfaces.Services
 
         public Account? GetByTag(string tag);
 
-        public List<Account> GetByUserId(decimal userId);
+        public List<Account> GetByUserId(string userId);
     }
 }

@@ -31,7 +31,7 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public User? GetById(decimal id)
+        public User? GetById(string id)
         {
             return _repository.GetById(id);
         }

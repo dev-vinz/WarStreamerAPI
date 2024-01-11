@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 
 namespace WarStreamer.Maps
 {
-    public class AccountMap : IAccountMap
+    public class AccountMap(IAccountService service) : IAccountMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IAccountService _service;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public AccountMap(IAccountService service)
-        {
-            _service = service;
-        }
+        private readonly IAccountService _service = service;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -46,17 +37,12 @@ namespace WarStreamer.Maps
         public AccountViewModel? GetByTag(string tag)
         {
             Account? account = _service.GetByTag(tag);
-
-            if (account == null) return null;
-
-            return DomainToViewModel(account);
+            return account != null ? DomainToViewModel(account) : null;
         }
 
         public List<AccountViewModel> GetByUserId(string userId)
         {
-            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
-
-            return DomainToViewModel(_service.GetByUserId(decimalUserId));
+            return DomainToViewModel(_service.GetByUserId(userId));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -69,19 +55,17 @@ namespace WarStreamer.Maps
 
         private static AccountViewModel DomainToViewModel(Account domain)
         {
-            return new(domain.Tag, domain.UserId.ToString());
+            return new(domain.Tag, domain.UserId);
         }
 
         private static List<AccountViewModel> DomainToViewModel(List<Account> domain)
         {
-            return domain
-                .Select(DomainToViewModel)
-                .ToList();
+            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static Account ViewModelToDomain(AccountViewModel viewModel)
         {
-            return new(viewModel.Tag, decimal.Parse(viewModel.UserId));
+            return new(viewModel.Tag, viewModel.UserId);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<User> GetAll();
 
-        public User? GetById(decimal id);
+        public User? GetById(string id);
 
         public User Save(User domain);
 

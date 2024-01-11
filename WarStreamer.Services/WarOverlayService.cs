@@ -31,12 +31,12 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public List<WarOverlay> GetByUserId(decimal userId)
+        public List<WarOverlay> GetByUserId(string userId)
         {
             return _repository.GetByUserId(userId);
         }
 
-        public WarOverlay? GetByUserIdAndId(decimal userId, int id)
+        public WarOverlay? GetByUserIdAndId(string userId, int id)
         {
             return _repository.GetByUserIdAndId(userId, id);
         }

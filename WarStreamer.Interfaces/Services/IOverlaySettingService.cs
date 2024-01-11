@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Services
 
         public List<OverlaySetting> GetAll();
 
-        public OverlaySetting? GetByUserId(decimal userId);
+        public OverlaySetting? GetByUserId(string userId);
 
         public bool Update(OverlaySetting domain);
     }

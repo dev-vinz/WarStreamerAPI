@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -12,9 +11,9 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [Key]
-        [Precision(30, 0)]
+        [MaxLength(30)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public decimal Id { get; private set; }
+        public string Id { get; private set; }
 
         public int LanguageId { get; set; }
 
@@ -38,7 +37,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public User(decimal id)
+        public User(string id)
         {
             // Inputs
             {

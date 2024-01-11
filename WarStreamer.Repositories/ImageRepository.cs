@@ -39,7 +39,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Image? GetByOverlaySettingIdAndName(decimal overlaySettingId, string name)
+        public Image? GetByOverlaySettingIdAndName(string overlaySettingId, string name)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace WarStreamer.Repositories
                     .Set<Image>()
                     .FirstOrDefault(
                         i =>
-                            i.OverlaySettingId == overlaySettingId
+                            i.OverlaySettingId.Equals(overlaySettingId, StringComparison.Ordinal)
                             && i.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)
                     );
             }
@@ -57,7 +57,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<Image> GetByOverlaySettingId(decimal overlaySettingId)
+        public List<Image> GetByOverlaySettingId(string overlaySettingId)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace WarStreamer.Repositories
                 [
                     .. Context
                         .Set<Image>()
-                        .Where(i => i.OverlaySettingId == overlaySettingId),
+                        .Where(i => i.OverlaySettingId.Equals(overlaySettingId, StringComparison.Ordinal)),
                 ];
             }
             catch (Exception)

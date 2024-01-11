@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 
 namespace WarStreamer.Maps
 {
-    public class UserMap : IUserMap
+    public class UserMap(IUserService service) : IUserMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IUserService _service;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public UserMap(IUserService service)
-        {
-            _service = service;
-        }
+        private readonly IUserService _service = service;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -45,13 +36,8 @@ namespace WarStreamer.Maps
 
         public UserViewModel? GetById(string id)
         {
-            if (!decimal.TryParse(id, out decimal decimalId)) throw new FormatException($"Cannot parse '{id}' to decimal");
-
-            User? user = _service.GetById(decimalId);
-
-            if (user == null) return null;
-
-            return DomainToViewModel(user);
+            User? user = _service.GetById(id);
+            return user != null ? DomainToViewModel(user) : null;
         }
 
         public bool Update(UserViewModel viewModel)
@@ -70,7 +56,7 @@ namespace WarStreamer.Maps
 
         private static UserViewModel DomainToViewModel(User domain)
         {
-            return new(domain.Id.ToString())
+            return new(domain.Id)
             {
                 LanguageId = domain.LanguageId,
                 TierLevel = domain.TierLevel,
@@ -80,14 +66,12 @@ namespace WarStreamer.Maps
 
         private static List<UserViewModel> DomainToViewModel(List<User> domain)
         {
-            return domain
-                .Select(DomainToViewModel)
-                .ToList();
+            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static User ViewModelToDomain(UserViewModel viewModel)
         {
-            return new(decimal.Parse(viewModel.Id))
+            return new(viewModel.Id)
             {
                 LanguageId = viewModel.LanguageId,
                 TierLevel = viewModel.TierLevel,

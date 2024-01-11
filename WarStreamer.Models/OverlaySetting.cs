@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -13,8 +12,8 @@ namespace WarStreamer.Models
 
         [Key]
         [Column("Id")]
-        [Precision(30, 0)]
-        public decimal UserId { get; private set; }
+        [MaxLength(30)]
+        public string UserId { get; private set; }
 
         public int? FontId { get; set; }
 
@@ -92,7 +91,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public OverlaySetting(decimal userId)
+        public OverlaySetting(string userId)
         {
             // Inputs
             {

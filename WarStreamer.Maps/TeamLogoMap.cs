@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 
 namespace WarStreamer.Maps
 {
-    public class TeamLogoMap : ITeamLogoMap
+    public class TeamLogoMap(ITeamLogoService service) : ITeamLogoMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly ITeamLogoService _service;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public TeamLogoMap(ITeamLogoService service)
-        {
-            _service = service;
-        }
+        private readonly ITeamLogoService _service = service;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -45,20 +36,13 @@ namespace WarStreamer.Maps
 
         public List<TeamLogoViewModel> GetByUserId(string userId)
         {
-            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
-
-            return DomainToViewModel(_service.GetByUserId(decimalUserId));
+            return DomainToViewModel(_service.GetByUserId(userId));
         }
 
         public TeamLogoViewModel? GetByUserIdAndName(string userId, string name)
         {
-            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
-
-            TeamLogo? logo = _service.GetByUserIdAndName(decimalUserId, name);
-
-            if (logo == null) return null;
-
-            return DomainToViewModel(logo);
+            TeamLogo? logo = _service.GetByUserIdAndName(userId, name);
+            return logo != null ? DomainToViewModel(logo) : null;
         }
 
         public bool Update(TeamLogoViewModel viewModel)
@@ -77,27 +61,17 @@ namespace WarStreamer.Maps
 
         private static TeamLogoViewModel DomainToViewModel(TeamLogo domain)
         {
-            return new TeamLogoViewModel(domain.TeamName, domain.UserId.ToString())
-            {
-                Width = domain.Width,
-                Height = domain.Height,
-            };
+            return new TeamLogoViewModel(domain.TeamName, domain.UserId);
         }
 
         private static List<TeamLogoViewModel> DomainToViewModel(List<TeamLogo> domain)
         {
-            return domain
-                .Select(DomainToViewModel)
-                .ToList();
+            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel)
         {
-            return new(viewModel.TeamName, decimal.Parse(viewModel.UserId))
-            {
-                Width = viewModel.Width,
-                Height = viewModel.Height,
-            };
+            return new(viewModel.TeamName, viewModel.UserId);
         }
     }
 }

@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20240106223844_InitialCreate")]
+    [Migration("20240111213124_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace WarStreamer.Models.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -31,9 +31,10 @@ namespace WarStreamer.Models.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("UserId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Tag");
 
@@ -62,9 +63,9 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.Image", b =>
                 {
-                    b.Property<decimal>("OverlaySettingId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
+                    b.Property<string>("OverlaySettingId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
@@ -114,9 +115,9 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.OverlaySetting", b =>
                 {
-                    b.Property<decimal>("UserId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)")
+                    b.Property<string>("UserId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
                         .HasColumnName("Id");
 
                     b.Property<int?>("AverageDurationLocationX")
@@ -226,9 +227,9 @@ namespace WarStreamer.Models.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<decimal>("UserId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
+                    b.Property<string>("UserId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("TeamName", "UserId");
 
@@ -239,9 +240,9 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.User", b =>
                 {
-                    b.Property<decimal>("Id")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
+                    b.Property<string>("Id")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
@@ -261,9 +262,9 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.WarOverlay", b =>
                 {
-                    b.Property<decimal>("UserId")
-                        .HasPrecision(30)
-                        .HasColumnType("decimal(30,0)");
+                    b.Property<string>("UserId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");

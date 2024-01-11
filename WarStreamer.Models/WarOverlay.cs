@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
@@ -11,9 +12,8 @@ namespace WarStreamer.Models
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [Precision(30, 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public decimal UserId { get; private set; }
+        [MaxLength(30)]
+        public string UserId { get; private set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; private set; }
@@ -34,7 +34,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlay(decimal userId, int id, string clanTag)
+        public WarOverlay(string userId, int id, string clanTag)
         {
             // Inputs
             {

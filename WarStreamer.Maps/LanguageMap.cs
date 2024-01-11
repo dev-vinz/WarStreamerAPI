@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 
 namespace WarStreamer.Maps
 {
-    public class LanguageMap : ILanguageMap
+    public class LanguageMap(ILanguageService service) : ILanguageMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly ILanguageService _service;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public LanguageMap(ILanguageService service)
-        {
-            _service = service;
-        }
+        private readonly ILanguageService _service = service;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -34,10 +25,7 @@ namespace WarStreamer.Maps
         public LanguageViewModel? GetById(int id)
         {
             Language? language = _service.GetById(id);
-
-            if (language == null) return null;
-
-            return DomainToViewModel(language);
+            return language != null ? DomainToViewModel(language) : null;
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -50,14 +38,18 @@ namespace WarStreamer.Maps
 
         private static LanguageViewModel DomainToViewModel(Language domain)
         {
-            return new(domain.Id, domain.CultureInfo, domain.DisplayValue, domain.ShortcutValue, domain.FlagEmoji);
+            return new(
+                domain.Id,
+                domain.CultureInfo,
+                domain.DisplayValue,
+                domain.ShortcutValue,
+                domain.FlagEmoji
+            );
         }
 
         private static List<LanguageViewModel> DomainToViewModel(List<Language> domain)
         {
-            return domain
-                .Select(DomainToViewModel)
-                .ToList();
+            return domain.Select(DomainToViewModel).ToList();
         }
     }
 }

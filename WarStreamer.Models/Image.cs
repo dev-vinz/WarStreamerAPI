@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -10,8 +11,8 @@ namespace WarStreamer.Models
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [Precision(30, 0)]
-        public decimal OverlaySettingId { get; private set; }
+        [MaxLength(30)]
+        public string OverlaySettingId { get; private set; }
 
         public string Name { get; private set; }
 
@@ -33,7 +34,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image(decimal overlaySettingId, string name)
+        public Image(string overlaySettingId, string name)
         {
             // Inputs
             {

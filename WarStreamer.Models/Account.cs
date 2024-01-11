@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
@@ -14,8 +13,8 @@ namespace WarStreamer.Models
         [MaxLength(50)]
         public string Tag { get; private set; }
 
-        [Precision(30, 0)]
-        public decimal UserId { get; private set; }
+        [MaxLength(30)]
+        public string UserId { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
@@ -27,11 +26,11 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Account(string tag, decimal userId)
+        public Account(string tag, string userId)
         {
             // Inputs
             {
-                Tag = tag;
+                Tag = tag.ToUpper().Replace('O', '0');
                 UserId = userId;
             }
         }

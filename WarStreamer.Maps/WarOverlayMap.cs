@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 
 namespace WarStreamer.Maps
 {
-    public class WarOverlayMap : IWarOverlayMap
+    public class WarOverlayMap(IWarOverlayService service) : IWarOverlayMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IWarOverlayService _service;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public WarOverlayMap(IWarOverlayService service)
-        {
-            _service = service;
-        }
+        private readonly IWarOverlayService _service = service;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -45,20 +36,13 @@ namespace WarStreamer.Maps
 
         public List<WarOverlayViewModel> GetByUserId(string userId)
         {
-            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
-
-            return DomainToViewModel(_service.GetByUserId(decimalUserId));
+            return DomainToViewModel(_service.GetByUserId(userId));
         }
 
         public WarOverlayViewModel? GetByUserIdAndId(string userId, int id)
         {
-            if (!decimal.TryParse(userId, out decimal decimalUserId)) throw new FormatException($"Cannot parse '{userId}' to decimal");
-
-            WarOverlay? overlay = _service.GetByUserIdAndId(decimalUserId, id);
-
-            if (overlay == null) return null;
-
-            return DomainToViewModel(overlay);
+            WarOverlay? overlay = _service.GetByUserIdAndId(userId, id);
+            return overlay != null ? DomainToViewModel(overlay) : null;
         }
 
         public bool Update(WarOverlayViewModel viewModel)
@@ -77,7 +61,7 @@ namespace WarStreamer.Maps
 
         private static WarOverlayViewModel DomainToViewModel(WarOverlay domain)
         {
-            return new(domain.UserId.ToString(), domain.Id, domain.ClanTag)
+            return new(domain.UserId, domain.Id, domain.ClanTag)
             {
                 LastCheckout = domain.LastCheckout,
                 IsEnded = domain.IsEnded,
@@ -86,14 +70,12 @@ namespace WarStreamer.Maps
 
         private static List<WarOverlayViewModel> DomainToViewModel(List<WarOverlay> domain)
         {
-            return domain
-                .Select(DomainToViewModel)
-                .ToList();
+            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static WarOverlay ViewModelToDomain(WarOverlayViewModel viewModel)
         {
-            return new(decimal.Parse(viewModel.UserId), viewModel.Id, viewModel.ClanTag)
+            return new(viewModel.UserId, viewModel.Id, viewModel.ClanTag)
             {
                 LastCheckout = viewModel.LastCheckout,
                 IsEnded = viewModel.IsEnded,

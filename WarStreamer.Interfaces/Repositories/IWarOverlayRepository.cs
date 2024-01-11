@@ -12,9 +12,9 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<WarOverlay> GetAll();
 
-        public List<WarOverlay> GetByUserId(decimal userId);
+        public List<WarOverlay> GetByUserId(string userId);
 
-        public WarOverlay? GetByUserIdAndId(decimal userId, int id);
+        public WarOverlay? GetByUserIdAndId(string userId, int id);
 
         public WarOverlay Save(WarOverlay domain);
 

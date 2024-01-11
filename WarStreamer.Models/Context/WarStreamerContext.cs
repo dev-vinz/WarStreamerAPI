@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using WarStreamer.Models.EntityBase;
 
@@ -77,17 +76,6 @@ namespace WarStreamer.Models.Context
         /* * * * * * * * * * * * * * * * * *\
         |*             OVERRIDE            *|
         \* * * * * * * * * * * * * * * * * */
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-
-            // Disable decimal warnings
-            optionsBuilder.ConfigureWarnings(warnings =>
-            {
-                warnings.Ignore(SqlServerEventId.DecimalTypeKeyWarning);
-            });
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

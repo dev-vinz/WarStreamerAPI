@@ -37,11 +37,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public User? GetById(decimal id)
+        public User? GetById(string id)
         {
             try
             {
-                return Context.Set<User>().FirstOrDefault(u => u.Id == id);
+                return Context
+                    .Set<User>()
+                    .FirstOrDefault(u => u.Id.Equals(id, StringComparison.Ordinal));
             }
             catch (Exception)
             {

@@ -39,11 +39,13 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public OverlaySetting? GetByUserId(decimal userId)
+        public OverlaySetting? GetByUserId(string userId)
         {
             try
             {
-                return Context.Set<OverlaySetting>().FirstOrDefault(os => os.UserId == userId);
+                return Context
+                    .Set<OverlaySetting>()
+                    .FirstOrDefault(os => os.UserId.Equals(userId, StringComparison.Ordinal));
             }
             catch (Exception)
             {

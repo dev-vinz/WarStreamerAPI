@@ -12,7 +12,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<OverlaySetting> GetAll();
 
-        public OverlaySetting? GetByUserId(decimal userId);
+        public OverlaySetting? GetByUserId(string userId);
 
         public OverlaySetting Save(OverlaySetting domain);
 

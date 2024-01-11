@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 
 namespace WarStreamer.Maps
 {
-    public class ImageMap : IImageMap
+    public class ImageMap(IImageService service) : IImageMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IImageService _service;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public ImageMap(IImageService service)
-        {
-            _service = service;
-        }
+        private readonly IImageService _service = service;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -45,20 +36,13 @@ namespace WarStreamer.Maps
 
         public ImageViewModel? GetByOverlaySettingIdAndName(string overlaySettingId, string name)
         {
-            if (!decimal.TryParse(overlaySettingId, out decimal decimalOverlaySettingId)) throw new FormatException($"Cannot parse '{overlaySettingId}' to decimal");
-
-            Image? image = _service.GetByOverlaySettingIdAndName(decimalOverlaySettingId, name);
-
-            if (image == null) return null;
-
-            return DomainToViewModel(image);
+            Image? image = _service.GetByOverlaySettingIdAndName(overlaySettingId, name);
+            return image != null ? DomainToViewModel(image) : null;
         }
 
         public List<ImageViewModel> GetByOverlaySettingId(string overlaySettingId)
         {
-            if (!decimal.TryParse(overlaySettingId, out decimal decimalOverlaySettingId)) throw new FormatException($"Cannot parse '{overlaySettingId}' to decimal");
-
-            return DomainToViewModel(_service.GetByOverlaySettingId(decimalOverlaySettingId));
+            return DomainToViewModel(_service.GetByOverlaySettingId(overlaySettingId));
         }
 
         public bool Update(ImageViewModel viewModel)
@@ -77,7 +61,7 @@ namespace WarStreamer.Maps
 
         private static ImageViewModel DomainToViewModel(Image domain)
         {
-            return new(domain.OverlaySettingId.ToString(), domain.Name)
+            return new(domain.OverlaySettingId, domain.Name)
             {
                 Location = new(domain.LocationX, domain.LocationY),
                 Width = domain.Width,
@@ -87,14 +71,12 @@ namespace WarStreamer.Maps
 
         private static List<ImageViewModel> DomainToViewModel(List<Image> domain)
         {
-            return domain
-                .Select(DomainToViewModel)
-                .ToList();
+            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static Image ViewModelToDomain(ImageViewModel viewModel)
         {
-            return new(decimal.Parse(viewModel.OverlaySettingId), viewModel.Name)
+            return new(viewModel.OverlaySettingId, viewModel.Name)
             {
                 LocationX = viewModel.Location.X,
                 LocationY = viewModel.Location.Y,

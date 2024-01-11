@@ -14,8 +14,8 @@ namespace WarStreamer.Models
         [MaxLength(50)]
         public string TeamName { get; private set; } = null!;
 
-        [Precision(30, 0)]
-        public decimal UserId { get; private set; }
+        [MaxLength(30)]
+        public string UserId { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
@@ -27,7 +27,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogo(string teamName, decimal userId)
+        public TeamLogo(string teamName, string userId)
         {
             // Inputs
             {

@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Repositories
 
         public Account? GetByTag(string tag);
 
-        public List<Account> GetByUserId(decimal userId);
+        public List<Account> GetByUserId(string userId);
 
         public Account Save(Account domain);
     }

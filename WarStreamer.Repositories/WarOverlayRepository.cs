@@ -39,7 +39,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<WarOverlay> GetByUserId(decimal userId)
+        public List<WarOverlay> GetByUserId(string userId)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace WarStreamer.Repositories
                 [
                     .. Context
                         .Set<WarOverlay>()
-                        .Where(o => o.UserId == userId)
+                        .Where(o => o.UserId.Equals(userId, StringComparison.Ordinal))
                 ];
             }
             catch (Exception)
@@ -56,13 +56,15 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public WarOverlay? GetByUserIdAndId(decimal userId, int id)
+        public WarOverlay? GetByUserIdAndId(string userId, int id)
         {
             try
             {
                 return Context
                     .Set<WarOverlay>()
-                    .FirstOrDefault(o => o.UserId == userId && o.Id == id);
+                    .FirstOrDefault(
+                        o => o.UserId.Equals(userId, StringComparison.Ordinal) && o.Id == id
+                    );
             }
             catch (Exception)
             {

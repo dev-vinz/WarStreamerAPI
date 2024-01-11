@@ -43,7 +43,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
                     TierLevel = table.Column<long>(type: "bigint", nullable: false),
                     NewsLetter = table.Column<bool>(type: "bit", nullable: false)
@@ -64,7 +64,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     Tag = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,7 +81,7 @@ namespace WarStreamer.Models.Migrations
                 name: "OverlaySettings",
                 columns: table => new
                 {
-                    Id = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     FontId = table.Column<int>(type: "int", nullable: true),
                     TextColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsLogo = table.Column<bool>(type: "bit", nullable: false),
@@ -136,7 +136,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,7 +153,7 @@ namespace WarStreamer.Models.Migrations
                 name: "WarOverlays",
                 columns: table => new
                 {
-                    UserId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     ClanTag = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastCheckout = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -174,7 +174,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    OverlaySettingId = table.Column<decimal>(type: "decimal(30,0)", precision: 30, scale: 0, nullable: false),
+                    OverlaySettingId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LocationX = table.Column<int>(type: "int", nullable: false),
                     LocationY = table.Column<int>(type: "int", nullable: false),
