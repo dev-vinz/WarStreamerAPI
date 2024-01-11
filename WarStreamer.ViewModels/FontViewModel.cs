@@ -1,38 +1,45 @@
 ﻿namespace WarStreamer.ViewModels
 {
-    public class TeamLogoViewModel
+    public class FontViewModel
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly string _teamName;
-        private readonly string _userId;
+        private readonly int _id;
+        private readonly string _displayName;
+        private readonly string _fileName;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string TeamName
+        public int Id
         {
-            get => _teamName;
+            get => _id;
         }
 
-        public string UserId
+        public string DisplayName
         {
-            get => _userId;
+            get => _displayName;
+        }
+
+        public string FileName
+        {
+            get => _fileName;
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogoViewModel(string teamName, string userId)
+        public FontViewModel(int id, string displayName, string fileName)
         {
             // Inputs
             {
-                _teamName = teamName;
-                _userId = userId;
+                _id = id;
+                _displayName = displayName;
+                _fileName = fileName;
             }
         }
     }

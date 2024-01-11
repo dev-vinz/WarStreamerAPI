@@ -15,13 +15,28 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string Id { get => _id; }
+        public string Id
+        {
+            get => _id;
+        }
 
-        public int LanguageId { get => _languageId; set => _languageId = value; }
+        public int LanguageId
+        {
+            get => _languageId;
+            set => _languageId = value;
+        }
 
-        public uint TierLevel { get => _tierLevel; set => _tierLevel = value; }
+        public uint TierLevel
+        {
+            get => _tierLevel;
+            set => _tierLevel = value;
+        }
 
-        public bool NewsLetter { get => _newsLetter; set => _newsLetter = value; }
+        public bool NewsLetter
+        {
+            get => _newsLetter;
+            set => _newsLetter = value;
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|

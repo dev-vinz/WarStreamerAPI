@@ -16,15 +16,32 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string UserId { get => _userId; }
+        public string UserId
+        {
+            get => _userId;
+        }
 
-        public int Id { get => _id; }
+        public int Id
+        {
+            get => _id;
+        }
 
-        public string ClanTag { get => _clanTag; }
+        public string ClanTag
+        {
+            get => _clanTag;
+        }
 
-        public DateTimeOffset LastCheckout { get => _lastCheckout; set => _lastCheckout = value; }
+        public DateTimeOffset LastCheckout
+        {
+            get => _lastCheckout;
+            set => _lastCheckout = value;
+        }
 
-        public bool IsEnded { get => _isEnded; set => _isEnded = value; }
+        public bool IsEnded
+        {
+            get => _isEnded;
+            set => _isEnded = value;
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|

@@ -35,7 +35,9 @@ namespace WarStreamer.Repositories.RepositoryBase
                 Entity? existing = _context.Set<TEntity>().FirstOrDefault(t => t == domain);
 
                 if (existing != null)
+                {
                     _context.Set<TEntity>().Remove((TEntity)existing);
+                }
 
                 _context.SaveChanges();
                 _context.CommitTransaction();
@@ -90,7 +92,9 @@ namespace WarStreamer.Repositories.RepositoryBase
                 Entity? existing = Context.Set<TEntity>().FirstOrDefault(t => t == domain);
 
                 if (existing != null)
+                {
                     domain.CopyTo(ref existing);
+                }
 
                 _context.SaveChanges();
                 _context.CommitTransaction();

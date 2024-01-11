@@ -16,21 +16,42 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public int Id { get => _id; }
+        public int Id
+        {
+            get => _id;
+        }
 
-        public string CultureInfo { get => _cultureInfo; }
+        public string CultureInfo
+        {
+            get => _cultureInfo;
+        }
 
-        public string DisplayValue { get => _displayValue; }
+        public string DisplayValue
+        {
+            get => _displayValue;
+        }
 
-        public string ShortcutValue { get => _shortcutValue; }
+        public string ShortcutValue
+        {
+            get => _shortcutValue;
+        }
 
-        public string FlagEmoji { get => _flagEmoji; }
+        public string FlagEmoji
+        {
+            get => _flagEmoji;
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public LanguageViewModel(int id, string cultureInfo, string displayValue, string shortcutValue, string flagEmoji)
+        public LanguageViewModel(
+            int id,
+            string cultureInfo,
+            string displayValue,
+            string shortcutValue,
+            string flagEmoji
+        )
         {
             // Inputs
             {

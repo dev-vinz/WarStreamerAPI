@@ -9,20 +9,28 @@ namespace WarStreamer.ViewModels
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _userId;
+        private int? _fontId;
         private string _textColor;
         private bool _logoVisible;
+        private int? _logoSize;
         private Location2D? _logoLocation;
         private bool _clanNameVisible;
+        private int? _clanNameSize;
         private Location2D? _clanNameLocation;
         private bool _totalStarsVisible;
+        private int? _totalStarsSize;
         private Location2D? _totalStarsLocation;
         private bool _totalPercentageVisible;
+        private int? _totalPercentageSize;
         private Location2D? _totalPercentageLocation;
         private bool _averageDurationVisible;
+        private int? _averageDurationSize;
         private Location2D? _averageDurationLocation;
         private bool _playerDetailsVisible;
+        private int? _playerDetailsSize;
         private Location2D? _playerDetailsLocation;
         private bool _lastAttackToWinVisible;
+        private int? _lastAttackToWinSize;
         private Location2D? _lastAttackToWinLocation;
         private bool _mirrorReflection;
 
@@ -30,9 +38,22 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string UserId { get => _userId; }
+        public string UserId
+        {
+            get => _userId;
+        }
 
-        public string TextColor { get => _textColor; set => _textColor = value; }
+        public int? FontId
+        {
+            get => _fontId;
+            set => _fontId = value;
+        }
+
+        public string TextColor
+        {
+            get => _textColor;
+            set => _textColor = value;
+        }
 
         public bool LogoVisible
         {
@@ -41,7 +62,23 @@ namespace WarStreamer.ViewModels
             {
                 _logoVisible = value;
 
-                if (!_logoVisible) _logoLocation = null;
+                if (!_logoVisible)
+                {
+                    _logoSize = null;
+                    _logoLocation = null;
+                }
+            }
+        }
+
+        public int? LogoSize
+        {
+            get => _logoSize;
+            set
+            {
+                if (_logoVisible)
+                {
+                    _logoSize = value;
+                }
             }
         }
 
@@ -50,7 +87,10 @@ namespace WarStreamer.ViewModels
             get => _logoLocation;
             set
             {
-                if (_logoVisible) _logoLocation = value;
+                if (_logoVisible)
+                {
+                    _logoLocation = value;
+                }
             }
         }
 
@@ -61,7 +101,23 @@ namespace WarStreamer.ViewModels
             {
                 _clanNameVisible = value;
 
-                if (!_clanNameVisible) _clanNameLocation = null;
+                if (!_clanNameVisible)
+                {
+                    _clanNameSize = null;
+                    _clanNameLocation = null;
+                }
+            }
+        }
+
+        public int? ClanNameSize
+        {
+            get => _clanNameSize;
+            set
+            {
+                if (_clanNameVisible)
+                {
+                    _clanNameSize = value;
+                }
             }
         }
 
@@ -70,7 +126,10 @@ namespace WarStreamer.ViewModels
             get => _clanNameLocation;
             set
             {
-                if (_clanNameVisible) _clanNameLocation = value;
+                if (_clanNameVisible)
+                {
+                    _clanNameLocation = value;
+                }
             }
         }
 
@@ -81,7 +140,23 @@ namespace WarStreamer.ViewModels
             {
                 _totalStarsVisible = value;
 
-                if (!_totalStarsVisible) _totalStarsLocation = null;
+                if (!_totalStarsVisible)
+                {
+                    _totalStarsSize = null;
+                    _totalStarsLocation = null;
+                }
+            }
+        }
+
+        public int? TotalStarsSize
+        {
+            get => _totalStarsSize;
+            set
+            {
+                if (_totalStarsVisible)
+                {
+                    _totalStarsSize = value;
+                }
             }
         }
 
@@ -90,7 +165,10 @@ namespace WarStreamer.ViewModels
             get => _totalStarsLocation;
             set
             {
-                if (_totalStarsVisible) _totalStarsLocation = value;
+                if (_totalStarsVisible)
+                {
+                    _totalStarsLocation = value;
+                }
             }
         }
 
@@ -101,7 +179,23 @@ namespace WarStreamer.ViewModels
             {
                 _totalPercentageVisible = value;
 
-                if (!_totalPercentageVisible) _totalPercentageLocation = null;
+                if (!_totalPercentageVisible)
+                {
+                    _totalPercentageSize = null;
+                    _totalPercentageLocation = null;
+                }
+            }
+        }
+
+        public int? TotalPercentageSize
+        {
+            get => _totalPercentageSize;
+            set
+            {
+                if (_totalPercentageVisible)
+                {
+                    _totalPercentageSize = value;
+                }
             }
         }
 
@@ -110,7 +204,10 @@ namespace WarStreamer.ViewModels
             get => _totalPercentageLocation;
             set
             {
-                if (_totalPercentageVisible) _totalPercentageLocation = value;
+                if (_totalPercentageVisible)
+                {
+                    _totalPercentageLocation = value;
+                }
             }
         }
 
@@ -121,7 +218,23 @@ namespace WarStreamer.ViewModels
             {
                 _averageDurationVisible = value;
 
-                if (!_averageDurationVisible) _averageDurationLocation = null;
+                if (!_averageDurationVisible)
+                {
+                    _averageDurationSize = null;
+                    _averageDurationLocation = null;
+                }
+            }
+        }
+
+        public int? AverageDurationSize
+        {
+            get => _averageDurationSize;
+            set
+            {
+                if (_averageDurationVisible)
+                {
+                    _averageDurationSize = value;
+                }
             }
         }
 
@@ -130,7 +243,8 @@ namespace WarStreamer.ViewModels
             get => _averageDurationLocation;
             set
             {
-                if (_averageDurationVisible) _averageDurationLocation = value;
+                if (_averageDurationVisible)
+                    _averageDurationLocation = value;
             }
         }
 
@@ -141,7 +255,23 @@ namespace WarStreamer.ViewModels
             {
                 _playerDetailsVisible = value;
 
-                if (!_playerDetailsVisible) _playerDetailsLocation = null;
+                if (!_playerDetailsVisible)
+                {
+                    _playerDetailsSize = null;
+                    _playerDetailsLocation = null;
+                }
+            }
+        }
+
+        public int? PlayerDetailsSize
+        {
+            get => _playerDetailsSize;
+            set
+            {
+                if (_playerDetailsVisible)
+                {
+                    _playerDetailsSize = value;
+                }
             }
         }
 
@@ -150,7 +280,10 @@ namespace WarStreamer.ViewModels
             get => _playerDetailsLocation;
             set
             {
-                if (_playerDetailsVisible) _playerDetailsLocation = value;
+                if (_playerDetailsVisible)
+                {
+                    _playerDetailsLocation = value;
+                }
             }
         }
 
@@ -161,7 +294,23 @@ namespace WarStreamer.ViewModels
             {
                 _lastAttackToWinVisible = value;
 
-                if (!_lastAttackToWinVisible) _lastAttackToWinLocation = null;
+                if (!_lastAttackToWinVisible)
+                {
+                    _lastAttackToWinSize = null;
+                    _lastAttackToWinLocation = null;
+                }
+            }
+        }
+
+        public int? LastAttackToWinSize
+        {
+            get => _lastAttackToWinSize;
+            set
+            {
+                if (_lastAttackToWinVisible)
+                {
+                    _lastAttackToWinSize = value;
+                }
             }
         }
 
@@ -170,11 +319,18 @@ namespace WarStreamer.ViewModels
             get => _lastAttackToWinLocation;
             set
             {
-                if (_lastAttackToWinVisible) _lastAttackToWinLocation = value;
+                if (_lastAttackToWinVisible)
+                {
+                    _lastAttackToWinLocation = value;
+                }
             }
         }
 
-        public bool MirrorReflection { get => _mirrorReflection; set => _mirrorReflection = value; }
+        public bool MirrorReflection
+        {
+            get => _mirrorReflection;
+            set => _mirrorReflection = value;
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|

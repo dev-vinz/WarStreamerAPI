@@ -13,9 +13,15 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string Tag { get => _tag; }
+        public string Tag
+        {
+            get => _tag;
+        }
 
-        public string UserId { get => _userId; }
+        public string UserId
+        {
+            get => _userId;
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|

@@ -18,15 +18,33 @@ namespace WarStreamer.ViewModels
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string OverlaySettingId { get => _overlaySettingId; }
+        public string OverlaySettingId
+        {
+            get => _overlaySettingId;
+        }
 
-        public string Name { get => _name; }
+        public string Name
+        {
+            get => _name;
+        }
 
-        public Location2D Location { get => _location; set => _location = value; }
+        public Location2D Location
+        {
+            get => _location;
+            set => _location = value;
+        }
 
-        public int Width { get => _width; set => _width = value; }
+        public int Width
+        {
+            get => _width;
+            set => _width = value;
+        }
 
-        public int Height { get => _height; set => _height = value; }
+        public int Height
+        {
+            get => _height;
+            set => _height = value;
+        }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
