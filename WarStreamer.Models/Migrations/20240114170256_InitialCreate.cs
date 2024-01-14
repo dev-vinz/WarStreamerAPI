@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WarStreamer.Models.Migrations
 {
     /// <inheritdoc />
@@ -190,6 +192,26 @@ namespace WarStreamer.Models.Migrations
                         principalTable: "OverlaySettings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Fonts",
+                columns: new[] { "Id", "DisplayName", "FileName" },
+                values: new object[,]
+                {
+                    { 1, "Clash of Clans", "supercell-magic.ttf" },
+                    { 2, "Poppins", "poppins.otf" },
+                    { 3, "Quicksand", "quicksand.otf" },
+                    { 4, "Roboto", "roboto.ttf" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
+                values: new object[,]
+                {
+                    { 1, "en-US", "English", "🇬🇧", "en" },
+                    { 2, "fr-FR", "Français", "🇫🇷", "fr" }
                 });
 
             migrationBuilder.CreateIndex(

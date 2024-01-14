@@ -88,6 +88,24 @@ namespace WarStreamer.Models.Context
                 .WithOne(os => os.Font)
                 .HasForeignKey(os => os.FontId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            // Create Fond seeder
+            modelBuilder
+                .Entity<Font>()
+                .HasData(
+                    new Font(1, "Clash of Clans", "supercell-magic.ttf"),
+                    new Font(2, "Poppins", "poppins.otf"),
+                    new Font(3, "Quicksand", "quicksand.otf"),
+                    new Font(4, "Roboto", "roboto.ttf")
+                );
+
+            // Create Language seeder
+            modelBuilder
+                .Entity<Language>()
+                .HasData(
+                    new Language(1, "en-US", "English", "en", "🇬🇧"),
+                    new Language(2, "fr-FR", "Français", "fr", "🇫🇷")
+                );
         }
     }
 }

@@ -56,6 +56,32 @@ namespace WarStreamer.Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Fonts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DisplayName = "Clash of Clans",
+                            FileName = "supercell-magic.ttf"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DisplayName = "Poppins",
+                            FileName = "poppins.otf"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayName = "Quicksand",
+                            FileName = "quicksand.otf"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DisplayName = "Roboto",
+                            FileName = "roboto.ttf"
+                        });
                 });
 
             modelBuilder.Entity("WarStreamer.Models.Image", b =>
@@ -108,6 +134,24 @@ namespace WarStreamer.Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CultureInfo = "en-US",
+                            DisplayValue = "English",
+                            FlagEmoji = "🇬🇧",
+                            ShortcutValue = "en"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CultureInfo = "fr-FR",
+                            DisplayValue = "Français",
+                            FlagEmoji = "🇫🇷",
+                            ShortcutValue = "fr"
+                        });
                 });
 
             modelBuilder.Entity("WarStreamer.Models.OverlaySetting", b =>
