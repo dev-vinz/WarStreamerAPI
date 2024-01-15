@@ -12,8 +12,8 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const string USER_ID = "1";
-        private const int FONT_ID = 1;
+        private static readonly Guid USER_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560e");
+        private static readonly Guid FONT_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
         private const string TEXT_COLOR = "#000000";
         private const string TEXT_COLOR_UPDATED = "#FF0000";
         private const bool IS_LOGO = true;
@@ -221,7 +221,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(4)]
         public void WhenGetOverlaySettingByUserId_ThenReturnsNull()
         {
-            Assert.Null(_repository.GetByUserId(USER_ID + 1));
+            Assert.Null(_repository.GetByUserId(FONT_ID));
         }
 
         [Fact]

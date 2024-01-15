@@ -1,4 +1,5 @@
-﻿using WarStreamer.Models;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Models;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
@@ -23,7 +24,7 @@ namespace WarStreamer.Tests.Models
             Account account = CreateAccountOne();
 
             Assert.NotNull(account);
-            Assert.Equal(USER_ID, account.UserId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID), account.UserId);
             Assert.Equal(TAG_ONE, account.Tag);
         }
 
@@ -80,12 +81,12 @@ namespace WarStreamer.Tests.Models
 
         private static Account CreateAccountOne()
         {
-            return new(TAG_ONE, USER_ID);
+            return new(TAG_ONE, Guid.Empty.ParseDiscordId(USER_ID));
         }
 
         private static Account CreateAccountTwo()
         {
-            return new(TAG_TWO, USER_ID);
+            return new(TAG_TWO, Guid.Empty.ParseDiscordId(USER_ID));
         }
     }
 }

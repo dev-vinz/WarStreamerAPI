@@ -1,4 +1,5 @@
-﻿using WarStreamer.Models;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Models;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
@@ -28,7 +29,7 @@ namespace WarStreamer.Tests.Models
 
             Assert.NotNull(image);
             Assert.Equal(NAME_ONE.ToUpper(), image.Name);
-            Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(OVERLAY_SETTING_ID), image.OverlaySettingId);
             Assert.Equal(LOCATION_X, image.LocationX);
             Assert.Equal(LOCATION_Y, image.LocationY);
             Assert.Equal(WIDTH, image.Width);
@@ -95,7 +96,7 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageOne()
         {
-            return new(OVERLAY_SETTING_ID, NAME_ONE)
+            return new(Guid.Empty.ParseDiscordId(OVERLAY_SETTING_ID), NAME_ONE)
             {
                 LocationX = LOCATION_X,
                 LocationY = LOCATION_Y,
@@ -106,7 +107,7 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageTwo()
         {
-            return new(OVERLAY_SETTING_ID, NAME_TWO)
+            return new(Guid.Empty.ParseDiscordId(OVERLAY_SETTING_ID), NAME_TWO)
             {
                 LocationX = LOCATION_Y,
                 LocationY = LOCATION_X,

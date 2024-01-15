@@ -12,7 +12,8 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const string USER_ID = "1";
+        private static readonly Guid USER_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private static readonly Guid USER_ID_2 = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560e");
         private const int ID = 0;
         private const string CLAN_TAG = "#ABCDEFG";
         private const bool IS_ENDED = false;
@@ -87,7 +88,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(4)]
         public void WhenGetWarOverlaysByUserId_ThenReturnsEmpty()
         {
-            Assert.Empty(_repository.GetByUserId(USER_ID + 1));
+            Assert.Empty(_repository.GetByUserId(USER_ID_2));
         }
 
         [Fact]

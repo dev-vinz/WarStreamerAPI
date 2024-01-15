@@ -1,4 +1,5 @@
-﻿using WarStreamer.Models;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Models;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
@@ -28,7 +29,7 @@ namespace WarStreamer.Tests.Models
             overlay.LastCheckout = UTC_NOW;
 
             Assert.NotNull(overlay);
-            Assert.Equal(USER_ID, overlay.UserId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID), overlay.UserId);
             Assert.Equal(ID_ONE, overlay.Id);
             Assert.Equal(CLAN_TAG, overlay.ClanTag);
             Assert.Equal(UTC_NOW, overlay.LastCheckout);
@@ -97,12 +98,18 @@ namespace WarStreamer.Tests.Models
 
         private static WarOverlay CreateWarOverlayOne()
         {
-            return new(USER_ID, ID_ONE, CLAN_TAG) { IsEnded = IS_ENDED, };
+            return new(Guid.Empty.ParseDiscordId(USER_ID), ID_ONE, CLAN_TAG)
+            {
+                IsEnded = IS_ENDED,
+            };
         }
 
         private static WarOverlay CreateWarOverlayTwo()
         {
-            return new(USER_ID, ID_TWO, CLAN_TAG) { IsEnded = !IS_ENDED, };
+            return new(Guid.Empty.ParseDiscordId(USER_ID), ID_TWO, CLAN_TAG)
+            {
+                IsEnded = !IS_ENDED,
+            };
         }
     }
 }

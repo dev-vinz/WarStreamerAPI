@@ -1,4 +1,5 @@
-﻿using WarStreamer.Models;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Models;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
@@ -11,7 +12,7 @@ namespace WarStreamer.Tests.Models
 
         private const string USER_ID_ONE = "1";
         private const string USER_ID_TWO = "2";
-        private const int LANGUAGE_ID = 1;
+        private const string LANGUAGE_ID = "4";
         private const uint TIER_LEVEL = 3;
         private const bool NEWSLETTER = true;
 
@@ -25,8 +26,8 @@ namespace WarStreamer.Tests.Models
             User user = CreateUserOne();
 
             Assert.NotNull(user);
-            Assert.Equal(USER_ID_ONE, user.Id);
-            Assert.Equal(LANGUAGE_ID, user.LanguageId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID_ONE), user.Id);
+            Assert.Equal(Guid.Empty.ParseDiscordId(LANGUAGE_ID), user.LanguageId);
             Assert.Equal(TIER_LEVEL, user.TierLevel);
             Assert.Equal(NEWSLETTER, user.NewsLetter);
         }
@@ -90,9 +91,9 @@ namespace WarStreamer.Tests.Models
 
         private static User CreateUserOne()
         {
-            return new(USER_ID_ONE)
+            return new(Guid.Empty.ParseDiscordId(USER_ID_ONE))
             {
-                LanguageId = LANGUAGE_ID,
+                LanguageId = Guid.Empty.ParseDiscordId(LANGUAGE_ID),
                 TierLevel = TIER_LEVEL,
                 NewsLetter = NEWSLETTER,
             };
@@ -100,10 +101,10 @@ namespace WarStreamer.Tests.Models
 
         private static User CreateUserTwo()
         {
-            return new(USER_ID_TWO)
+            return new(Guid.Empty.ParseDiscordId(USER_ID_TWO))
             {
-                LanguageId = (int)TIER_LEVEL,
-                TierLevel = LANGUAGE_ID,
+                LanguageId = Guid.Empty.ParseDiscordId(TIER_LEVEL.ToString()),
+                TierLevel = uint.Parse(LANGUAGE_ID),
                 NewsLetter = !NEWSLETTER,
             };
         }

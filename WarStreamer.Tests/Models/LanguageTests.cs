@@ -9,8 +9,8 @@ namespace WarStreamer.Tests.Models
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const int ID_ONE = 1;
-        private const int ID_TWO = 2;
+        private static readonly Guid ID_ONE = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private static readonly Guid ID_TWO = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
         private const string CULTURE_INFO = "fr-FR";
         private const string DISPLAY_VALUE = "Français";
         private const string SHORTCUT_VALUE = "fr";
@@ -26,7 +26,6 @@ namespace WarStreamer.Tests.Models
             Language language = CreateLanguageOne();
 
             Assert.NotNull(language);
-            Assert.Equal(ID_ONE, language.Id);
             Assert.Equal(CULTURE_INFO, language.CultureInfo);
             Assert.Equal(DISPLAY_VALUE, language.DisplayValue);
             Assert.Equal(SHORTCUT_VALUE, language.ShortcutValue);

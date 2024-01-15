@@ -1,4 +1,5 @@
-﻿using WarStreamer.Models;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Models;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
@@ -24,7 +25,7 @@ namespace WarStreamer.Tests.Models
 
             Assert.NotNull(logo);
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
-            Assert.Equal(USER_ID_ONE, logo.UserId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID_ONE), logo.UserId);
         }
 
         [Fact]
@@ -80,12 +81,12 @@ namespace WarStreamer.Tests.Models
 
         private static TeamLogo CreateTeamLogoOne()
         {
-            return new(TEAM_NAME, USER_ID_ONE);
+            return new(TEAM_NAME, Guid.Empty.ParseDiscordId(USER_ID_ONE));
         }
 
         private static TeamLogo CreateTeamLogoTwo()
         {
-            return new(TEAM_NAME, USER_ID_TWO);
+            return new(TEAM_NAME, Guid.Empty.ParseDiscordId(USER_ID_TWO));
         }
     }
 }

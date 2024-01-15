@@ -1,4 +1,5 @@
-﻿using WarStreamer.Models;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Models;
 using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
@@ -11,7 +12,8 @@ namespace WarStreamer.Tests.Models
 
         private const string USER_ID_ONE = "1";
         private const string USER_ID_TWO = "2";
-        private const int FONT_ID = 1;
+        private static readonly Guid FONT_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private static readonly Guid FONT_ID_2 = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
         private const string TEXT_COLOR = "#000000";
         private const bool IS_LOGO = true;
         private const int LOGO_SIZE = 8;
@@ -54,7 +56,7 @@ namespace WarStreamer.Tests.Models
 
             Assert.NotNull(setting);
 
-            Assert.Equal(USER_ID_ONE, setting.UserId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID_ONE), setting.UserId);
             Assert.Equal(FONT_ID, setting.FontId);
             Assert.Equal(TEXT_COLOR, setting.TextColor);
 
@@ -191,7 +193,7 @@ namespace WarStreamer.Tests.Models
 
         private static OverlaySetting CreateOverlaySettingOne()
         {
-            return new(USER_ID_ONE)
+            return new(Guid.Empty.ParseDiscordId(USER_ID_ONE))
             {
                 FontId = FONT_ID,
                 TextColor = TEXT_COLOR,
@@ -229,9 +231,9 @@ namespace WarStreamer.Tests.Models
 
         private static OverlaySetting CreateOverlaySettingTwo()
         {
-            return new(USER_ID_TWO)
+            return new(Guid.Empty.ParseDiscordId(USER_ID_TWO))
             {
-                FontId = FONT_ID + 1,
+                FontId = FONT_ID_2,
                 TextColor = TEXT_COLOR,
                 IsLogo = !IS_LOGO,
                 IsClanName = IS_CLAN_NAME,

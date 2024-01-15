@@ -13,7 +13,12 @@ namespace WarStreamer.Tests.Repositories
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private const string NAME = "Image";
-        private const string OVERLAY_SETTING_ID = "0";
+        private static readonly Guid OVERLAY_SETTING_ID = Guid.Parse(
+            "01e75c83-c6f5-4192-b57e-7427cec5560d"
+        );
+        private static readonly Guid OVERLAY_SETTING_ID_2 = Guid.Parse(
+            "01e75c83-c6f5-4192-b57e-7427cec5560e"
+        );
         private const int LOCATION_X = 100;
         private const int LOCATION_X_UPDATED = 150;
         private const int LOCATION_Y = 150;
@@ -98,7 +103,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(4)]
         public void WhenGetAllImagesByOverlaySettingId_ThenReturnsEmpty()
         {
-            Assert.Empty(_repository.GetByOverlaySettingId(OVERLAY_SETTING_ID + 1));
+            Assert.Empty(_repository.GetByOverlaySettingId(OVERLAY_SETTING_ID_2));
         }
 
         [Fact]
@@ -137,7 +142,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(7)]
         public void WhenGetImageById_ThenReturnsNull()
         {
-            Assert.Null(_repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID + 1, NAME));
+            Assert.Null(_repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID_2, NAME));
         }
 
         [Fact]

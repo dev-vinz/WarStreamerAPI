@@ -9,8 +9,8 @@ namespace WarStreamer.Tests.Models
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const int ID_ONE = 1;
-        private const int ID_TWO = 2;
+        private static readonly Guid ID_ONE = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private static readonly Guid ID_TWO = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
         private const string DISPLAY_NAME = "Quicksand";
         private const string FILE_NAME = "Quicksand Light.ttf";
 
@@ -24,7 +24,6 @@ namespace WarStreamer.Tests.Models
             Font font = CreateFontOne();
 
             Assert.NotNull(font);
-            Assert.Equal(ID_ONE, font.Id);
             Assert.Equal(DISPLAY_NAME, font.DisplayName);
             Assert.Equal(FILE_NAME, font.FileName);
         }

@@ -12,9 +12,14 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const string USER_ID = "1";
-        private const int LANGUAGE_ID = 1;
-        private const int LANGUAGE_ID_UPDATED = 0;
+        private static readonly Guid USER_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
+        private static readonly Guid USER_ID_2 = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private static readonly Guid LANGUAGE_ID = Guid.Parse(
+            "01e75c83-c6f5-4192-b57e-7427cec5560e"
+        );
+        private static readonly Guid LANGUAGE_ID_UPDATED = Guid.Parse(
+            "01e75c83-c6f5-4192-b57e-7427cec5560f"
+        );
         private const uint TIER_LEVEL = 3;
         private const uint TIER_LEVEL_UPDATED = 1;
         private const bool NEWSLETTER = true;
@@ -73,7 +78,7 @@ namespace WarStreamer.Tests.Repositories
         [TestOrder(3)]
         public void WhenGetUserById_ThenReturnsNull()
         {
-            Assert.Null(_repository.GetById(USER_ID + 1));
+            Assert.Null(_repository.GetById(USER_ID_2));
         }
 
         [Fact]

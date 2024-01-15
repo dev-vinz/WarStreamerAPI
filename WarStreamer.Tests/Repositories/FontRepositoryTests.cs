@@ -11,7 +11,7 @@ namespace WarStreamer.Tests.Repositories
         |*                             CONSTANTS                             *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private const int ID = 1;
+        private readonly Guid ID = Guid.NewGuid();
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
