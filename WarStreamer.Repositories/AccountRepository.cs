@@ -51,14 +51,14 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<Account> GetByUserId(string userId)
+        public List<Account> GetByUserId(Guid userId)
         {
             try
             {
                 return
                 [
                     .. Context.Set<Account>()
-                              .Where(a => a.UserId.Equals(userId, StringComparison.Ordinal)),
+                              .Where(a => a.UserId == userId),
                 ];
             }
             catch (Exception)

@@ -11,11 +11,10 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [Key]
-        [MaxLength(30)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        public int LanguageId { get; set; }
+        public Guid LanguageId { get; set; }
 
         public uint TierLevel { get; set; }
 
@@ -37,7 +36,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public User(string id)
+        public User(Guid id)
         {
             // Inputs
             {
@@ -78,7 +77,7 @@ namespace WarStreamer.Models
             {
                 User? user = obj as User;
 
-                return user?.Id == Id;
+                return user?.Id.Equals(Id) ?? false;
             }
         }
 

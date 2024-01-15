@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
@@ -11,8 +11,8 @@ namespace WarStreamer.Models
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [MaxLength(30)]
-        public string OverlaySettingId { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid OverlaySettingId { get; private set; }
 
         public string Name { get; private set; }
 
@@ -34,7 +34,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image(string overlaySettingId, string name)
+        public Image(Guid overlaySettingId, string name)
         {
             // Inputs
             {
@@ -77,7 +77,7 @@ namespace WarStreamer.Models
             {
                 Image? image = obj as Image;
 
-                return image?.OverlaySettingId == OverlaySettingId
+                return (image?.OverlaySettingId.Equals(OverlaySettingId) ?? false)
                     && image.Name.Equals(Name, StringComparison.CurrentCultureIgnoreCase);
             }
         }

@@ -22,7 +22,7 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public FontViewModel? GetById(int id)
+        public FontViewModel? GetById(Guid id)
         {
             Font? font = _service.GetById(id);
             return font != null ? DomainToViewModel(font) : null;
@@ -38,7 +38,7 @@ namespace WarStreamer.Maps
 
         private static FontViewModel DomainToViewModel(Font domain)
         {
-            return new(domain.Id, domain.DisplayName, domain.FileName);
+            return new($"{domain.Id}", domain.DisplayName, domain.FileName);
         }
 
         private static List<FontViewModel> DomainToViewModel(List<Font> domain)

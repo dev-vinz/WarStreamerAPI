@@ -39,7 +39,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<TeamLogo> GetByUserId(string userId)
+        public List<TeamLogo> GetByUserId(Guid userId)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace WarStreamer.Repositories
                 [
                     .. Context
                         .Set<TeamLogo>()
-                        .Where(l => l.UserId.Equals(userId, StringComparison.Ordinal))
+                        .Where(l => l.UserId == userId)
                 ];
             }
             catch (Exception)
@@ -56,7 +56,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public TeamLogo? GetByUserIdAndName(string userId, string name)
+        public TeamLogo? GetByUserIdAndName(Guid userId, string name)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace WarStreamer.Repositories
                     .Set<TeamLogo>()
                     .FirstOrDefault(
                         l =>
-                            l.UserId.Equals(userId, StringComparison.Ordinal)
+                            l.UserId == userId
                             && l.TeamName.Equals(name, StringComparison.CurrentCultureIgnoreCase)
                     );
             }

@@ -12,9 +12,9 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<TeamLogo> GetAll();
 
-        public List<TeamLogo> GetByUserId(string userId);
+        public List<TeamLogo> GetByUserId(Guid userId);
 
-        public TeamLogo? GetByUserIdAndName(string userId, string name);
+        public TeamLogo? GetByUserIdAndName(Guid userId, string name);
 
         public TeamLogo Save(TeamLogo domain);
 

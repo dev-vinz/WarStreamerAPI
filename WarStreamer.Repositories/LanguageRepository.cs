@@ -25,7 +25,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Language? GetById(int id)
+        public Language? GetById(Guid id)
         {
             try
             {

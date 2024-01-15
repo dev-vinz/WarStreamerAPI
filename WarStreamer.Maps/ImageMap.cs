@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Maps;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
 using WarStreamer.ViewModels;
@@ -36,13 +37,15 @@ namespace WarStreamer.Maps
 
         public ImageViewModel? GetByOverlaySettingIdAndName(string overlaySettingId, string name)
         {
-            Image? image = _service.GetByOverlaySettingIdAndName(overlaySettingId, name);
+            Guid guid = Guid.Empty.ParseDiscordId(overlaySettingId);
+            Image? image = _service.GetByOverlaySettingIdAndName(guid, name);
             return image != null ? DomainToViewModel(image) : null;
         }
 
         public List<ImageViewModel> GetByOverlaySettingId(string overlaySettingId)
         {
-            return DomainToViewModel(_service.GetByOverlaySettingId(overlaySettingId));
+            Guid guid = Guid.Empty.ParseDiscordId(overlaySettingId);
+            return DomainToViewModel(_service.GetByOverlaySettingId(guid));
         }
 
         public bool Update(ImageViewModel viewModel)
@@ -61,7 +64,7 @@ namespace WarStreamer.Maps
 
         private static ImageViewModel DomainToViewModel(Image domain)
         {
-            return new(domain.OverlaySettingId, domain.Name)
+            return new($"{domain.OverlaySettingId}", domain.Name)
             {
                 Location = new(domain.LocationX, domain.LocationY),
                 Width = domain.Width,
@@ -76,7 +79,7 @@ namespace WarStreamer.Maps
 
         private static Image ViewModelToDomain(ImageViewModel viewModel)
         {
-            return new(viewModel.OverlaySettingId, viewModel.Name)
+            return new(Guid.Empty.ParseDiscordId(viewModel.OverlaySettingId), viewModel.Name)
             {
                 LocationX = viewModel.Location.X,
                 LocationY = viewModel.Location.Y,

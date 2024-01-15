@@ -9,7 +9,7 @@ namespace WarStreamer.ViewModels
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _userId;
-        private int? _fontId;
+        private string? _fontId;
         private string _textColor;
         private bool _logoVisible;
         private int? _logoSize;
@@ -43,7 +43,7 @@ namespace WarStreamer.ViewModels
             get => _userId;
         }
 
-        public int? FontId
+        public string? FontId
         {
             get => _fontId;
             set => _fontId = value;

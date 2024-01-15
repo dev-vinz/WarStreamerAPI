@@ -22,7 +22,7 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetAll());
         }
 
-        public LanguageViewModel? GetById(int id)
+        public LanguageViewModel? GetById(Guid id)
         {
             Language? language = _service.GetById(id);
             return language != null ? DomainToViewModel(language) : null;
@@ -39,7 +39,7 @@ namespace WarStreamer.Maps
         private static LanguageViewModel DomainToViewModel(Language domain)
         {
             return new(
-                domain.Id,
+                $"{domain.Id}",
                 domain.CultureInfo,
                 domain.DisplayValue,
                 domain.ShortcutValue,

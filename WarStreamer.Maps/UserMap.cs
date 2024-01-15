@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Maps;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
 using WarStreamer.ViewModels;
@@ -36,7 +37,8 @@ namespace WarStreamer.Maps
 
         public UserViewModel? GetById(string id)
         {
-            User? user = _service.GetById(id);
+            Guid guid = Guid.Empty.ParseDiscordId(id);
+            User? user = _service.GetById(guid);
             return user != null ? DomainToViewModel(user) : null;
         }
 
@@ -56,9 +58,9 @@ namespace WarStreamer.Maps
 
         private static UserViewModel DomainToViewModel(User domain)
         {
-            return new(domain.Id)
+            return new($"{domain.Id}")
             {
-                LanguageId = domain.LanguageId,
+                LanguageId = domain.LanguageId.ToString(),
                 TierLevel = domain.TierLevel,
                 NewsLetter = domain.NewsLetter,
             };
@@ -71,9 +73,9 @@ namespace WarStreamer.Maps
 
         private static User ViewModelToDomain(UserViewModel viewModel)
         {
-            return new(viewModel.Id)
+            return new(Guid.Empty.ParseDiscordId(viewModel.Id))
             {
-                LanguageId = viewModel.LanguageId,
+                LanguageId = Guid.Parse(viewModel.LanguageId),
                 TierLevel = viewModel.TierLevel,
                 NewsLetter = viewModel.NewsLetter,
             };

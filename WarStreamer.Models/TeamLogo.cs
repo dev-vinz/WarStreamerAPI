@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
@@ -14,8 +15,8 @@ namespace WarStreamer.Models
         [MaxLength(50)]
         public string TeamName { get; private set; } = null!;
 
-        [MaxLength(30)]
-        public string UserId { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid UserId { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
@@ -27,7 +28,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogo(string teamName, string userId)
+        public TeamLogo(string teamName, Guid userId)
         {
             // Inputs
             {
@@ -60,8 +61,12 @@ namespace WarStreamer.Models
             {
                 TeamLogo? logo = obj as TeamLogo;
 
-                return logo?.UserId == UserId
-                    && logo.TeamName.Equals(TeamName, StringComparison.CurrentCultureIgnoreCase);
+                return logo?.UserId.Equals(UserId)
+                    ?? false
+                        && logo.TeamName.Equals(
+                            TeamName,
+                            StringComparison.CurrentCultureIgnoreCase
+                        );
             }
         }
 

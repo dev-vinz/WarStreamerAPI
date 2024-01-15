@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Maps;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
 using WarStreamer.ViewModels;
@@ -42,7 +43,8 @@ namespace WarStreamer.Maps
 
         public List<AccountViewModel> GetByUserId(string userId)
         {
-            return DomainToViewModel(_service.GetByUserId(userId));
+            Guid guid = Guid.Empty.ParseDiscordId(userId);
+            return DomainToViewModel(_service.GetByUserId(guid));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -55,7 +57,7 @@ namespace WarStreamer.Maps
 
         private static AccountViewModel DomainToViewModel(Account domain)
         {
-            return new(domain.Tag, domain.UserId);
+            return new(domain.Tag, $"{domain.UserId}");
         }
 
         private static List<AccountViewModel> DomainToViewModel(List<Account> domain)
@@ -65,7 +67,7 @@ namespace WarStreamer.Maps
 
         private static Account ViewModelToDomain(AccountViewModel viewModel)
         {
-            return new(viewModel.Tag, viewModel.UserId);
+            return new(viewModel.Tag, Guid.Empty.ParseDiscordId(viewModel.UserId));
         }
     }
 }

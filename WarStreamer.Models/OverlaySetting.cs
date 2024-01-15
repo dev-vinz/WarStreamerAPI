@@ -12,10 +12,10 @@ namespace WarStreamer.Models
 
         [Key]
         [Column("Id")]
-        [MaxLength(30)]
-        public string UserId { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid UserId { get; private set; }
 
-        public int? FontId { get; set; }
+        public Guid? FontId { get; set; }
 
         public string TextColor { get; set; } = null!;
 
@@ -91,7 +91,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public OverlaySetting(string userId)
+        public OverlaySetting(Guid userId)
         {
             // Inputs
             {
@@ -168,7 +168,7 @@ namespace WarStreamer.Models
             {
                 OverlaySetting? setting = obj as OverlaySetting;
 
-                return setting?.UserId == UserId;
+                return setting?.UserId.Equals(UserId) ?? false;
             }
         }
 

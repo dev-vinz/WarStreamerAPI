@@ -11,8 +11,8 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; private set; }
 
         public string CultureInfo { get; private set; }
 
@@ -33,7 +33,7 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         public Language(
-            int id,
+            Guid id,
             string cultureInfo,
             string displayValue,
             string shortcutValue,
@@ -49,6 +49,14 @@ namespace WarStreamer.Models
                 FlagEmoji = flagEmoji;
             }
         }
+
+        public Language(
+            string cultureInfo,
+            string displayValue,
+            string shortcutValue,
+            string flagEmoji
+        )
+            : this(Guid.NewGuid(), cultureInfo, displayValue, shortcutValue, flagEmoji) { }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -74,7 +82,7 @@ namespace WarStreamer.Models
             {
                 Language? language = obj as Language;
 
-                return language?.Id == Id;
+                return language?.Id.Equals(Id) ?? false;
             }
         }
 

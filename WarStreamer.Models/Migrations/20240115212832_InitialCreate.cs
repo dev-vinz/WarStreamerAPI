@@ -17,7 +17,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Fonts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -30,7 +30,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CultureInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DisplayValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShortcutValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -45,8 +45,8 @@ namespace WarStreamer.Models.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LanguageId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LanguageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TierLevel = table.Column<long>(type: "bigint", nullable: false),
                     NewsLetter = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -66,7 +66,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     Tag = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,8 +83,8 @@ namespace WarStreamer.Models.Migrations
                 name: "OverlaySettings",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    FontId = table.Column<int>(type: "int", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FontId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TextColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsLogo = table.Column<bool>(type: "bit", nullable: false),
                     LogoSize = table.Column<int>(type: "int", nullable: true),
@@ -138,7 +138,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -155,7 +155,7 @@ namespace WarStreamer.Models.Migrations
                 name: "WarOverlays",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     ClanTag = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastCheckout = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -176,7 +176,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    OverlaySettingId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    OverlaySettingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LocationX = table.Column<int>(type: "int", nullable: false),
                     LocationY = table.Column<int>(type: "int", nullable: false),
@@ -199,10 +199,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { 1, "Clash of Clans", "supercell-magic.ttf" },
-                    { 2, "Poppins", "poppins.otf" },
-                    { 3, "Quicksand", "quicksand.otf" },
-                    { 4, "Roboto", "roboto.ttf" }
+                    { new Guid("0199fb85-c1c1-4903-bf68-c977093cb0da"), "Roboto", "roboto.ttf" },
+                    { new Guid("64c64c78-690c-4222-b5e6-8f3d15bb7be6"), "Poppins", "poppins.otf" },
+                    { new Guid("9fa5ce3e-ecc4-4d68-8e28-938b5ecbaf07"), "Clash of Clans", "supercell-magic.ttf" },
+                    { new Guid("dd2cbeed-4619-453d-83b4-390266f3a9f0"), "Quicksand", "quicksand.otf" }
                 });
 
             migrationBuilder.InsertData(
@@ -210,8 +210,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { 1, "en-US", "English", "🇬🇧", "en" },
-                    { 2, "fr-FR", "Français", "🇫🇷", "fr" }
+                    { new Guid("bf53cdc4-e048-4a85-85fb-09b5dcfc1afb"), "en-US", "English", "🇬🇧", "en" },
+                    { new Guid("f86988e9-f3f3-4619-9e5f-39094ece42eb"), "fr-FR", "Français", "🇫🇷", "fr" }
                 });
 
             migrationBuilder.CreateIndex(

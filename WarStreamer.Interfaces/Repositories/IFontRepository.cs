@@ -10,6 +10,6 @@ namespace WarStreamer.Interfaces.Repositories
 
         public List<Font> GetAll();
 
-        public Font? GetById(int id);
+        public Font? GetById(Guid id);
     }
 }

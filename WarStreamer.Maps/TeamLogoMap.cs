@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Maps;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
 using WarStreamer.ViewModels;
@@ -36,12 +37,14 @@ namespace WarStreamer.Maps
 
         public List<TeamLogoViewModel> GetByUserId(string userId)
         {
-            return DomainToViewModel(_service.GetByUserId(userId));
+            Guid guid = Guid.Empty.ParseDiscordId(userId);
+            return DomainToViewModel(_service.GetByUserId(guid));
         }
 
         public TeamLogoViewModel? GetByUserIdAndName(string userId, string name)
         {
-            TeamLogo? logo = _service.GetByUserIdAndName(userId, name);
+            Guid guid = Guid.Empty.ParseDiscordId(userId);
+            TeamLogo? logo = _service.GetByUserIdAndName(guid, name);
             return logo != null ? DomainToViewModel(logo) : null;
         }
 
@@ -61,7 +64,7 @@ namespace WarStreamer.Maps
 
         private static TeamLogoViewModel DomainToViewModel(TeamLogo domain)
         {
-            return new TeamLogoViewModel(domain.TeamName, domain.UserId);
+            return new TeamLogoViewModel(domain.TeamName, $"{domain.UserId}");
         }
 
         private static List<TeamLogoViewModel> DomainToViewModel(List<TeamLogo> domain)
@@ -71,7 +74,7 @@ namespace WarStreamer.Maps
 
         private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel)
         {
-            return new(viewModel.TeamName, viewModel.UserId);
+            return new(viewModel.TeamName, Guid.Empty.ParseDiscordId(viewModel.UserId));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using WarStreamer.Models.EntityBase;
 
@@ -12,8 +11,8 @@ namespace WarStreamer.Models
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [MaxLength(30)]
-        public string UserId { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid UserId { get; private set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; private set; }
@@ -34,7 +33,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlay(string userId, int id, string clanTag)
+        public WarOverlay(Guid userId, int id, string clanTag)
         {
             // Inputs
             {
@@ -76,7 +75,7 @@ namespace WarStreamer.Models
             {
                 WarOverlay? overlay = obj as WarOverlay;
 
-                return overlay?.UserId == UserId && overlay.Id == Id;
+                return (overlay?.UserId.Equals(UserId) ?? false) && overlay.Id.Equals(Id);
             }
         }
 

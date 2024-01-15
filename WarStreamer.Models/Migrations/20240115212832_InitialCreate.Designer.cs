@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20240114170256_InitialCreate")]
+    [Migration("20240115212832_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,10 +31,8 @@ namespace WarStreamer.Models.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Tag");
 
@@ -45,8 +43,9 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.Font", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
@@ -63,25 +62,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("9fa5ce3e-ecc4-4d68-8e28-938b5ecbaf07"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("64c64c78-690c-4222-b5e6-8f3d15bb7be6"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("dd2cbeed-4619-453d-83b4-390266f3a9f0"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("0199fb85-c1c1-4903-bf68-c977093cb0da"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -89,9 +88,8 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.Image", b =>
                 {
-                    b.Property<string>("OverlaySettingId")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<Guid>("OverlaySettingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
@@ -115,8 +113,9 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.Language", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CultureInfo")
                         .IsRequired()
@@ -141,7 +140,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("bf53cdc4-e048-4a85-85fb-09b5dcfc1afb"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -149,7 +148,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("f86988e9-f3f3-4619-9e5f-39094ece42eb"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
@@ -159,9 +158,8 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.OverlaySetting", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 
                     b.Property<int?>("AverageDurationLocationX")
@@ -182,8 +180,8 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int?>("ClanNameSize")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FontId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("FontId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsAverageDuration")
                         .HasColumnType("bit");
@@ -271,9 +269,8 @@ namespace WarStreamer.Models.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserId")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("TeamName", "UserId");
 
@@ -284,12 +281,11 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("LanguageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("NewsLetter")
                         .HasColumnType("bit");
@@ -306,9 +302,8 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.WarOverlay", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");

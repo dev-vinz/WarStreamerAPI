@@ -10,6 +10,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public List<FontViewModel> GetAll();
 
-        public FontViewModel? GetById(int id);
+        public FontViewModel? GetById(Guid id);
     }
 }

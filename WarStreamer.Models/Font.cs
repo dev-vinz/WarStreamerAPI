@@ -11,8 +11,8 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; private set; }
 
         public string DisplayName { get; private set; }
 
@@ -28,7 +28,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Font(int id, string displayName, string fileName)
+        public Font(Guid id, string displayName, string fileName)
         {
             // Inputs
             {
@@ -37,6 +37,9 @@ namespace WarStreamer.Models
                 FileName = fileName;
             }
         }
+
+        public Font(string displayName, string fileName)
+            : this(Guid.NewGuid(), displayName, fileName) { }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -62,7 +65,7 @@ namespace WarStreamer.Models
             {
                 Font? font = obj as Font;
 
-                return font?.Id == Id;
+                return font?.Id.Equals(Id) ?? false;
             }
         }
 

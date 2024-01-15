@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Maps;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
 using WarStreamer.ViewModels;
@@ -36,12 +37,14 @@ namespace WarStreamer.Maps
 
         public List<WarOverlayViewModel> GetByUserId(string userId)
         {
-            return DomainToViewModel(_service.GetByUserId(userId));
+            Guid guid = Guid.Empty.ParseDiscordId(userId);
+            return DomainToViewModel(_service.GetByUserId(guid));
         }
 
         public WarOverlayViewModel? GetByUserIdAndId(string userId, int id)
         {
-            WarOverlay? overlay = _service.GetByUserIdAndId(userId, id);
+            Guid guid = Guid.Empty.ParseDiscordId(userId);
+            WarOverlay? overlay = _service.GetByUserIdAndId(guid, id);
             return overlay != null ? DomainToViewModel(overlay) : null;
         }
 
@@ -61,7 +64,7 @@ namespace WarStreamer.Maps
 
         private static WarOverlayViewModel DomainToViewModel(WarOverlay domain)
         {
-            return new(domain.UserId, domain.Id, domain.ClanTag)
+            return new(domain.UserId.ToString(), domain.Id, domain.ClanTag)
             {
                 LastCheckout = domain.LastCheckout,
                 IsEnded = domain.IsEnded,
@@ -75,7 +78,7 @@ namespace WarStreamer.Maps
 
         private static WarOverlay ViewModelToDomain(WarOverlayViewModel viewModel)
         {
-            return new(viewModel.UserId, viewModel.Id, viewModel.ClanTag)
+            return new(Guid.Empty.ParseDiscordId(viewModel.UserId), viewModel.Id, viewModel.ClanTag)
             {
                 LastCheckout = viewModel.LastCheckout,
                 IsEnded = viewModel.IsEnded,

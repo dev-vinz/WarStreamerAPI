@@ -7,7 +7,7 @@
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _id;
-        private int _languageId;
+        private string _languageId;
         private uint _tierLevel;
         private bool _newsLetter;
 
@@ -20,7 +20,7 @@
             get => _id;
         }
 
-        public int LanguageId
+        public string LanguageId
         {
             get => _languageId;
             set => _languageId = value;
@@ -47,6 +47,7 @@
             // Inputs
             {
                 _id = id;
+                _languageId = string.Empty;
             }
         }
     }

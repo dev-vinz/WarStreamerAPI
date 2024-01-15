@@ -21,7 +21,7 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public Language? GetById(int id)
+        public Language? GetById(Guid id)
         {
             return _repository.GetById(id);
         }

@@ -13,8 +13,7 @@ namespace WarStreamer.Models
         [MaxLength(50)]
         public string Tag { get; private set; }
 
-        [MaxLength(30)]
-        public string UserId { get; private set; }
+        public Guid UserId { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
@@ -26,7 +25,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Account(string tag, string userId)
+        public Account(string tag, Guid userId)
         {
             // Inputs
             {
@@ -59,7 +58,7 @@ namespace WarStreamer.Models
             {
                 Account? account = obj as Account;
 
-                return account?.Tag == Tag;
+                return account?.Tag.Equals(Tag, StringComparison.CurrentCultureIgnoreCase) ?? false;
             }
         }
 

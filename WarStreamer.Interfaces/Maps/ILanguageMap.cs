@@ -10,6 +10,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public List<LanguageViewModel> GetAll();
 
-        public LanguageViewModel? GetById(int id);
+        public LanguageViewModel? GetById(Guid id);
     }
 }

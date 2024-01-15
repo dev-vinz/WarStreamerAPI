@@ -32,7 +32,7 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public OverlaySetting? GetByUserId(string userId)
+        public OverlaySetting? GetByUserId(Guid userId)
         {
             return _repository.GetByUserId(userId);
         }

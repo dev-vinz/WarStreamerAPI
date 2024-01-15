@@ -36,7 +36,7 @@ namespace WarStreamer.Services
             return _repository.GetByTag(tag);
         }
 
-        public List<Account> GetByUserId(string userId)
+        public List<Account> GetByUserId(Guid userId)
         {
             return _repository.GetByUserId(userId);
         }

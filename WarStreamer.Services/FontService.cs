@@ -21,7 +21,7 @@ namespace WarStreamer.Services
             return _repository.GetAll();
         }
 
-        public Font? GetById(int id)
+        public Font? GetById(Guid id)
         {
             return _repository.GetById(id);
         }

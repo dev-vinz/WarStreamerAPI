@@ -14,9 +14,9 @@ namespace WarStreamer.Interfaces.Services
 
         public List<Image> GetAll();
 
-        public Image? GetByOverlaySettingIdAndName(string overlaySettingId, string name);
+        public Image? GetByOverlaySettingIdAndName(Guid overlaySettingId, string name);
 
-        public List<Image> GetByOverlaySettingId(string overlaySettingId);
+        public List<Image> GetByOverlaySettingId(Guid overlaySettingId);
 
         public bool Update(Image domain);
     }

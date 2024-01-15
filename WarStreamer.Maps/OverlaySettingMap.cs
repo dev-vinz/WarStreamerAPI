@@ -1,4 +1,5 @@
-﻿using WarStreamer.Commons.Tools;
+﻿using WarStreamer.Commons.Extensions;
+using WarStreamer.Commons.Tools;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.Interfaces.Services;
 using WarStreamer.Models;
@@ -37,7 +38,8 @@ namespace WarStreamer.Maps
 
         public OverlaySettingViewModel? GetByUserId(string userId)
         {
-            OverlaySetting? setting = _service.GetByUserId(userId);
+            Guid guid = Guid.Empty.ParseDiscordId(userId);
+            OverlaySetting? setting = _service.GetByUserId(guid);
             return setting != null ? DomainToViewModel(setting) : null;
         }
 
@@ -57,9 +59,9 @@ namespace WarStreamer.Maps
 
         private static OverlaySettingViewModel DomainToViewModel(OverlaySetting domain)
         {
-            return new(domain.UserId)
+            return new($"{domain.UserId}")
             {
-                FontId = domain.FontId,
+                FontId = domain.FontId?.ToString(),
                 TextColor = domain.TextColor,
                 LogoVisible = domain.IsLogo,
                 LogoSize = domain.LogoSize,
@@ -111,9 +113,9 @@ namespace WarStreamer.Maps
 
         private static OverlaySetting ViewModelToDomain(OverlaySettingViewModel viewModel)
         {
-            return new(viewModel.UserId)
+            return new(Guid.Empty.ParseDiscordId(viewModel.UserId))
             {
-                FontId = viewModel.FontId,
+                FontId = viewModel.FontId != null ? Guid.Parse(viewModel.FontId) : null,
                 TextColor = viewModel.TextColor,
                 IsLogo = viewModel.LogoVisible,
                 LogoSize = viewModel.LogoSize,

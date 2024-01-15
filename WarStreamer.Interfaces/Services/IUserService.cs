@@ -14,7 +14,7 @@ namespace WarStreamer.Interfaces.Services
 
         public List<User> GetAll();
 
-        public User? GetById(string id);
+        public User? GetById(Guid id);
 
         public bool Update(User domain);
     }

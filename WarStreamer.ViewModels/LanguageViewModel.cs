@@ -6,7 +6,7 @@
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly int _id;
+        private readonly string _id;
         private readonly string _cultureInfo;
         private readonly string _displayValue;
         private readonly string _shortcutValue;
@@ -16,7 +16,7 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public int Id
+        public string Id
         {
             get => _id;
         }
@@ -46,7 +46,7 @@
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         public LanguageViewModel(
-            int id,
+            string id,
             string cultureInfo,
             string displayValue,
             string shortcutValue,

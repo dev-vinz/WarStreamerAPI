@@ -6,7 +6,7 @@
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly int _id;
+        private readonly string _id;
         private readonly string _displayName;
         private readonly string _fileName;
 
@@ -14,7 +14,7 @@
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public int Id
+        public string Id
         {
             get => _id;
         }
@@ -33,7 +33,7 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public FontViewModel(int id, string displayName, string fileName)
+        public FontViewModel(string id, string displayName, string fileName)
         {
             // Inputs
             {

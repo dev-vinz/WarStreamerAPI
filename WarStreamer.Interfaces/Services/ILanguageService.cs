@@ -10,6 +10,6 @@ namespace WarStreamer.Interfaces.Services
 
         public List<Language> GetAll();
 
-        public Language? GetById(int id);
+        public Language? GetById(Guid id);
     }
 }
