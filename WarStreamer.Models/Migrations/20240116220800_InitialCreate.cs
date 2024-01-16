@@ -138,7 +138,8 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClanTags = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,10 +200,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("0199fb85-c1c1-4903-bf68-c977093cb0da"), "Roboto", "roboto.ttf" },
-                    { new Guid("64c64c78-690c-4222-b5e6-8f3d15bb7be6"), "Poppins", "poppins.otf" },
-                    { new Guid("9fa5ce3e-ecc4-4d68-8e28-938b5ecbaf07"), "Clash of Clans", "supercell-magic.ttf" },
-                    { new Guid("dd2cbeed-4619-453d-83b4-390266f3a9f0"), "Quicksand", "quicksand.otf" }
+                    { new Guid("07972212-5ddb-47dd-a0cd-a9e4fc64ddb6"), "Clash of Clans", "supercell-magic.ttf" },
+                    { new Guid("a7a6ba48-34b6-40bf-a0c4-49f3cd3bd41a"), "Poppins", "poppins.otf" },
+                    { new Guid("b11116d7-25cc-4f50-aac3-1836e0a2ef02"), "Roboto", "roboto.ttf" },
+                    { new Guid("b588379e-318f-4c44-bcbe-4bd98d7a89b4"), "Quicksand", "quicksand.otf" }
                 });
 
             migrationBuilder.InsertData(
@@ -210,8 +211,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("bf53cdc4-e048-4a85-85fb-09b5dcfc1afb"), "en-US", "English", "🇬🇧", "en" },
-                    { new Guid("f86988e9-f3f3-4619-9e5f-39094ece42eb"), "fr-FR", "Français", "🇫🇷", "fr" }
+                    { new Guid("27dd4bf1-bfe2-4fa3-ba93-5e4b1a602fe3"), "fr-FR", "Français", "🇫🇷", "fr" },
+                    { new Guid("31f146ba-6dd9-4d33-ab6f-7ce8b5d93205"), "en-US", "English", "🇬🇧", "en" }
                 });
 
             migrationBuilder.CreateIndex(

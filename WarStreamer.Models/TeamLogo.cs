@@ -18,6 +18,8 @@ namespace WarStreamer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid UserId { get; private set; }
 
+        public string[] ClanTags { get; set; }
+
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
@@ -34,6 +36,7 @@ namespace WarStreamer.Models
             {
                 TeamName = teamName.ToUpper();
                 UserId = userId;
+                ClanTags = [];
             }
         }
 
@@ -47,7 +50,18 @@ namespace WarStreamer.Models
 
         public override void CopyTo(ref Entity entity)
         {
-            throw new InvalidOperationException("Cannot copy / update a TeamLogo entity");
+            if (entity is TeamLogo logo)
+            {
+                // Erase array
+                ClanTags = new string[logo.ClanTags.Length];
+
+                // And copy
+                Array.Copy(logo.ClanTags, ClanTags, ClanTags.Length);
+            }
+            else
+            {
+                throw new ArgumentException("Cannot copy to a different type.");
+            }
         }
 
         public override bool Equals(object? obj)

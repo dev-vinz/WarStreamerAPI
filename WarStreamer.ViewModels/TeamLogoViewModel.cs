@@ -8,6 +8,7 @@
 
         private readonly string _teamName;
         private readonly string _userId;
+        private HashSet<string> _clanTags;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -23,6 +24,12 @@
             get => _userId;
         }
 
+        public HashSet<string> ClanTags
+        {
+            get => _clanTags;
+            set => _clanTags = value;
+        }
+
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -33,6 +40,11 @@
             {
                 _teamName = teamName;
                 _userId = userId;
+            }
+
+            // Outputs
+            {
+                _clanTags = [];
             }
         }
     }

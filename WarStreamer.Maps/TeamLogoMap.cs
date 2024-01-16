@@ -64,7 +64,10 @@ namespace WarStreamer.Maps
 
         private static TeamLogoViewModel DomainToViewModel(TeamLogo domain)
         {
-            return new TeamLogoViewModel(domain.TeamName, $"{domain.UserId}");
+            return new TeamLogoViewModel(domain.TeamName, $"{domain.UserId}")
+            {
+                ClanTags = [.. domain.ClanTags]
+            };
         }
 
         private static List<TeamLogoViewModel> DomainToViewModel(List<TeamLogo> domain)
@@ -74,7 +77,10 @@ namespace WarStreamer.Maps
 
         private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel)
         {
-            return new(viewModel.TeamName, Guid.Empty.ParseDiscordId(viewModel.UserId));
+            return new(viewModel.TeamName, Guid.Empty.ParseDiscordId(viewModel.UserId))
+            {
+                ClanTags = [.. viewModel.ClanTags]
+            };
         }
     }
 }

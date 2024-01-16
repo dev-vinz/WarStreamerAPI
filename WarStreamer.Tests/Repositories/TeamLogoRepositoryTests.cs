@@ -15,6 +15,7 @@ namespace WarStreamer.Tests.Repositories
         private const string TEAM_NAME = "TeamLogoTest";
         private static readonly Guid USER_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
         private static readonly Guid USER_ID_2 = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560e");
+        private static readonly string[] CLAN_TAGS = ["#TAG_1", "#TAG_2"];
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -47,6 +48,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
+            Assert.Equal(CLAN_TAGS, logo.ClanTags);
         }
 
         [Fact]
@@ -59,6 +61,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
+            Assert.Equal(CLAN_TAGS, logo.ClanTags);
         }
 
         [Fact]
@@ -71,6 +74,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
+            Assert.Equal(CLAN_TAGS, logo.ClanTags);
         }
 
         [Fact]
@@ -90,6 +94,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
             Assert.Equal(USER_ID, logo.UserId);
+            Assert.Equal(CLAN_TAGS, logo.ClanTags);
         }
 
         [Fact]
@@ -121,7 +126,7 @@ namespace WarStreamer.Tests.Repositories
 
         private static TeamLogo CreateTeamLogo()
         {
-            return new(TEAM_NAME, USER_ID);
+            return new(TEAM_NAME, USER_ID) { ClanTags = CLAN_TAGS };
         }
     }
 }

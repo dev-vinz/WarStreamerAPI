@@ -59,25 +59,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9fa5ce3e-ecc4-4d68-8e28-938b5ecbaf07"),
+                            Id = new Guid("07972212-5ddb-47dd-a0cd-a9e4fc64ddb6"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("64c64c78-690c-4222-b5e6-8f3d15bb7be6"),
+                            Id = new Guid("a7a6ba48-34b6-40bf-a0c4-49f3cd3bd41a"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("dd2cbeed-4619-453d-83b4-390266f3a9f0"),
+                            Id = new Guid("b588379e-318f-4c44-bcbe-4bd98d7a89b4"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("0199fb85-c1c1-4903-bf68-c977093cb0da"),
+                            Id = new Guid("b11116d7-25cc-4f50-aac3-1836e0a2ef02"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -137,7 +137,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bf53cdc4-e048-4a85-85fb-09b5dcfc1afb"),
+                            Id = new Guid("31f146ba-6dd9-4d33-ab6f-7ce8b5d93205"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -145,7 +145,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f86988e9-f3f3-4619-9e5f-39094ece42eb"),
+                            Id = new Guid("27dd4bf1-bfe2-4fa3-ba93-5e4b1a602fe3"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
@@ -268,6 +268,10 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ClanTags")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeamName", "UserId");
 
