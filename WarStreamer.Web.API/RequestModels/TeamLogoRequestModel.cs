@@ -14,9 +14,6 @@ namespace WarStreamer.Web.API.RequestModels
         public IFormFile Logo { get; set; } = null!;
 
         [Required]
-        public int Width { get; set; }
-
-        [Required]
-        public int Height { get; set; }
+        public HashSet<string> ClanTags { get; set; } = [];
     }
 }

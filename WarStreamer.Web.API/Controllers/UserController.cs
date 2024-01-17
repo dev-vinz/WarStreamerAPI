@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WarStreamer.Commons.Extensions;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
 using WarStreamer.Web.API.ResponseModels;
@@ -6,34 +7,26 @@ using WarStreamer.Web.API.ResponseModels;
 namespace WarStreamer.Web.API.Controllers
 {
     [Route("users/")]
-    public class UserController : Controller
+    public class UserController(
+        IWebHostEnvironment environment,
+        IAccountMap accountMap,
+        ILanguageMap languageMap,
+        ITeamLogoMap logoMap,
+        IUserMap userMap,
+        IWarOverlayMap overlayMap
+    ) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IWebHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment = environment;
 
-        private readonly IAccountMap _accountMap;
-        private readonly ILanguageMap _languageMap;
-        private readonly ITeamLogoMap _logoMap;
-        private readonly IUserMap _userMap;
-        private readonly IWarOverlayMap _overlayMap;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public UserController(IWebHostEnvironment environment, IAccountMap accountMap, ILanguageMap languageMap, ITeamLogoMap logoMap, IUserMap userMap, IWarOverlayMap overlayMap)
-        {
-            _environment = environment;
-
-            _accountMap = accountMap;
-            _languageMap = languageMap;
-            _logoMap = logoMap;
-            _userMap = userMap;
-            _overlayMap = overlayMap;
-        }
+        private readonly IAccountMap _accountMap = accountMap;
+        private readonly ILanguageMap _languageMap = languageMap;
+        private readonly ITeamLogoMap _logoMap = logoMap;
+        private readonly IUserMap _userMap = userMap;
+        private readonly IWarOverlayMap _overlayMap = overlayMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -61,8 +54,11 @@ namespace WarStreamer.Web.API.Controllers
         {
             UserViewModel? user = _userMap.GetById(userId);
 
-            // Verifies user exists
-            if (user == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (user == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
             return Ok(user);
         }
@@ -76,8 +72,11 @@ namespace WarStreamer.Web.API.Controllers
         {
             UserViewModel? user = _userMap.GetById(userId);
 
-            // Verifies user exists
-            if (user == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (user == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
             return Ok(_accountMap.GetByUserId(userId).Select(a => a.Tag));
         }
@@ -92,13 +91,27 @@ namespace WarStreamer.Web.API.Controllers
         {
             UserViewModel? user = _userMap.GetById(userId);
 
-            // Verifies user exists
-            if (user == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (user == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
-            LanguageViewModel? language = _languageMap.GetById(user.LanguageId);
+            LanguageViewModel? language = _languageMap.GetById(
+                Guid.Empty.ParseDiscordId(user.LanguageId)
+            );
 
-            // Verifies that language still exists
-            if (language == null) return StatusCode(StatusCodes.Status500InternalServerError, new { error = $"Language with id '{user.LanguageId}' has been deleted from the server" });
+            // Verify that tje language still exists
+            if (language == null)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new
+                    {
+                        error = $"Language with id '{user.LanguageId}' has been deleted from the server"
+                    }
+                );
+            }
 
             return Ok(language);
         }
@@ -110,18 +123,23 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<TeamLogoResponseModel>> GetTeamLogos(string userId)
         {
-            // Verifies if user exists
-            if (_userMap.GetById(userId) == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (_userMap.GetById(userId) == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
-            List<TeamLogoResponseModel> result = _logoMap.GetByUserId(userId)
-                .Select(i => new TeamLogoResponseModel
-                {
-                    TeamName = i.TeamName,
-                    UserId = i.UserId,
-                    Logo = GetLogo(i.UserId, i.TeamName),
-                    Width = i.Width,
-                    Height = i.Height
-                })
+            List<TeamLogoResponseModel> result = _logoMap
+                .GetByUserId(userId)
+                .Select(
+                    i =>
+                        new TeamLogoResponseModel
+                        {
+                            TeamName = i.TeamName,
+                            UserId = i.UserId,
+                            Logo = GetLogo(i.UserId, i.TeamName),
+                        }
+                )
                 .ToList();
 
             return Ok(result);
@@ -134,8 +152,11 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<WarOverlayViewModel>> GetWarOverlays(string userId)
         {
-            // Verifies if user exists
-            if (_userMap.GetById(userId) == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (_userMap.GetById(userId) == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
             return Ok(_overlayMap.GetByUserId(userId));
         }
@@ -152,14 +173,25 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<UserViewModel> Create([FromBody] UserViewModel user)
         {
-            // Verifies if user already exists
-            if (_userMap.GetById(user.Id) != null) return Conflict(new { error = $"User with id '{user.Id}' already exists" });
+            // Verify if the user already exists
+            if (_userMap.GetById(user.Id) != null)
+            {
+                return Conflict(new { error = $"User with id '{user.Id}' already exists" });
+            }
 
-            // Verifies languageId
-            if (_languageMap.GetById(user.LanguageId) == null) return BadRequest(new { error = $"Language with id '{user.LanguageId}' not found" });
+            // Verify the languageId
+            if (_languageMap.GetById(Guid.Empty.ParseDiscordId(user.LanguageId)) == null)
+            {
+                return BadRequest(
+                    new { error = $"Language with id '{user.LanguageId}' not found" }
+                );
+            }
 
-            // Creates user folder, for future images
-            if (!Directory.Exists($@"{_environment.WebRootPath}\{user.Id}")) Directory.CreateDirectory($@"{_environment.WebRootPath}\{user.Id}");
+            // Create the user folder, for future images and logos
+            if (!Directory.Exists($@"{_environment.WebRootPath}\{user.Id}"))
+            {
+                Directory.CreateDirectory($@"{_environment.WebRootPath}\{user.Id}");
+            }
 
             return Created($"~/users/{user.Id}", _userMap.Create(user));
         }
@@ -176,13 +208,21 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Update(string userId, [FromBody] UserViewModel user)
         {
-            // Verifies if user exists
-            if (_userMap.GetById(userId) == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (_userMap.GetById(userId) == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
-            // Verifies languageId
-            if (_languageMap.GetById(user.LanguageId) == null) return BadRequest(new { error = $"Language with id '{user.LanguageId}' not found" });
+            // Verify the languageId
+            if (_languageMap.GetById(Guid.Empty.ParseDiscordId(user.LanguageId)) == null)
+            {
+                return BadRequest(
+                    new { error = $"Language with id '{user.LanguageId}' not found" }
+                );
+            }
 
-            // Creates a new user with id
+            // Create a new user with the same id
             user = new(userId)
             {
                 LanguageId = user.LanguageId,
@@ -206,11 +246,17 @@ namespace WarStreamer.Web.API.Controllers
         {
             UserViewModel? user = _userMap.GetById(userId);
 
-            // Verifies user exists
-            if (user == null) return NotFound(new { error = $"User with id '{userId}' not found" });
+            // Verify if the user exists
+            if (user == null)
+            {
+                return NotFound(new { error = $"User with id '{userId}' not found" });
+            }
 
-            // Deletes user folder, with existing images
-            if (Directory.Exists($@"{_environment.WebRootPath}\{user.Id}")) Directory.Delete($@"{_environment.WebRootPath}\{user.Id}", true);
+            // Delete the user folder, with existing images inside
+            if (Directory.Exists($@"{_environment.WebRootPath}\{user.Id}"))
+            {
+                Directory.Delete($@"{_environment.WebRootPath}\{user.Id}", true);
+            }
 
             return Ok(_userMap.Delete(user));
         }
@@ -221,33 +267,7 @@ namespace WarStreamer.Web.API.Controllers
 
         private byte[] GetLogo(string userId, string name)
         {
-            TryGetLogo(userId, name, out byte[] logo);
-
-            return logo;
-        }
-
-        private bool TryGetLogo(string userId, string name, out byte[] logo)
-        {
-            // Default image
-            logo = null!;
-
-            string path = $@"{_environment.WebRootPath}\{userId}\{TeamLogoController.RELATIVE_PATH}";
-
-            if (!Directory.Exists(path)) return false;
-
-            try
-            {
-                using FileStream filestream = new($@"{path}\{name.ToUpper()}.png", FileMode.Open);
-                using MemoryStream stream = new();
-
-                filestream.CopyTo(stream);
-                logo = stream.ToArray();
-
-                return true;
-            }
-            catch (FileNotFoundException) { }
-
-            return false;
+            return TeamLogoController.GetLogo(_environment, userId, name);
         }
     }
 }

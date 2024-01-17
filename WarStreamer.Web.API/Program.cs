@@ -1,10 +1,11 @@
 using WarStreamer.Web.API.App_Start;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -13,7 +14,7 @@ builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 DependencyInjectionConfig.AddScopes(builder.Services);
 DBContextConfig.Initialize(builder.Services, builder.Configuration, builder.Environment);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,11 +24,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
 app.UseCors(options =>
 {
-    options.AllowAnyHeader()
-           .AllowAnyMethod()
-           .AllowAnyOrigin();
+    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
 });
 
 app.UseHttpsRedirection();

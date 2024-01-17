@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 namespace WarStreamer.Web.API.Controllers
 {
     [Route("languages/")]
-    public class LanguageController : Controller
+    public class LanguageController(ILanguageMap languageMap) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly ILanguageMap _languageMap;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public LanguageController(ILanguageMap languageMap)
-        {
-            _languageMap = languageMap;
-        }
+        private readonly ILanguageMap _languageMap = languageMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -44,11 +35,15 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<LanguageViewModel?> GetById(int languageId)
+        public ActionResult<LanguageViewModel?> GetById(Guid languageId)
         {
             LanguageViewModel? language = _languageMap.GetById(languageId);
 
-            if (language == null) return NotFound(new { error = $"Language with id '{languageId}' not found" });
+            // Verify if the language exists
+            if (language == null)
+            {
+                return NotFound(new { error = $"Language with id '{languageId}' not found" });
+            }
 
             return Ok(language);
         }

@@ -5,24 +5,14 @@ using WarStreamer.ViewModels;
 namespace WarStreamer.Web.API.Controllers
 {
     [Route("waroverlays/")]
-    public class WarOverlayController : Controller
+    public class WarOverlayController(IUserMap userMap, IWarOverlayMap overlayMap) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IUserMap _userMap;
-        private readonly IWarOverlayMap _overlayMap;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public WarOverlayController(IUserMap userMap, IWarOverlayMap overlayMap)
-        {
-            _userMap = userMap;
-            _overlayMap = overlayMap;
-        }
+        private readonly IUserMap _userMap = userMap;
+        private readonly IWarOverlayMap _overlayMap = overlayMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -62,13 +52,27 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<WarOverlayViewModel> Create([FromBody] WarOverlayViewModel overlay)
         {
-            // Verifies if user exists
-            if (_userMap.GetById(overlay.UserId) == null) return BadRequest(new { error = $"User with id '{overlay.UserId}' not found" });
+            // Verify if the user exists
+            if (_userMap.GetById(overlay.UserId) == null)
+            {
+                return BadRequest(new { error = $"User with id '{overlay.UserId}' not found" });
+            }
 
-            // Verifies if war overlay already exists
-            if (_overlayMap.GetByUserIdAndId(overlay.UserId, overlay.Id) != null) return Conflict(new { error = $"War overlay with user id '{overlay.UserId}' and id '{overlay.Id}' already exists" });
+            // Verify if the war overlay already exists
+            if (_overlayMap.GetByUserIdAndId(overlay.UserId, overlay.Id) != null)
+            {
+                return Conflict(
+                    new
+                    {
+                        error = $"War overlay with user id '{overlay.UserId}' and id '{overlay.Id}' already exists"
+                    }
+                );
+            }
 
-            return Created($"~/waroverlays/{overlay.UserId}/{overlay.Id}", _overlayMap.Create(overlay));
+            return Created(
+                $"~/waroverlays/{overlay.UserId}/{overlay.Id}",
+                _overlayMap.Create(overlay)
+            );
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -80,12 +84,21 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(string userId, int id, [FromBody] WarOverlayViewModel overlay)
+        public ActionResult<bool> Update(
+            string userId,
+            int id,
+            [FromBody] WarOverlayViewModel overlay
+        )
         {
-            // Verifies if war overlay exists
-            if (_overlayMap.GetByUserIdAndId(userId, id) == null) return NotFound(new { error = $"War overlay with user id '{userId}' and id '{id}' not found" });
+            // Verify if the war overlay exists
+            if (_overlayMap.GetByUserIdAndId(userId, id) == null)
+            {
+                return NotFound(
+                    new { error = $"War overlay with user id '{userId}' and id '{id}' not found" }
+                );
+            }
 
-            // Creates a new user with id
+            // Create a new war overlay with the same ids
             overlay = new(userId, id, overlay.ClanTag)
             {
                 LastCheckout = overlay.LastCheckout,
@@ -108,8 +121,13 @@ namespace WarStreamer.Web.API.Controllers
         {
             WarOverlayViewModel? overlay = _overlayMap.GetByUserIdAndId(userId, id);
 
-            // Verifies overlay exists
-            if (overlay == null) return NotFound(new { error = $"War overlay with user id '{userId}' and id '{id}' not found" });
+            // Verify if the war overlay exists
+            if (overlay == null)
+            {
+                return NotFound(
+                    new { error = $"War overlay with user id '{userId}' and id '{id}' not found" }
+                );
+            }
 
             return Ok(_overlayMap.Delete(overlay));
         }

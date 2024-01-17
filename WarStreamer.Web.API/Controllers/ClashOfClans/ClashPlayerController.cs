@@ -21,12 +21,13 @@ namespace WarStreamer.Web.API.Controllers.ClashOfClans
 
         public ClashPlayerController(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            string? token = configuration.GetValue<string>(environment.IsDevelopment() ? "DevCocApiToken" : "ProdCocApiToken");
+            string? token = configuration.GetValue<string>(
+                environment.IsDevelopment() ? "DevCocApiToken" : "ProdCocApiToken"
+            );
 
             if (token == null)
             {
-                ArgumentNullException tokenNullException = new(nameof(token));
-                throw tokenNullException;
+                throw new(nameof(token));
             }
 
             _client = new(token);
@@ -50,7 +51,10 @@ namespace WarStreamer.Web.API.Controllers.ClashOfClans
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<Player?>> GetByTagAsync(string playerTag)
         {
-            if (!playerTag.StartsWith('#')) playerTag = $"#{playerTag}";
+            if (!playerTag.StartsWith('#'))
+            {
+                playerTag = $"#{playerTag}";
+            }
 
             try
             {
@@ -74,9 +78,15 @@ namespace WarStreamer.Web.API.Controllers.ClashOfClans
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<VerifyTokenResponse?>> VerifyTokenAsync(string playerTag, [FromBody] string token)
+        public async Task<ActionResult<VerifyTokenResponse?>> VerifyTokenAsync(
+            string playerTag,
+            [FromBody] string token
+        )
         {
-            if (!playerTag.StartsWith('#')) playerTag = $"#{playerTag}";
+            if (!playerTag.StartsWith('#'))
+            {
+                playerTag = $"#{playerTag}";
+            }
 
             try
             {

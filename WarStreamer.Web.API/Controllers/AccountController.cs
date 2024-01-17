@@ -5,22 +5,13 @@ using WarStreamer.ViewModels;
 namespace WarStreamer.Web.API.Controllers
 {
     [Route("accounts/")]
-    public class AccountController : Controller
+    public class AccountController(IAccountMap accountMap) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IAccountMap _accountMap;
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                            CONSTRUCTORS                           *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        public AccountController(IAccountMap accountMap)
-        {
-            _accountMap = accountMap;
-        }
+        private readonly IAccountMap _accountMap = accountMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -40,25 +31,25 @@ namespace WarStreamer.Web.API.Controllers
         }
 
         [HttpGet]
-        [Route("{userId}")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<AccountViewModel>> GetAllByUserId(string userId)
-        {
-            return Ok(_accountMap.GetByUserId(userId));
-        }
-
-        [HttpGet]
         [Route("{userTag}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<AccountViewModel?> GetByTag(string userTag)
         {
+            // Ensure that the tag begins with '#'
+            if (!userTag.StartsWith('#'))
+            {
+                userTag = $"#{userTag}";
+            }
+
             AccountViewModel? account = _accountMap.GetByTag(userTag);
 
-            // Verifies account exists
-            if (account == null) return NotFound(new { error = $"Account with tag '{userTag}' not found" });
+            // Verify if the account exists
+            if (account == null)
+            {
+                return NotFound(new { error = $"Account with tag '{userTag}' not found" });
+            }
 
             return Ok(account);
         }
@@ -74,8 +65,11 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<AccountViewModel> Create([FromBody] AccountViewModel account)
         {
-            // Verifies if account already exists
-            if (_accountMap.GetByTag(account.Tag) != null) return Conflict(new { error = $"Account with tag '{account.Tag}' already exists" });
+            // Verify if the account already exists
+            if (_accountMap.GetByTag(account.Tag) != null)
+            {
+                return Conflict(new { error = $"Account with tag '{account.Tag}' already exists" });
+            }
 
             return Created($"~/accounts/{account.Tag}", _accountMap.Create(account));
         }
@@ -95,10 +89,19 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Delete(string userTag)
         {
+            // Ensure that the tag begins with '#'
+            if (!userTag.StartsWith('#'))
+            {
+                userTag = $"#{userTag}";
+            }
+
             AccountViewModel? account = _accountMap.GetByTag(userTag);
 
-            // Verifies user exists
-            if (account == null) return NotFound(new { error = $"Account with tag '{userTag}' not found" });
+            // Verify if the account exists
+            if (account == null)
+            {
+                return NotFound(new { error = $"Account with tag '{userTag}' not found" });
+            }
 
             return Ok(_accountMap.Delete(account));
         }

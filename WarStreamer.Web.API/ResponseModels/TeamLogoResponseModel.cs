@@ -8,8 +8,6 @@
 
         public byte[] Logo { get; set; } = null!;
 
-        public int Width { get; set; }
-
-        public int Height { get; set; }
+        public HashSet<string> ClanTags { get; set; } = [];
     }
 }
