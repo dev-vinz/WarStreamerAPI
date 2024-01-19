@@ -9,10 +9,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-DependencyInjectionConfig.AddScopes(builder.Services);
+AuthenticationService.Configure(builder.Services, builder.Configuration);
 DBContextConfig.Initialize(builder.Services, builder.Configuration, builder.Environment);
+DependencyInjectionConfig.AddScopes(builder.Services);
 
 WebApplication app = builder.Build();
 
@@ -32,6 +34,7 @@ app.UseCors(options =>
 
 app.UseHttpsRedirection();
 
+app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();
