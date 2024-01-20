@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
 using WarStreamer.Web.API.RequestModels;
@@ -6,6 +7,7 @@ using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
+    [Authorize]
     [Route("teamlogos/")]
     public class TeamLogoController(
         IWebHostEnvironment environment,

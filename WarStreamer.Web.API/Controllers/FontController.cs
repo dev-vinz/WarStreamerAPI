@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
+    [Authorize]
     [Route("fonts/")]
     public class FontController(IWebHostEnvironment environment, IFontMap fontMap) : Controller
     {

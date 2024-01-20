@@ -14,6 +14,21 @@ namespace WarStreamer.Models.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AuthRefreshTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TokenValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AesInitializationVector = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssuedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthRefreshTokens", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Fonts",
                 columns: table => new
                 {
@@ -200,10 +215,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("07972212-5ddb-47dd-a0cd-a9e4fc64ddb6"), "Clash of Clans", "supercell-magic.ttf" },
-                    { new Guid("a7a6ba48-34b6-40bf-a0c4-49f3cd3bd41a"), "Poppins", "poppins.otf" },
-                    { new Guid("b11116d7-25cc-4f50-aac3-1836e0a2ef02"), "Roboto", "roboto.ttf" },
-                    { new Guid("b588379e-318f-4c44-bcbe-4bd98d7a89b4"), "Quicksand", "quicksand.otf" }
+                    { new Guid("37cc32a6-085c-4086-81bf-8bb060d7896a"), "Clash of Clans", "supercell-magic.ttf" },
+                    { new Guid("b12236e2-9cd0-4193-b69b-71f2b802421a"), "Roboto", "roboto.ttf" },
+                    { new Guid("dbbdcd9d-cd56-47bf-8c57-7d223282dc16"), "Poppins", "poppins.otf" },
+                    { new Guid("df9f8cbc-b5f3-48e0-b0f0-97d648636529"), "Quicksand", "quicksand.otf" }
                 });
 
             migrationBuilder.InsertData(
@@ -211,8 +226,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("27dd4bf1-bfe2-4fa3-ba93-5e4b1a602fe3"), "fr-FR", "Français", "🇫🇷", "fr" },
-                    { new Guid("31f146ba-6dd9-4d33-ab6f-7ce8b5d93205"), "en-US", "English", "🇬🇧", "en" }
+                    { new Guid("035389e0-d2c4-4324-80d9-8816e8099b96"), "en-US", "English", "🇬🇧", "en" },
+                    { new Guid("fa61a6be-12eb-4a52-92ce-46c79f114385"), "fr-FR", "Français", "🇫🇷", "fr" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -241,6 +256,9 @@ namespace WarStreamer.Models.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "AuthRefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "Images");

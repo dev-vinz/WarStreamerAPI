@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20240116220800_InitialCreate")]
+    [Migration("20240120212946_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -41,6 +41,31 @@ namespace WarStreamer.Models.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("WarStreamer.Models.AuthRefreshToken", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AesInitializationVector")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ExpiresAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("IssuedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TokenValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("AuthRefreshTokens");
+                });
+
             modelBuilder.Entity("WarStreamer.Models.Font", b =>
                 {
                     b.Property<Guid>("Id")
@@ -62,25 +87,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("07972212-5ddb-47dd-a0cd-a9e4fc64ddb6"),
+                            Id = new Guid("37cc32a6-085c-4086-81bf-8bb060d7896a"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("a7a6ba48-34b6-40bf-a0c4-49f3cd3bd41a"),
+                            Id = new Guid("dbbdcd9d-cd56-47bf-8c57-7d223282dc16"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("b588379e-318f-4c44-bcbe-4bd98d7a89b4"),
+                            Id = new Guid("df9f8cbc-b5f3-48e0-b0f0-97d648636529"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("b11116d7-25cc-4f50-aac3-1836e0a2ef02"),
+                            Id = new Guid("b12236e2-9cd0-4193-b69b-71f2b802421a"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -140,7 +165,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("31f146ba-6dd9-4d33-ab6f-7ce8b5d93205"),
+                            Id = new Guid("035389e0-d2c4-4324-80d9-8816e8099b96"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -148,7 +173,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("27dd4bf1-bfe2-4fa3-ba93-5e4b1a602fe3"),
+                            Id = new Guid("fa61a6be-12eb-4a52-92ce-46c79f114385"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",

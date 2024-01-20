@@ -28,6 +28,11 @@ namespace WarStreamer.Web.API.App_Start
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
+            // AuthRefreshToken
+            services.AddScoped<IAuthRefreshTokenMap, AuthRefreshTokenMap>();
+            services.AddScoped<IAuthRefreshTokenService, AuthRefreshTokenService>();
+            services.AddScoped<IAuthRefreshTokenRepository, AuthRefreshTokenRepository>();
+
             // Font
             services.AddScoped<IFontMap, FontMap>();
             services.AddScoped<IFontService, FontService>();

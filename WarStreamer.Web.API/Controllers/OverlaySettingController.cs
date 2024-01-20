@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
 using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
+    [Authorize]
     [Route("overlaysettings/")]
     public class OverlaySettingController(
         IWebHostEnvironment environment,

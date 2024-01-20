@@ -1,11 +1,13 @@
 ﻿using ClashOfClans;
 using ClashOfClans.Core;
 using ClashOfClans.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Web.API.Extensions;
 
 namespace WarStreamer.Web.API.Controllers.ClashOfClans
 {
+    [Authorize]
     [Route("coc/players/")]
     public class ClashPlayerController : Controller
     {

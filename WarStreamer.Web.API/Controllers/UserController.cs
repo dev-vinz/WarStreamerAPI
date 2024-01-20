@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Commons.Extensions;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
@@ -6,6 +7,7 @@ using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
+    [Authorize]
     [Route("users/")]
     public class UserController(
         IWebHostEnvironment environment,
