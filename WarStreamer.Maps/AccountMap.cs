@@ -26,7 +26,7 @@ namespace WarStreamer.Maps
 
         public bool Delete(AccountViewModel viewModel)
         {
-            Account account = ViewModelToDomain(viewModel);
+            Account account = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
             return _service.Delete(account);
         }
 
@@ -65,9 +65,14 @@ namespace WarStreamer.Maps
             return domain.Select(DomainToViewModel).ToList();
         }
 
+        private static Account ViewModelToDomain(AccountViewModel viewModel, Guid userId)
+        {
+            return new(viewModel.Tag, userId);
+        }
+
         private static Account ViewModelToDomain(AccountViewModel viewModel)
         {
-            return new(viewModel.Tag, Guid.Empty.ParseDiscordId(viewModel.UserId));
+            return ViewModelToDomain(viewModel, Guid.Empty.ParseDiscordId(viewModel.UserId));
         }
     }
 }

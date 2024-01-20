@@ -26,7 +26,7 @@ namespace WarStreamer.Maps
 
         public bool Delete(UserViewModel viewModel)
         {
-            User user = ViewModelToDomain(viewModel);
+            User user = ViewModelToDomain(viewModel, Guid.Parse(viewModel.Id));
             return _service.Delete(user);
         }
 
@@ -44,7 +44,7 @@ namespace WarStreamer.Maps
 
         public bool Update(UserViewModel viewModel)
         {
-            User user = ViewModelToDomain(viewModel);
+            User user = ViewModelToDomain(viewModel, Guid.Parse(viewModel.Id));
             return _service.Update(user);
         }
 
@@ -71,14 +71,19 @@ namespace WarStreamer.Maps
             return domain.Select(DomainToViewModel).ToList();
         }
 
-        private static User ViewModelToDomain(UserViewModel viewModel)
+        private static User ViewModelToDomain(UserViewModel viewModel, Guid userId)
         {
-            return new(Guid.Empty.ParseDiscordId(viewModel.Id))
+            return new(userId)
             {
                 LanguageId = Guid.Parse(viewModel.LanguageId),
                 TierLevel = viewModel.TierLevel,
                 NewsLetter = viewModel.NewsLetter,
             };
+        }
+
+        private static User ViewModelToDomain(UserViewModel viewModel)
+        {
+            return ViewModelToDomain(viewModel, Guid.Empty.ParseDiscordId(viewModel.Id));
         }
     }
 }

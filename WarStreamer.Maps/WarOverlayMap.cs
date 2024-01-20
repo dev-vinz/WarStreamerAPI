@@ -26,7 +26,7 @@ namespace WarStreamer.Maps
 
         public bool Delete(WarOverlayViewModel viewModel)
         {
-            WarOverlay overlay = ViewModelToDomain(viewModel);
+            WarOverlay overlay = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
             return _service.Delete(overlay);
         }
 
@@ -50,7 +50,7 @@ namespace WarStreamer.Maps
 
         public bool Update(WarOverlayViewModel viewModel)
         {
-            WarOverlay overlay = ViewModelToDomain(viewModel);
+            WarOverlay overlay = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
             return _service.Update(overlay);
         }
 
@@ -76,13 +76,18 @@ namespace WarStreamer.Maps
             return domain.Select(DomainToViewModel).ToList();
         }
 
-        private static WarOverlay ViewModelToDomain(WarOverlayViewModel viewModel)
+        private static WarOverlay ViewModelToDomain(WarOverlayViewModel viewModel, Guid userId)
         {
-            return new(Guid.Empty.ParseDiscordId(viewModel.UserId), viewModel.Id, viewModel.ClanTag)
+            return new(userId, viewModel.Id, viewModel.ClanTag)
             {
                 LastCheckout = viewModel.LastCheckout,
                 IsEnded = viewModel.IsEnded,
             };
+        }
+
+        private static WarOverlay ViewModelToDomain(WarOverlayViewModel viewModel)
+        {
+            return ViewModelToDomain(viewModel, Guid.Empty.ParseDiscordId(viewModel.UserId));
         }
     }
 }

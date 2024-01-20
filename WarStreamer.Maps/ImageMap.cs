@@ -26,7 +26,7 @@ namespace WarStreamer.Maps
 
         public bool Delete(ImageViewModel viewModel)
         {
-            Image image = ViewModelToDomain(viewModel);
+            Image image = ViewModelToDomain(viewModel, Guid.Parse(viewModel.OverlaySettingId));
             return _service.Delete(image);
         }
 
@@ -50,7 +50,7 @@ namespace WarStreamer.Maps
 
         public bool Update(ImageViewModel viewModel)
         {
-            Image image = ViewModelToDomain(viewModel);
+            Image image = ViewModelToDomain(viewModel, Guid.Parse(viewModel.OverlaySettingId));
             return _service.Update(image);
         }
 
@@ -77,15 +77,23 @@ namespace WarStreamer.Maps
             return domain.Select(DomainToViewModel).ToList();
         }
 
-        private static Image ViewModelToDomain(ImageViewModel viewModel)
+        private static Image ViewModelToDomain(ImageViewModel viewModel, Guid overlaySettingId)
         {
-            return new(Guid.Empty.ParseDiscordId(viewModel.OverlaySettingId), viewModel.Name)
+            return new(overlaySettingId, viewModel.Name)
             {
                 LocationX = viewModel.Location.X,
                 LocationY = viewModel.Location.Y,
                 Width = viewModel.Width,
                 Height = viewModel.Height,
             };
+        }
+
+        private static Image ViewModelToDomain(ImageViewModel viewModel)
+        {
+            return ViewModelToDomain(
+                viewModel,
+                Guid.Empty.ParseDiscordId(viewModel.OverlaySettingId)
+            );
         }
     }
 }

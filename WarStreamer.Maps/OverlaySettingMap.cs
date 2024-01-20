@@ -27,7 +27,7 @@ namespace WarStreamer.Maps
 
         public bool Delete(OverlaySettingViewModel viewModel)
         {
-            OverlaySetting setting = ViewModelToDomain(viewModel);
+            OverlaySetting setting = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
             return _service.Delete(setting);
         }
 
@@ -45,7 +45,7 @@ namespace WarStreamer.Maps
 
         public bool Update(OverlaySettingViewModel viewModel)
         {
-            OverlaySetting setting = ViewModelToDomain(viewModel);
+            OverlaySetting setting = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
             return _service.Update(setting);
         }
 
@@ -111,9 +111,12 @@ namespace WarStreamer.Maps
             return domain.Select(DomainToViewModel).ToList();
         }
 
-        private static OverlaySetting ViewModelToDomain(OverlaySettingViewModel viewModel)
+        private static OverlaySetting ViewModelToDomain(
+            OverlaySettingViewModel viewModel,
+            Guid userId
+        )
         {
-            return new(Guid.Empty.ParseDiscordId(viewModel.UserId))
+            return new(userId)
             {
                 FontId = viewModel.FontId != null ? Guid.Parse(viewModel.FontId) : null,
                 TextColor = viewModel.TextColor,
@@ -147,6 +150,11 @@ namespace WarStreamer.Maps
                 LastAttackToWinLocationY = viewModel.LastAttackToWinLocation?.Y,
                 MirrorReflection = viewModel.MirrorReflection,
             };
+        }
+
+        private static OverlaySetting ViewModelToDomain(OverlaySettingViewModel viewModel)
+        {
+            return ViewModelToDomain(viewModel, Guid.Empty.ParseDiscordId(viewModel.UserId));
         }
     }
 }
