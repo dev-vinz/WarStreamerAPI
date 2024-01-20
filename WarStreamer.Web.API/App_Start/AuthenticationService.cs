@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using WarStreamer.Commons.Tools;
 using WarStreamer.Web.API.Authentication;
 using WarStreamer.Web.API.Models;
 
@@ -28,6 +29,8 @@ namespace WarStreamer.Web.API.App_Start
         private readonly string _jwtSecretKey;
         private readonly string _jwtDomain;
         private readonly string _jwtAudience;
+
+        private readonly string _aesKey;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
@@ -66,12 +69,25 @@ namespace WarStreamer.Web.API.App_Start
                 _jwtAudience =
                     _configuration.GetValue<string>("JwtConfig:Audience", null!)
                     ?? throw new ArgumentNullException("JWT Audience is null");
+
+                _aesKey =
+                    _configuration.GetValue<string>("AesKey", null!)
+                    ?? throw new ArgumentNullException("JWT Audience is null");
             }
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        public string BuildRefreshTokenFromDiscord(
+            string discordToken,
+            out string initializationVector
+        )
+        {
+            AesEncryption aes = new(_aesKey);
+            return aes.Encrypt(discordToken, out initializationVector);
+        }
 
         public async Task<AuthenticationToken> GetAccessToken(string code)
         {
@@ -104,6 +120,12 @@ namespace WarStreamer.Web.API.App_Start
             string content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<AuthenticationToken>(content)!;
+        }
+
+        public string GetDiscordRefreshToken(string cipherToken, string initializationVector)
+        {
+            AesEncryption aes = new(_aesKey);
+            return aes.Decrypt(cipherToken, initializationVector);
         }
 
         public string GetJwtToken(DiscordUser user)
@@ -160,6 +182,37 @@ namespace WarStreamer.Web.API.App_Start
             string content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<DiscordUser>(content)!;
+        }
+
+        public async Task<AuthenticationToken> RefreshAccessToken(string refreshToken)
+        {
+            // Create a new HttpClient
+            _httpClient.DefaultRequestHeaders.Clear();
+
+            // Build parameters
+            KeyValuePair<string, string>[] parameters =
+            [
+                new KeyValuePair<string, string>("client_id", _clientId),
+                new KeyValuePair<string, string>("client_secret", _clientSecret),
+                new KeyValuePair<string, string>(
+                    "grant_type",
+                    OpenIdConnectGrantTypes.RefreshToken
+                ),
+                new KeyValuePair<string, string>("refresh_token", refreshToken),
+            ];
+
+            // Make the request to Discord
+            HttpResponseMessage response = await _httpClient.PostAsync(
+                DiscordAuthenticationDefaults.TokenEndpoint,
+                new FormUrlEncodedContent(parameters)
+            );
+
+            response.EnsureSuccessStatusCode();
+
+            // Get the token from response
+            string content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<AuthenticationToken>(content)!;
         }
 
         /* * * * * * * * * * * * * * * * * *\
