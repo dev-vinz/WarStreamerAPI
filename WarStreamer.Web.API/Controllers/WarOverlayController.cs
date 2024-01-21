@@ -28,6 +28,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<List<WarOverlayViewModel>> GetAll()
         {
             return Ok(_overlayMap.GetAll());
@@ -37,6 +38,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<List<WarOverlayViewModel>> GetAllByUserId(string userId)
         {
             return Ok(_overlayMap.GetByUserId(userId));
@@ -51,6 +53,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<WarOverlayViewModel> Create([FromBody] WarOverlayViewModel overlay)
         {
@@ -85,6 +88,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}/{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Update(
             string userId,
@@ -118,6 +122,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}/{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Delete(string userId, int id)
         {

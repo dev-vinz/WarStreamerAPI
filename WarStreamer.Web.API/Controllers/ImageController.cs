@@ -43,6 +43,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<List<ImageResponseModel>> GetAll()
         {
             List<ImageResponseModel> result = _imageMap
@@ -74,6 +75,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ImageResponseModel> Create([FromForm] ImageRequestModel imageRequest)
@@ -161,6 +163,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{overlaySettingId}/{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<bool> Update(
@@ -209,6 +212,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{overlaySettingId}/{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Delete(string overlaySettingId, string name)
         {

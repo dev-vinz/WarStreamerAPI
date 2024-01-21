@@ -89,7 +89,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<bool> Logout([FromForm] string userId)
+        public ActionResult<bool> Logout([FromBody] string userId)
         {
             AuthRefreshTokenViewModel? authRefreshToken = _authRefreshTokenMap.GetByUserId(userId);
 

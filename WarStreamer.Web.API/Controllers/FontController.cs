@@ -35,6 +35,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<List<FontViewModel>> GetAll()
         {
             return Ok(_fontMap.GetAll());
@@ -44,6 +45,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{fontId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<FontViewModel?> GetById(Guid fontId)
         {
@@ -62,6 +64,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{fontId}/file")]
         [Produces("application/octet-stream")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult GetFontById(Guid fontId)
         {

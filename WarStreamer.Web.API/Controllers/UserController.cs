@@ -42,6 +42,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<List<UserViewModel>> GetAll()
         {
             return Ok(_userMap.GetAll());
@@ -51,6 +52,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<UserViewModel?> GetById(string userId)
         {
@@ -69,6 +71,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}/accounts")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<string[]> GetAccounts(string userId)
         {
@@ -87,6 +90,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}/language")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<LanguageViewModel> GetLanguage(string userId)
@@ -122,6 +126,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}/teamlogos")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<TeamLogoResponseModel>> GetTeamLogos(string userId)
         {
@@ -151,6 +156,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}/waroverlays")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<WarOverlayViewModel>> GetWarOverlays(string userId)
         {
@@ -172,6 +178,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<UserViewModel> Create([FromBody] UserViewModel user)
         {
@@ -207,6 +214,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Update(string userId, [FromBody] UserViewModel user)
         {
@@ -243,6 +251,7 @@ namespace WarStreamer.Web.API.Controllers
         [Route("{userId}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Delete(string userId)
         {
