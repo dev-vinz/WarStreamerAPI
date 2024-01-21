@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WarStreamer.Interfaces.Repositories;
 using WarStreamer.Models;
 using WarStreamer.Models.Context;
 using WarStreamer.Repositories.RepositoryBase;
@@ -62,7 +63,7 @@ namespace WarStreamer.Repositories
             {
                 return Context
                     .Set<TeamLogo>()
-                    .FirstOrDefault(l => l.UserId == userId && l.TeamName == name);
+                    .FirstOrDefault(l => l.UserId == userId && EF.Functions.Like(l.TeamName, name));
             }
             catch (Exception)
             {

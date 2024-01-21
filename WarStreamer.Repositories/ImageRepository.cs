@@ -1,4 +1,5 @@
-﻿using WarStreamer.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WarStreamer.Interfaces.Repositories;
 using WarStreamer.Models;
 using WarStreamer.Models.Context;
 using WarStreamer.Repositories.RepositoryBase;
@@ -45,7 +46,11 @@ namespace WarStreamer.Repositories
             {
                 return Context
                     .Set<Image>()
-                    .FirstOrDefault(i => i.OverlaySettingId == overlaySettingId && i.Name == name);
+                    .FirstOrDefault(
+                        i =>
+                            i.OverlaySettingId == overlaySettingId
+                            && EF.Functions.Like(i.Name, name)
+                    );
             }
             catch (Exception)
             {

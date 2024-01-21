@@ -55,6 +55,10 @@ namespace WarStreamer.Tests
             this.AddScoped<IAccountService, AccountService>();
             this.AddScoped<IAccountRepository, AccountRepository>();
 
+            // AuthRefreshToken
+            this.AddScoped<IAuthRefreshTokenService, AuthRefreshTokenService>();
+            this.AddScoped<IAuthRefreshTokenRepository, AuthRefreshTokenRepository>();
+
             // Font
             this.AddScoped<IFontService, FontService>();
             this.AddScoped<IFontRepository, FontRepository>();
