@@ -45,11 +45,7 @@ namespace WarStreamer.Repositories
             {
                 return Context
                     .Set<Image>()
-                    .FirstOrDefault(
-                        i =>
-                            i.OverlaySettingId == overlaySettingId
-                            && i.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)
-                    );
+                    .FirstOrDefault(i => i.OverlaySettingId == overlaySettingId && i.Name == name);
             }
             catch (Exception)
             {

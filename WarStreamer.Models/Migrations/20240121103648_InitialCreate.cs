@@ -152,7 +152,7 @@ namespace WarStreamer.Models.Migrations
                 name: "TeamLogos",
                 columns: table => new
                 {
-                    TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClanTags = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -193,7 +193,7 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     OverlaySettingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     LocationX = table.Column<int>(type: "int", nullable: false),
                     LocationY = table.Column<int>(type: "int", nullable: false),
                     Width = table.Column<int>(type: "int", nullable: false),
@@ -215,10 +215,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("37cc32a6-085c-4086-81bf-8bb060d7896a"), "Clash of Clans", "supercell-magic.ttf" },
-                    { new Guid("b12236e2-9cd0-4193-b69b-71f2b802421a"), "Roboto", "roboto.ttf" },
-                    { new Guid("dbbdcd9d-cd56-47bf-8c57-7d223282dc16"), "Poppins", "poppins.otf" },
-                    { new Guid("df9f8cbc-b5f3-48e0-b0f0-97d648636529"), "Quicksand", "quicksand.otf" }
+                    { new Guid("16599ae9-4d07-4d90-9860-6708e78ba81a"), "Poppins", "poppins.otf" },
+                    { new Guid("7ee237c5-c4d7-4bf0-9c38-3c0fd79f5f1d"), "Roboto", "roboto.ttf" },
+                    { new Guid("899d8f05-9234-4de4-b5ff-f29f222775f1"), "Quicksand", "quicksand.otf" },
+                    { new Guid("d2487fd7-67e4-479d-9ace-23d1befbec74"), "Clash of Clans", "supercell-magic.ttf" }
                 });
 
             migrationBuilder.InsertData(
@@ -226,8 +226,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("035389e0-d2c4-4324-80d9-8816e8099b96"), "en-US", "English", "🇬🇧", "en" },
-                    { new Guid("fa61a6be-12eb-4a52-92ce-46c79f114385"), "fr-FR", "Français", "🇫🇷", "fr" }
+                    { new Guid("a3af84a8-67b4-4919-97d4-5fe5742b7ad6"), "en-US", "English", "🇬🇧", "en" },
+                    { new Guid("f243d5a5-660f-4829-a82e-4c104eb04d5c"), "fr-FR", "Français", "🇫🇷", "fr" }
                 });
 
             migrationBuilder.CreateIndex(

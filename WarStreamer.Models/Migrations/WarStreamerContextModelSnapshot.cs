@@ -17,6 +17,7 @@ namespace WarStreamer.Models.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS")
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -84,25 +85,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("37cc32a6-085c-4086-81bf-8bb060d7896a"),
+                            Id = new Guid("d2487fd7-67e4-479d-9ace-23d1befbec74"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("dbbdcd9d-cd56-47bf-8c57-7d223282dc16"),
+                            Id = new Guid("16599ae9-4d07-4d90-9860-6708e78ba81a"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("df9f8cbc-b5f3-48e0-b0f0-97d648636529"),
+                            Id = new Guid("899d8f05-9234-4de4-b5ff-f29f222775f1"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("b12236e2-9cd0-4193-b69b-71f2b802421a"),
+                            Id = new Guid("7ee237c5-c4d7-4bf0-9c38-3c0fd79f5f1d"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -114,7 +115,8 @@ namespace WarStreamer.Models.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                     b.Property<int>("Height")
                         .HasColumnType("int");
@@ -162,7 +164,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("035389e0-d2c4-4324-80d9-8816e8099b96"),
+                            Id = new Guid("a3af84a8-67b4-4919-97d4-5fe5742b7ad6"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -170,7 +172,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fa61a6be-12eb-4a52-92ce-46c79f114385"),
+                            Id = new Guid("f243d5a5-660f-4829-a82e-4c104eb04d5c"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
@@ -289,7 +291,8 @@ namespace WarStreamer.Models.Migrations
                 {
                     b.Property<string>("TeamName")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

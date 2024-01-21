@@ -83,6 +83,29 @@ namespace WarStreamer.Models.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            /* * * * * * * * * * * * * * * * * *\
+            |*          CASE SETTINGS          *|
+            \* * * * * * * * * * * * * * * * * */
+
+            // Use case sensitive for all database
+            modelBuilder.UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+            // Use case-insensitive for Image name
+            modelBuilder
+                .Entity<Image>()
+                .Property(i => i.Name)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+            // Use case-insensitive for TeamLogo name
+            modelBuilder
+                .Entity<TeamLogo>()
+                .Property(l => l.TeamName)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+            /* * * * * * * * * * * * * * * * * *\
+            |*            PROPERTIES           *|
+            \* * * * * * * * * * * * * * * * * */
+
             // Add onDelete: SET NULL on Font
             modelBuilder
                 .Entity<Font>()
@@ -90,6 +113,10 @@ namespace WarStreamer.Models.Context
                 .WithOne(os => os.Font)
                 .HasForeignKey(os => os.FontId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            /* * * * * * * * * * * * * * * * * *\
+            |*             SEEDERS             *|
+            \* * * * * * * * * * * * * * * * * */
 
             // Create Fond seeder
             modelBuilder

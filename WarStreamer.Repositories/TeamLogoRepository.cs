@@ -62,11 +62,7 @@ namespace WarStreamer.Repositories
             {
                 return Context
                     .Set<TeamLogo>()
-                    .FirstOrDefault(
-                        l =>
-                            l.UserId == userId
-                            && l.TeamName.Equals(name, StringComparison.CurrentCultureIgnoreCase)
-                    );
+                    .FirstOrDefault(l => l.UserId == userId && l.TeamName == name);
             }
             catch (Exception)
             {
