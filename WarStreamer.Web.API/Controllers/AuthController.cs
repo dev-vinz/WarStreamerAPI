@@ -6,6 +6,7 @@ using WarStreamer.ViewModels;
 using WarStreamer.Web.API.App_Start;
 using WarStreamer.Web.API.Authentication;
 using WarStreamer.Web.API.Models;
+using WarStreamer.Web.API.RequestModels;
 using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
@@ -41,18 +42,43 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TokenResponseModel>> LoginWithDiscord([FromBody] string code)
+        public async Task<ActionResult<TokenResponseModel>> LoginWithDiscord(
+            [FromBody] DiscordAuthRequestModel discordAuth
+        )
         {
             try
             {
                 // Get the access token
-                AuthenticationToken authToken = await _authService.GetAccessToken(code);
+                AuthenticationToken authToken = await _authService.GetAccessToken(
+                    discordAuth.Code,
+                    discordAuth.CodeVerifier
+                );
 
                 // Get the user informations with the access token
                 DiscordUser user = await _authService.GetUserInformations(authToken.AccessToken);
 
+                // Check if user is already logged in
+                AuthRefreshTokenViewModel? anyAuthRefreshToken = _authRefreshTokenMap.GetByUserId(
+                    user.Id
+                );
+
+                // If token is still valid, refresh them
+                if (anyAuthRefreshToken?.ExpiresAt >= DateTime.UtcNow)
+                {
+                    return await RefreshTokens(
+                        user.Id,
+                        anyAuthRefreshToken.TokenValue,
+                        discordAuth.State
+                    );
+                }
+                else if (anyAuthRefreshToken != null)
+                {
+                    // Token isn't valid anymore, but old one hasn't been deleted
+                    _authRefreshTokenMap.Delete(anyAuthRefreshToken);
+                }
+
                 // Build JWT token and refresh token
-                string jwtToken = _authService.GetJwtToken(user);
+                string jwtToken = _authService.GetJwtToken(user, discordAuth.State);
                 string refreshToken = _authService.BuildRefreshTokenFromDiscord(
                     authToken.RefreshToken,
                     out string initializationVector
@@ -112,7 +138,8 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TokenResponseModel>> RefreshTokens(
             [FromForm, Required] string userId,
-            [FromForm, Required] string refreshToken
+            [FromForm, Required] string refreshToken,
+            [FromForm, Required] string nonce
         )
         {
             try
@@ -157,7 +184,7 @@ namespace WarStreamer.Web.API.Controllers
                 DiscordUser user = await _authService.GetUserInformations(authToken.AccessToken);
 
                 // Build JWT token and refresh token
-                string jwtToken = _authService.GetJwtToken(user);
+                string jwtToken = _authService.GetJwtToken(user, nonce);
                 string newRefreshToken = _authService.BuildRefreshTokenFromDiscord(
                     authToken.RefreshToken,
                     out string initializationVector

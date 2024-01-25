@@ -1,12 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
 using AspNet.Security.OAuth.Discord;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using WarStreamer.Commons.Extensions;
 using WarStreamer.Commons.Tools;
 using WarStreamer.Web.API.Authentication;
 using WarStreamer.Web.API.Models;
@@ -22,13 +23,8 @@ namespace WarStreamer.Web.API.App_Start
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
 
-        private readonly string _clientId;
-        private readonly string _clientSecret;
-        private readonly string _redirectUri;
-
-        private readonly string _jwtSecretKey;
-        private readonly string _jwtDomain;
-        private readonly string _jwtAudience;
+        private readonly DiscordConfig _discordConfig;
+        private readonly JwtConfig _jwtConfig;
 
         private readonly string _aesKey;
 
@@ -46,33 +42,17 @@ namespace WarStreamer.Web.API.App_Start
 
             // Tools
             {
-                _clientId =
-                    _configuration.GetValue<string>("Discord:ClientId", null!)
-                    ?? throw new ArgumentNullException("Discord ClientId is null");
+                _discordConfig =
+                    _configuration.GetSection<DiscordConfig>()
+                    ?? throw new ArgumentNullException(nameof(_discordConfig));
 
-                _clientSecret =
-                    _configuration.GetValue<string>("Discord:ClientSecret", null!)
-                    ?? throw new ArgumentNullException("Discord ClientSecret is null");
-
-                _redirectUri =
-                    _configuration.GetValue<string>("Discord:RedirectUri", null!)
-                    ?? throw new ArgumentNullException("Discord RedirectUri is null");
-
-                _jwtSecretKey =
-                    _configuration.GetValue<string>("JwtConfig:SecretKey", null!)
-                    ?? throw new ArgumentNullException("JWT SecretKey is null");
-
-                _jwtDomain =
-                    _configuration.GetValue<string>("JwtConfig:Domain", null!)
-                    ?? throw new ArgumentNullException("JWT Domain is null");
-
-                _jwtAudience =
-                    _configuration.GetValue<string>("JwtConfig:Audience", null!)
-                    ?? throw new ArgumentNullException("JWT Audience is null");
+                _jwtConfig =
+                    _configuration.GetSection<JwtConfig>()
+                    ?? throw new ArgumentNullException(nameof(_jwtConfig));
 
                 _aesKey =
                     _configuration.GetValue<string>("AesKey", null!)
-                    ?? throw new ArgumentNullException("JWT Audience is null");
+                    ?? throw new ArgumentNullException(nameof(_aesKey));
             }
         }
 
@@ -89,7 +69,7 @@ namespace WarStreamer.Web.API.App_Start
             return aes.Encrypt(discordToken, out initializationVector);
         }
 
-        public async Task<AuthenticationToken> GetAccessToken(string code)
+        public async Task<AuthenticationToken> GetAccessToken(string code, string codeVerifier)
         {
             // Create a new HttpClient
             _httpClient.DefaultRequestHeaders.Clear();
@@ -97,14 +77,15 @@ namespace WarStreamer.Web.API.App_Start
             // Build parameters
             KeyValuePair<string, string>[] parameters =
             [
-                new KeyValuePair<string, string>("client_id", _clientId),
-                new KeyValuePair<string, string>("client_secret", _clientSecret),
+                new KeyValuePair<string, string>("client_id", _discordConfig.ClientId),
+                new KeyValuePair<string, string>("client_secret", _discordConfig.ClientSecret),
                 new KeyValuePair<string, string>(
                     "grant_type",
                     OpenIdConnectGrantTypes.AuthorizationCode
                 ),
                 new KeyValuePair<string, string>("code", code),
-                new KeyValuePair<string, string>("redirect_uri", _redirectUri),
+                new KeyValuePair<string, string>("code_verifier", codeVerifier),
+                new KeyValuePair<string, string>("redirect_uri", _discordConfig.RedirectUri),
                 new KeyValuePair<string, string>("scope", "identify email"),
             ];
 
@@ -128,11 +109,18 @@ namespace WarStreamer.Web.API.App_Start
             return aes.Decrypt(cipherToken, initializationVector);
         }
 
-        public string GetJwtToken(DiscordUser user)
+        public string GetJwtToken(DiscordUser user, string nonce)
         {
             // Build the security
             JwtSecurityTokenHandler tokenHandler = new();
-            byte[] key = Encoding.UTF8.GetBytes(_jwtSecretKey);
+
+            // Create RSA instance and import private key
+            using RSA rsa = RSA.Create();
+            rsa.ImportFromPem(_jwtConfig.PrivateKey);
+
+            // Export parameters and create security key
+            RSAParameters parameters = rsa.ExportParameters(true);
+            RsaSecurityKey securityKey = new(parameters) { KeyId = _jwtConfig.KeyId };
 
             // Build token
             SecurityTokenDescriptor tokenDescriptor =
@@ -141,20 +129,21 @@ namespace WarStreamer.Web.API.App_Start
                     Subject = new ClaimsIdentity(
                         new[]
                         {
-                            new Claim("id", user.Id),
+                            new Claim("sub", user.Id),
+                            new Claim("name", user.GlobalName ?? string.Empty),
                             new Claim("username", user.Username),
-                            new Claim("globalName", user.GlobalName ?? string.Empty),
-                            new Claim("avatarUrl", user.AvatarUrl),
                             new Claim("email", user.Email ?? string.Empty),
+                            new Claim("avatarUrl", user.AvatarUrl),
+                            new Claim("nonce", nonce)
                         }
                     ),
                     Expires = DateTime.UtcNow.AddHours(2),
                     SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(key),
-                        SecurityAlgorithms.HmacSha256Signature
+                        securityKey,
+                        SecurityAlgorithms.RsaSha256
                     ),
-                    Issuer = _jwtDomain,
-                    Audience = _jwtAudience,
+                    Issuer = _jwtConfig.Domain,
+                    Audience = _jwtConfig.Audience,
                 };
 
             // Create whole token
@@ -192,8 +181,8 @@ namespace WarStreamer.Web.API.App_Start
             // Build parameters
             KeyValuePair<string, string>[] parameters =
             [
-                new KeyValuePair<string, string>("client_id", _clientId),
-                new KeyValuePair<string, string>("client_secret", _clientSecret),
+                new KeyValuePair<string, string>("client_id", _discordConfig.ClientId),
+                new KeyValuePair<string, string>("client_secret", _discordConfig.ClientSecret),
                 new KeyValuePair<string, string>(
                     "grant_type",
                     OpenIdConnectGrantTypes.RefreshToken
@@ -222,38 +211,39 @@ namespace WarStreamer.Web.API.App_Start
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
             // Get configurations
-            IConfigurationSection jwtConfiguration = configuration.GetSection("JwtConfig");
+            JwtConfig jwtConfiguration = configuration.GetSection<JwtConfig>();
 
-            string secretKey =
-                jwtConfiguration.GetValue<string>("SecretKey", null!)
-                ?? throw new ArgumentNullException("JWT SecretKey is null");
+            // Create RSA instance and import private key
+            using RSA rsa = RSA.Create();
+            rsa.ImportFromPem(jwtConfiguration.PrivateKey);
 
-            string domain =
-                jwtConfiguration.GetValue<string>("Domain", null!)
-                ?? throw new ArgumentNullException("JWT Domain is null");
-
-            string audience =
-                jwtConfiguration.GetValue<string>("Audience", null!)
-                ?? throw new ArgumentNullException("JWT Audience is null");
-
-            // Build secret key
-            byte[] key = Encoding.ASCII.GetBytes(secretKey);
+            // Export parameters and create security key
+            RSAParameters parameters = rsa.ExportParameters(true);
+            RsaSecurityKey securityKey = new(parameters) { KeyId = jwtConfiguration.KeyId };
 
             // Build configurations
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = $"https://{domain}";
+                    options.Authority = $"https://{jwtConfiguration.Domain}";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidIssuer = domain,
-                        ValidAudience = audience,
+                        IssuerSigningKey = securityKey,
+                        ValidIssuer = jwtConfiguration.Domain,
+                        ValidAudience = jwtConfiguration.Audience,
+                        ValidAlgorithms = new[] { SecurityAlgorithms.RsaSha256 },
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 
