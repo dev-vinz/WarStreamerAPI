@@ -6,7 +6,7 @@ using WarStreamer.Tests.Tools;
 namespace WarStreamer.Tests.Repositories
 {
     [TestCaseOrderer("WarStreamer.Tests.Tools.OrderOrderer", "WarStreamer.Tests")]
-    public class AuthRefreshTokenRepositoryTests
+    public class AuthTokenRepositoryTests
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             CONSTANTS                             *|
@@ -14,26 +14,26 @@ namespace WarStreamer.Tests.Repositories
 
         private static readonly Guid USER_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
         private static readonly Guid USER_ID_2 = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560e");
-        private const string TOKEN_VALUE = "lkajevflu_wjrefhiuzg345-fwiurhv/=";
-        private const string TOKEN_VALUE_UPDATED = "lkajevflu_wjrefhiuzgaref345-fwiurhv/=";
-        private const string INITIALIZATION_VECTOR = "ahjber*çRFCER_EçFJNW=)%/(*";
-        private const string INITIALIZATION_VECTOR_UPDATED = "afrewhjber*çRFCER_EçFJNW=)%/(*";
+        private const string ACCESS_VALUE = "lkajevflu_wjrefhiuzg345-fwiurhv/=";
+        private const string ACCESS_IV = "ahjber*çRFCER_EçFJNW=)%/(*";
+        private const string DISCORD_VALUE = "lkajevflu_wjrefhiuzg345-faecferfw rtgvwiurhv/=";
+        private const string DISCORD_IV = "ahjber*çRFCER_EçFJNç&%/*WHTBSFVW=)%/(*";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IAuthRefreshTokenRepository _repository;
+        private readonly IAuthTokenRepository _repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public AuthRefreshTokenRepositoryTests()
+        public AuthTokenRepositoryTests()
         {
             _repository = new ServiceTestCollection()
                 .BuildServiceProvider()
-                .GetRequiredService<IAuthRefreshTokenRepository>();
+                .GetRequiredService<IAuthTokenRepository>();
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -42,58 +42,62 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(1)]
-        public void WhenInsertAuthRefreshToken_ThenReturnsAddedAuthRefreshToken()
+        public void WhenInsertAuthToken_ThenReturnsAddedAuthToken()
         {
-            AuthRefreshToken authToken = _repository.Save(CreateAuthRefreshToken());
+            AuthToken authToken = _repository.Save(CreateAuthToken());
 
             Assert.NotNull(authToken);
 
             Assert.Equal(USER_ID, authToken.UserId);
-            Assert.Equal(TOKEN_VALUE, authToken.TokenValue);
-            Assert.Equal(INITIALIZATION_VECTOR, authToken.AesInitializationVector);
-            Assert.Equal(authToken.ExpiresAt, authToken.IssuedAt.AddMonths(1));
+            Assert.Equal(ACCESS_VALUE, authToken.AccessToken);
+            Assert.Equal(ACCESS_IV, authToken.AccessIV);
+            Assert.Equal(DISCORD_VALUE, authToken.DiscordToken);
+            Assert.Equal(DISCORD_IV, authToken.DiscordIV);
+            Assert.Equal(authToken.ExpiresAt, authToken.IssuedAt.AddMonths(4));
         }
 
         [Fact]
         [TestOrder(2)]
-        public void WhenUpdateAuthRefreshToken_ThenReturnsTrue()
+        public void WhenUpdateAuthToken_ThenReturnsTrue()
         {
-            AuthRefreshToken? authToken = _repository.GetByUserId(USER_ID);
+            AuthToken? authToken = _repository.GetByUserId(USER_ID);
 
             Assert.NotNull(authToken);
 
-            authToken.TokenValue = TOKEN_VALUE_UPDATED;
-            authToken.AesInitializationVector = INITIALIZATION_VECTOR_UPDATED;
+            authToken.AccessToken = DISCORD_VALUE;
+            authToken.DiscordIV = ACCESS_IV;
 
             Assert.True(_repository.Update(authToken));
         }
 
         [Fact]
         [TestOrder(3)]
-        public void WhenGetAuthRefreshTokenByUserId_ThenReturnsAuthRefreshToken()
+        public void WhenGetAuthTokenByUserId_ThenReturnsAuthToken()
         {
-            AuthRefreshToken? authToken = _repository.GetByUserId(USER_ID);
+            AuthToken? authToken = _repository.GetByUserId(USER_ID);
 
             Assert.NotNull(authToken);
 
             Assert.Equal(USER_ID, authToken.UserId);
-            Assert.Equal(TOKEN_VALUE_UPDATED, authToken.TokenValue);
-            Assert.Equal(INITIALIZATION_VECTOR_UPDATED, authToken.AesInitializationVector);
-            Assert.Equal(authToken.ExpiresAt, authToken.IssuedAt.AddMonths(1));
+            Assert.Equal(DISCORD_VALUE, authToken.AccessToken);
+            Assert.Equal(ACCESS_IV, authToken.AccessIV);
+            Assert.Equal(DISCORD_VALUE, authToken.DiscordToken);
+            Assert.Equal(ACCESS_IV, authToken.DiscordIV);
+            Assert.Equal(authToken.ExpiresAt, authToken.IssuedAt.AddMonths(4));
         }
 
         [Fact]
         [TestOrder(4)]
-        public void WhenGetAuthRefreshTokenByUserId_ThenReturnsNull()
+        public void WhenGetAuthTokenByUserId_ThenReturnsNull()
         {
             Assert.Null(_repository.GetByUserId(USER_ID_2));
         }
 
         [Fact]
         [TestOrder(5)]
-        public void WhenDeleteAuthRefreshToken_ThenReturnsTrue()
+        public void WhenDeleteAuthToken_ThenReturnsTrue()
         {
-            AuthRefreshToken? authToken = _repository.GetByUserId(USER_ID);
+            AuthToken? authToken = _repository.GetByUserId(USER_ID);
 
             Assert.NotNull(authToken);
             Assert.True(_repository.Delete(authToken));
@@ -108,12 +112,14 @@ namespace WarStreamer.Tests.Repositories
         |*              STATIC             *|
         \* * * * * * * * * * * * * * * * * */
 
-        private static AuthRefreshToken CreateAuthRefreshToken()
+        private static AuthToken CreateAuthToken()
         {
             return new(USER_ID)
             {
-                TokenValue = TOKEN_VALUE,
-                AesInitializationVector = INITIALIZATION_VECTOR,
+                AccessToken = ACCESS_VALUE,
+                AccessIV = ACCESS_IV,
+                DiscordToken = DISCORD_VALUE,
+                DiscordIV = DISCORD_IV,
             };
         }
     }

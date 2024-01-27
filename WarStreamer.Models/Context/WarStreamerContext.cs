@@ -20,7 +20,7 @@ namespace WarStreamer.Models.Context
 
         public DbSet<Account> Accounts { get; set; }
 
-        public DbSet<AuthRefreshToken> AuthRefreshTokens { get; set; }
+        public DbSet<AuthToken> AuthTokens { get; set; }
 
         public DbSet<Font> Fonts { get; set; }
 

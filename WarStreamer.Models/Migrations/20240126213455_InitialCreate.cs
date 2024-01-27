@@ -14,18 +14,20 @@ namespace WarStreamer.Models.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AuthRefreshTokens",
+                name: "AuthTokens",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TokenValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AesInitializationVector = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccessIV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscordToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscordIV = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IssuedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuthRefreshTokens", x => x.UserId);
+                    table.PrimaryKey("PK_AuthTokens", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,10 +217,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("16599ae9-4d07-4d90-9860-6708e78ba81a"), "Poppins", "poppins.otf" },
-                    { new Guid("7ee237c5-c4d7-4bf0-9c38-3c0fd79f5f1d"), "Roboto", "roboto.ttf" },
-                    { new Guid("899d8f05-9234-4de4-b5ff-f29f222775f1"), "Quicksand", "quicksand.otf" },
-                    { new Guid("d2487fd7-67e4-479d-9ace-23d1befbec74"), "Clash of Clans", "supercell-magic.ttf" }
+                    { new Guid("463f666e-16ff-4ff7-9545-f7c382bec74d"), "Roboto", "roboto.ttf" },
+                    { new Guid("54cbb611-5421-42a6-b5b7-ffb75f4a6181"), "Quicksand", "quicksand.otf" },
+                    { new Guid("d785fa52-0316-4250-b161-c6713c263083"), "Poppins", "poppins.otf" },
+                    { new Guid("ff193217-486e-4b9f-a63c-64f04909a0ba"), "Clash of Clans", "supercell-magic.ttf" }
                 });
 
             migrationBuilder.InsertData(
@@ -226,8 +228,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("a3af84a8-67b4-4919-97d4-5fe5742b7ad6"), "en-US", "English", "🇬🇧", "en" },
-                    { new Guid("f243d5a5-660f-4829-a82e-4c104eb04d5c"), "fr-FR", "Français", "🇫🇷", "fr" }
+                    { new Guid("4d29a292-ebe1-4b7f-8707-12e525a50e79"), "fr-FR", "Français", "🇫🇷", "fr" },
+                    { new Guid("81c1f599-ac64-4faa-8d21-a36bb6e9d609"), "en-US", "English", "🇬🇧", "en" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -258,7 +260,7 @@ namespace WarStreamer.Models.Migrations
                 name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "AuthRefreshTokens");
+                name: "AuthTokens");
 
             migrationBuilder.DropTable(
                 name: "Images");

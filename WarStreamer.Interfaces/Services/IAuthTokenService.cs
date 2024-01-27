@@ -2,17 +2,17 @@
 
 namespace WarStreamer.Interfaces.Services
 {
-    public interface IAuthRefreshTokenService
+    public interface IAuthTokenService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-        public AuthRefreshToken Create(AuthRefreshToken domain);
+        public AuthToken Create(AuthToken domain);
 
-        public bool Delete(AuthRefreshToken domain);
+        public bool Delete(AuthToken domain);
 
-        public AuthRefreshToken? GetByUserId(Guid userId);
+        public AuthToken? GetByUserId(Guid userId);
 
-        public bool Update(AuthRefreshToken domain);
+        public bool Update(AuthToken domain);
     }
 }

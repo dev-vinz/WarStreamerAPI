@@ -3,7 +3,7 @@
     public static class IConfigurationSectionExtensions
     {
         /* * * * * * * * * * * * * * * * * *\
-        |*          IConfiguration         *|
+        |*            GENERIC T            *|
         \* * * * * * * * * * * * * * * * * */
 
         public static T GetSection<T>(this IConfiguration configuration, string key)

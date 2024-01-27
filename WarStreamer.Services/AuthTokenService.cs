@@ -4,35 +4,34 @@ using WarStreamer.Models;
 
 namespace WarStreamer.Services
 {
-    public class AuthRefreshTokenService(IAuthRefreshTokenRepository repository)
-        : IAuthRefreshTokenService
+    public class AuthTokenService(IAuthTokenRepository repository) : IAuthTokenService
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IAuthRefreshTokenRepository _repository = repository;
+        private readonly IAuthTokenRepository _repository = repository;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public AuthRefreshToken Create(AuthRefreshToken domain)
+        public AuthToken Create(AuthToken domain)
         {
             return _repository.Save(domain);
         }
 
-        public bool Delete(AuthRefreshToken domain)
+        public bool Delete(AuthToken domain)
         {
             return _repository.Delete(domain);
         }
 
-        public AuthRefreshToken? GetByUserId(Guid userId)
+        public AuthToken? GetByUserId(Guid userId)
         {
             return _repository.GetByUserId(userId);
         }
 
-        public bool Update(AuthRefreshToken domain)
+        public bool Update(AuthToken domain)
         {
             return _repository.Update(domain);
         }

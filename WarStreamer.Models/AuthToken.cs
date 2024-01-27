@@ -3,7 +3,7 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
 {
-    public class AuthRefreshToken : Entity
+    public class AuthToken : Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -12,9 +12,13 @@ namespace WarStreamer.Models
         [Key]
         public Guid UserId { get; private set; }
 
-        public string TokenValue { get; set; } = null!;
+        public string AccessToken { get; set; } = null!;
 
-        public string AesInitializationVector { get; set; } = null!;
+        public string AccessIV { get; set; } = null!;
+
+        public string DiscordToken { get; set; } = null!;
+
+        public string DiscordIV { get; set; } = null!;
 
         public DateTimeOffset IssuedAt { get; private set; }
 
@@ -24,13 +28,13 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public AuthRefreshToken(Guid userId)
+        public AuthToken(Guid userId)
         {
             // Inputs
             {
                 UserId = userId;
                 IssuedAt = DateTimeOffset.UtcNow;
-                ExpiresAt = IssuedAt.AddMonths(1);
+                ExpiresAt = IssuedAt.AddMonths(4);
             }
         }
 
@@ -44,10 +48,12 @@ namespace WarStreamer.Models
 
         public override void CopyTo(ref Entity entity)
         {
-            if (entity is AuthRefreshToken authToken)
+            if (entity is AuthToken authToken)
             {
-                authToken.TokenValue = TokenValue;
-                authToken.AesInitializationVector = AesInitializationVector;
+                authToken.AccessToken = AccessToken;
+                authToken.AccessIV = AccessIV;
+                authToken.DiscordToken = DiscordToken;
+                authToken.DiscordIV = DiscordIV;
             }
             else
             {
@@ -64,7 +70,7 @@ namespace WarStreamer.Models
             }
             else
             {
-                AuthRefreshToken? authToken = obj as AuthRefreshToken;
+                AuthToken? authToken = obj as AuthToken;
 
                 return authToken?.UserId.Equals(UserId) ?? false;
             }
@@ -79,7 +85,7 @@ namespace WarStreamer.Models
         |*                         OPERATORS OVERLOAD                        *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public static bool operator ==(AuthRefreshToken? x, AuthRefreshToken? y)
+        public static bool operator ==(AuthToken? x, AuthToken? y)
         {
             if (x is null && y is null)
             {
@@ -91,6 +97,6 @@ namespace WarStreamer.Models
             }
         }
 
-        public static bool operator !=(AuthRefreshToken? x, AuthRefreshToken? y) => !(x == y);
+        public static bool operator !=(AuthToken? x, AuthToken? y) => !(x == y);
     }
 }

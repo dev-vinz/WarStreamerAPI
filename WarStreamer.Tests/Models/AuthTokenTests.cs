@@ -3,7 +3,7 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Tests.Models
 {
-    public class AuthRefreshTokenTests
+    public class AuthTokenTests
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             CONSTANTS                             *|
@@ -15,30 +15,34 @@ namespace WarStreamer.Tests.Models
         private static readonly Guid USER_ID_TWO = Guid.Parse(
             "01e75c83-c6f5-4192-b57e-7427cec5560c"
         );
-        private const string TOKEN_VALUE = "lkajevflu_wjrefhiuzg345-fwiurhv/=";
-        private const string INITIALIZATION_VECTOR = "ahjber*çRFCER_EçFJNW=)%/(*";
+        private const string ACCESS_VALUE = "lkajevflu_wjrefhiuzg345-fwiurhv/=";
+        private const string ACCESS_IV = "ahjber*çRFCER_EçFJNW=)%/(*";
+        private const string DISCORD_VALUE = "lkajevflu_wjrefhiuzg345-faecferfw rtgvwiurhv/=";
+        private const string DISCORD_IV = "ahjber*çRFCER_EçFJNç&%/*WHTBSFVW=)%/(*";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [Fact]
-        public void WhenCreatingAuthRefreshToken_ThenAuthRefreshTokenReturned()
+        public void WhenCreatingAuthToken_ThenAuthTokenReturned()
         {
-            AuthRefreshToken authToken = CreateAuthRefreshTokenOne();
+            AuthToken authToken = CreateAuthTokenOne();
 
             Assert.NotNull(authToken);
             Assert.Equal(USER_ID_ONE, authToken.UserId);
-            Assert.Equal(TOKEN_VALUE, authToken.TokenValue);
-            Assert.Equal(INITIALIZATION_VECTOR, authToken.AesInitializationVector);
-            Assert.Equal(authToken.ExpiresAt, authToken.IssuedAt.AddMonths(1));
+            Assert.Equal(ACCESS_VALUE, authToken.AccessToken);
+            Assert.Equal(ACCESS_IV, authToken.AccessIV);
+            Assert.Equal(DISCORD_VALUE, authToken.DiscordToken);
+            Assert.Equal(DISCORD_IV, authToken.DiscordIV);
+            Assert.Equal(authToken.ExpiresAt, authToken.IssuedAt.AddMonths(4));
         }
 
         [Fact]
-        public void WhenComparingSameAuthRefreshTokens_ThenAuthRefreshTokensAreTheSame()
+        public void WhenComparingSameAuthTokens_ThenAuthTokensAreTheSame()
         {
-            AuthRefreshToken authTokenOne = CreateAuthRefreshTokenOne();
-            AuthRefreshToken authTokenTwo = CreateAuthRefreshTokenOne();
+            AuthToken authTokenOne = CreateAuthTokenOne();
+            AuthToken authTokenTwo = CreateAuthTokenOne();
 
             Assert.NotNull(authTokenOne);
             Assert.NotNull(authTokenTwo);
@@ -51,10 +55,10 @@ namespace WarStreamer.Tests.Models
         }
 
         [Fact]
-        public void WhenComparingDifferentAuthRefreshTokens_ThenAuthRefreshTokensAreDifferent()
+        public void WhenComparingDifferentAuthTokens_ThenAuthTokensAreDifferent()
         {
-            AuthRefreshToken authTokenOne = CreateAuthRefreshTokenOne();
-            AuthRefreshToken authTokenTwo = CreateAuthRefreshTokenTwo();
+            AuthToken authTokenOne = CreateAuthTokenOne();
+            AuthToken authTokenTwo = CreateAuthTokenTwo();
 
             Assert.NotNull(authTokenOne);
             Assert.NotNull(authTokenTwo);
@@ -67,19 +71,21 @@ namespace WarStreamer.Tests.Models
         }
 
         [Fact]
-        public void WhenCopyingAuthRefreshToken_ThenAuthRefreshTokenCopied()
+        public void WhenCopyingAuthToken_ThenAuthTokenCopied()
         {
-            AuthRefreshToken authToken = CreateAuthRefreshTokenOne();
-            Entity copy = new AuthRefreshToken(authToken.UserId);
+            AuthToken authToken = CreateAuthTokenOne();
+            Entity copy = new AuthToken(authToken.UserId);
 
             Assert.NotNull(authToken);
 
             authToken.CopyTo(ref copy);
-            AuthRefreshToken copyAuthToken = (AuthRefreshToken)copy;
+            AuthToken copyAuthToken = (AuthToken)copy;
 
             Assert.Equal(authToken.UserId, copyAuthToken.UserId);
-            Assert.Equal(authToken.TokenValue, copyAuthToken.TokenValue);
-            Assert.Equal(authToken.AesInitializationVector, copyAuthToken.AesInitializationVector);
+            Assert.Equal(authToken.AccessToken, copyAuthToken.AccessToken);
+            Assert.Equal(authToken.AccessIV, copyAuthToken.AccessIV);
+            Assert.Equal(authToken.DiscordToken, copyAuthToken.DiscordToken);
+            Assert.Equal(authToken.DiscordIV, copyAuthToken.DiscordIV);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -90,21 +96,25 @@ namespace WarStreamer.Tests.Models
         |*              STATIC             *|
         \* * * * * * * * * * * * * * * * * */
 
-        private static AuthRefreshToken CreateAuthRefreshTokenOne()
+        private static AuthToken CreateAuthTokenOne()
         {
             return new(USER_ID_ONE)
             {
-                TokenValue = TOKEN_VALUE,
-                AesInitializationVector = INITIALIZATION_VECTOR,
+                AccessToken = ACCESS_VALUE,
+                AccessIV = ACCESS_IV,
+                DiscordToken = DISCORD_VALUE,
+                DiscordIV = DISCORD_IV,
             };
         }
 
-        private static AuthRefreshToken CreateAuthRefreshTokenTwo()
+        private static AuthToken CreateAuthTokenTwo()
         {
             return new(USER_ID_TWO)
             {
-                TokenValue = INITIALIZATION_VECTOR,
-                AesInitializationVector = TOKEN_VALUE
+                AccessToken = DISCORD_IV,
+                AccessIV = ACCESS_VALUE,
+                DiscordToken = ACCESS_IV,
+                DiscordIV = DISCORD_VALUE,
             };
         }
     }

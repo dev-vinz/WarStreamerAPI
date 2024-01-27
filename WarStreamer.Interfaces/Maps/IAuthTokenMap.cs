@@ -2,17 +2,17 @@
 
 namespace WarStreamer.Interfaces.Maps
 {
-    public interface IAuthRefreshTokenMap
+    public interface IAuthTokenMap
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-        public AuthRefreshTokenViewModel Create(AuthRefreshTokenViewModel viewModel);
+        public AuthTokenViewModel Create(AuthTokenViewModel viewModel);
 
-        public bool Delete(AuthRefreshTokenViewModel viewModel);
+        public bool Delete(AuthTokenViewModel viewModel);
 
-        public AuthRefreshTokenViewModel? GetByUserId(string userId);
+        public AuthTokenViewModel? GetByUserId(string userId);
 
-        public bool Update(AuthRefreshTokenViewModel viewModel);
+        public bool Update(AuthTokenViewModel viewModel);
     }
 }

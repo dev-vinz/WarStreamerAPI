@@ -1,21 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
 using WarStreamer.Web.API.App_Start;
 using WarStreamer.Web.API.Authentication;
+using WarStreamer.Web.API.Extensions;
 using WarStreamer.Web.API.Models;
 using WarStreamer.Web.API.RequestModels;
 using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
+    [Authorize]
     [Route("auth/")]
-    public class AuthController(
-        AuthenticationService authService,
-        IAuthRefreshTokenMap authTokenMap
-    ) : Controller
+    public class AuthController(AuthenticationService authService, IAuthTokenMap authTokenMap)
+        : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -23,7 +22,7 @@ namespace WarStreamer.Web.API.Controllers
 
         private readonly AuthenticationService _authService = authService;
 
-        private readonly IAuthRefreshTokenMap _authRefreshTokenMap = authTokenMap;
+        private readonly IAuthTokenMap _authTokenMap = authTokenMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -33,10 +32,76 @@ namespace WarStreamer.Web.API.Controllers
         |*               GET               *|
         \* * * * * * * * * * * * * * * * * */
 
+        [HttpGet("@me")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<DiscordUser>> GetUserInformations()
+        {
+            try
+            {
+                // Get the user id
+                string userId = User.GetDiscordId();
+
+                // Get the authentication token associated to the user
+                AuthTokenViewModel? authToken = _authTokenMap.GetByUserId(userId);
+
+                // Verify it exists
+                if (authToken == null)
+                {
+                    return BadRequest(
+                        new { error = $"AuthToken not found for user with id '{userId}'" }
+                    );
+                }
+
+                // Fetch discord refresh token
+                string discordRefreshToken = _authService.DecryptToken(
+                    authToken.DiscordToken,
+                    authToken.DiscordIV
+                );
+
+                // Refresh discord tokens
+                DiscordAuthTokens discordTokens = await _authService.GetDiscordTokens(
+                    discordRefreshToken
+                );
+
+                // Fetch user informations
+                DiscordUser user = await _authService.GetUserInformations(
+                    discordTokens.AccessToken
+                );
+
+                // Encrypt discord refresh token
+                string cipherDiscord = _authService.EncryptToken(
+                    discordTokens.RefreshToken,
+                    out string initVectorDiscord
+                );
+
+                // Update the auth token
+                authToken.DiscordToken = cipherDiscord;
+                authToken.DiscordIV = initVectorDiscord;
+
+                _authTokenMap.Update(authToken);
+
+                // Return discord user
+                return Ok(user);
+            }
+            catch (HttpRequestException)
+            {
+                return BadRequest(new { error = "Discord refresh token invalid" });
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         /* * * * * * * * * * * * * * * * * *\
         |*               POST              *|
         \* * * * * * * * * * * * * * * * * */
 
+        [AllowAnonymous]
         [HttpPost("login")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -49,55 +114,59 @@ namespace WarStreamer.Web.API.Controllers
             try
             {
                 // Get the access token
-                AuthenticationToken authToken = await _authService.GetAccessToken(
+                DiscordAuthTokens discordTokens = await _authService.GetDiscordTokens(
                     discordAuth.Code,
                     discordAuth.CodeVerifier
                 );
 
                 // Get the user informations with the access token
-                DiscordUser user = await _authService.GetUserInformations(authToken.AccessToken);
-
-                // Check if user is already logged in
-                AuthRefreshTokenViewModel? anyAuthRefreshToken = _authRefreshTokenMap.GetByUserId(
-                    user.Id
+                DiscordUser user = await _authService.GetUserInformations(
+                    discordTokens.AccessToken
                 );
 
+                // Check if user is already logged in
+                AuthTokenViewModel? anyAuthToken = _authTokenMap.GetByUserId(user.Id);
+
                 // If token is still valid, refresh them
-                if (anyAuthRefreshToken?.ExpiresAt >= DateTime.UtcNow)
+                if (anyAuthToken?.ExpiresAt >= DateTime.UtcNow)
                 {
-                    return await RefreshTokens(
-                        user.Id,
-                        anyAuthRefreshToken.TokenValue,
-                        discordAuth.State
-                    );
+                    return await RefreshTokens();
                 }
-                else if (anyAuthRefreshToken != null)
+                else if (anyAuthToken != null)
                 {
                     // Token isn't valid anymore, but old one hasn't been deleted
-                    _authRefreshTokenMap.Delete(anyAuthRefreshToken);
+                    _authTokenMap.Delete(anyAuthToken);
                 }
 
-                // Build JWT token and refresh token
-                string jwtToken = _authService.GetJwtToken(user, discordAuth.State);
-                string refreshToken = _authService.BuildRefreshTokenFromDiscord(
-                    authToken.RefreshToken,
-                    out string initializationVector
+                // Build the JWT token
+                string jwtToken = _authService.BuildJwtToken(user, discordAuth.State);
+
+                // Encrypt the tokens
+                string cipherAccess = _authService.EncryptToken(
+                    jwtToken,
+                    out string initVectorAccess
+                );
+
+                string cipherDiscord = _authService.EncryptToken(
+                    discordTokens.RefreshToken,
+                    out string initVectorDiscord
                 );
 
                 // Build a AuthRefreshToken viewmodel
-                AuthRefreshTokenViewModel authRefreshToken =
+                AuthTokenViewModel authToken =
                     new(user.Id)
                     {
-                        TokenValue = refreshToken,
-                        AesInitializationVector = initializationVector
+                        AccessToken = cipherAccess,
+                        AccessIV = initVectorAccess,
+                        DiscordToken = cipherDiscord,
+                        DiscordIV = initVectorDiscord,
                     };
 
                 // Save to database
-                _authRefreshTokenMap.Create(authRefreshToken);
+                _authTokenMap.Create(authToken);
 
-                return Ok(
-                    new TokenResponseModel() { AccessToken = jwtToken, RefreshToken = refreshToken }
-                );
+                // Send token
+                return Ok(new TokenResponseModel() { Token = jwtToken });
             }
             catch (HttpRequestException)
             {
@@ -109,25 +178,26 @@ namespace WarStreamer.Web.API.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("logout")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<bool> Logout([FromBody] string userId)
+        public ActionResult<bool> Logout()
         {
-            AuthRefreshTokenViewModel? authRefreshToken = _authRefreshTokenMap.GetByUserId(userId);
+            // Fetch any token
+            string userId = User.GetDiscordId();
+            AuthTokenViewModel? authToken = _authTokenMap.GetByUserId(userId);
 
             // Verify if the token exists
-            if (authRefreshToken == null)
+            if (authToken == null)
             {
                 return BadRequest(
-                    new { error = $"AuthRefreshToken not found for user with id '{userId}'" }
+                    new { error = $"AuthToken not found for user with id '{userId}'" }
                 );
             }
 
-            return Ok(_authRefreshTokenMap.Delete(authRefreshToken));
+            return Ok(_authTokenMap.Delete(authToken));
         }
 
         [HttpPost("refresh")]
@@ -136,73 +206,74 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TokenResponseModel>> RefreshTokens(
-            [FromForm, Required] string userId,
-            [FromForm, Required] string refreshToken,
-            [FromForm, Required] string nonce
-        )
+        public async Task<ActionResult<TokenResponseModel>> RefreshTokens()
         {
             try
             {
-                AuthRefreshTokenViewModel? authRefreshToken = _authRefreshTokenMap.GetByUserId(
-                    userId
-                );
+                // Get the user id
+                string userId = User.GetDiscordId();
+
+                // Get the authentication token associated to the user
+                AuthTokenViewModel? authToken = _authTokenMap.GetByUserId(userId);
 
                 // Verify token exists
-                if (authRefreshToken == null)
+                if (authToken == null)
                 {
                     return Unauthorized(
-                        new { error = $"No refresh token registered for user with id '{userId}'" }
+                        new
+                        {
+                            error = $"No authentication token registered for user with id '{userId}'"
+                        }
                     );
                 }
 
-                // Verify if refreshToken is equal to the one that is registered
-                if (authRefreshToken.TokenValue != refreshToken)
+                // Verify that authentication token is still valid
+                if (authToken.ExpiresAt < DateTime.UtcNow)
                 {
-                    return Unauthorized(new { error = "The refresh token is invalid" });
+                    _authTokenMap.Delete(authToken);
+                    return Unauthorized(new { error = "Authentication token has expired" });
                 }
 
-                // Verify that refresh token is still valid
-                if (authRefreshToken.ExpiresAt < DateTime.UtcNow)
-                {
-                    _authRefreshTokenMap.Delete(authRefreshToken);
-                    return Unauthorized(new { error = "Refresh token has expired" });
-                }
-
-                // Recover the discord refresh token
-                string discordRefresh = _authService.GetDiscordRefreshToken(
-                    authRefreshToken.TokenValue,
-                    authRefreshToken.AesInitializationVector
+                // Decrypt the discord refresh token
+                string discordRefreshToken = _authService.DecryptToken(
+                    authToken.DiscordToken,
+                    authToken.DiscordIV
                 );
 
-                // Refresh the access token
-                AuthenticationToken authToken = await _authService.RefreshAccessToken(
-                    discordRefresh
+                // Refresh the discord tokens
+                DiscordAuthTokens discordTokens = await _authService.GetDiscordTokens(
+                    discordRefreshToken
                 );
 
                 // Get the user informations with the access token
-                DiscordUser user = await _authService.GetUserInformations(authToken.AccessToken);
-
-                // Build JWT token and refresh token
-                string jwtToken = _authService.GetJwtToken(user, nonce);
-                string newRefreshToken = _authService.BuildRefreshTokenFromDiscord(
-                    authToken.RefreshToken,
-                    out string initializationVector
+                DiscordUser user = await _authService.GetUserInformations(
+                    discordTokens.AccessToken
                 );
 
-                // Update the token from the database
-                authRefreshToken.TokenValue = newRefreshToken;
-                authRefreshToken.AesInitializationVector = initializationVector;
+                // Build the JWT token
+                string jwtToken = _authService.BuildJwtToken(user, string.Empty);
 
-                _authRefreshTokenMap.Update(authRefreshToken);
-
-                return Ok(
-                    new TokenResponseModel()
-                    {
-                        AccessToken = jwtToken,
-                        RefreshToken = newRefreshToken
-                    }
+                // Encrypt the new tokens
+                string cipherAccess = _authService.EncryptToken(
+                    jwtToken,
+                    out string initVectorAccess
                 );
+
+                string cipherDiscord = _authService.EncryptToken(
+                    discordTokens.RefreshToken,
+                    out string initVectorDiscord
+                );
+
+                // Update the auth token
+                authToken.AccessToken = cipherAccess;
+                authToken.AccessIV = initVectorAccess;
+                authToken.DiscordToken = cipherDiscord;
+                authToken.DiscordIV = initVectorDiscord;
+
+                _authTokenMap.Update(authToken);
+
+                // Send token
+                return Ok(new TokenResponseModel() { Token = jwtToken });
             }
             catch (HttpRequestException)
             {

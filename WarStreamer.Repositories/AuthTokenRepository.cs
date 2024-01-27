@@ -5,15 +5,15 @@ using WarStreamer.Repositories.RepositoryBase;
 
 namespace WarStreamer.Repositories
 {
-    public class AuthRefreshTokenRepository(IWarStreamerContext context)
+    public class AuthTokenRepository(IWarStreamerContext context)
         : Repository(context),
-            IAuthRefreshTokenRepository
+            IAuthTokenRepository
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public bool Delete(AuthRefreshToken domain)
+        public bool Delete(AuthToken domain)
         {
             try
             {
@@ -27,11 +27,11 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public AuthRefreshToken? GetByUserId(Guid userId)
+        public AuthToken? GetByUserId(Guid userId)
         {
             try
             {
-                return Context.Set<AuthRefreshToken>().FirstOrDefault(t => t.UserId == userId);
+                return Context.Set<AuthToken>().FirstOrDefault(t => t.UserId == userId);
             }
             catch (Exception)
             {
@@ -39,7 +39,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public AuthRefreshToken Save(AuthRefreshToken domain)
+        public AuthToken Save(AuthToken domain)
         {
             try
             {
@@ -53,11 +53,11 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public bool Update(AuthRefreshToken domain)
+        public bool Update(AuthToken domain)
         {
             try
             {
-                Update<AuthRefreshToken>(domain);
+                Update<AuthToken>(domain);
 
                 return true;
             }

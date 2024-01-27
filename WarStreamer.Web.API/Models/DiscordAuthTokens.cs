@@ -2,7 +2,7 @@
 
 namespace WarStreamer.Web.API.Authentication
 {
-    public class AuthenticationToken
+    public class DiscordAuthTokens
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
@@ -21,6 +21,6 @@ namespace WarStreamer.Web.API.Authentication
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private AuthenticationToken() { }
+        private DiscordAuthTokens() { }
     }
 }

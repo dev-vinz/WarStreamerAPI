@@ -1,14 +1,16 @@
 ﻿namespace WarStreamer.ViewModels
 {
-    public class AuthRefreshTokenViewModel
+    public class AuthTokenViewModel
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _userId;
-        private string _tokenValue;
-        private string _aesInitializationVector;
+        private string _accessToken;
+        private string _accessIV;
+        private string _discordToken;
+        private string _discordIV;
         private readonly DateTimeOffset _issuedAt;
         private readonly DateTimeOffset _expiresAt;
 
@@ -21,16 +23,28 @@
             get => _userId;
         }
 
-        public string TokenValue
+        public string AccessToken
         {
-            get => _tokenValue;
-            set => _tokenValue = value;
+            get => _accessToken;
+            set => _accessToken = value;
         }
 
-        public string AesInitializationVector
+        public string AccessIV
         {
-            get => _aesInitializationVector;
-            set => _aesInitializationVector = value;
+            get => _accessIV;
+            set => _accessIV = value;
+        }
+
+        public string DiscordToken
+        {
+            get => _discordToken;
+            set => _discordToken = value;
+        }
+
+        public string DiscordIV
+        {
+            get => _discordIV;
+            set => _discordIV = value;
         }
 
         public DateTimeOffset IssuedAt
@@ -47,11 +61,7 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public AuthRefreshTokenViewModel(
-            string userId,
-            DateTimeOffset issuedAt,
-            DateTimeOffset expiresAt
-        )
+        public AuthTokenViewModel(string userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
         {
             // Inputs
             {
@@ -62,12 +72,14 @@
 
             // Outputs
             {
-                _tokenValue = string.Empty;
-                _aesInitializationVector = string.Empty;
+                _accessToken = string.Empty;
+                _accessIV = string.Empty;
+                _discordToken = string.Empty;
+                _discordIV = string.Empty;
             }
         }
 
-        public AuthRefreshTokenViewModel(string userId)
+        public AuthTokenViewModel(string userId)
             : this(userId, DateTimeOffset.MinValue, DateTimeOffset.MinValue) { }
     }
 }

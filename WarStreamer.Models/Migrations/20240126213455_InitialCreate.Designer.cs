@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20240121103648_InitialCreate")]
+    [Migration("20240126213455_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -42,13 +42,25 @@ namespace WarStreamer.Models.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("WarStreamer.Models.AuthRefreshToken", b =>
+            modelBuilder.Entity("WarStreamer.Models.AuthToken", b =>
                 {
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AesInitializationVector")
+                    b.Property<string>("AccessIV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscordIV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DiscordToken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -58,13 +70,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<DateTimeOffset>("IssuedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("TokenValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("UserId");
 
-                    b.ToTable("AuthRefreshTokens");
+                    b.ToTable("AuthTokens");
                 });
 
             modelBuilder.Entity("WarStreamer.Models.Font", b =>
@@ -88,25 +96,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d2487fd7-67e4-479d-9ace-23d1befbec74"),
+                            Id = new Guid("ff193217-486e-4b9f-a63c-64f04909a0ba"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("16599ae9-4d07-4d90-9860-6708e78ba81a"),
+                            Id = new Guid("d785fa52-0316-4250-b161-c6713c263083"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("899d8f05-9234-4de4-b5ff-f29f222775f1"),
+                            Id = new Guid("54cbb611-5421-42a6-b5b7-ffb75f4a6181"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("7ee237c5-c4d7-4bf0-9c38-3c0fd79f5f1d"),
+                            Id = new Guid("463f666e-16ff-4ff7-9545-f7c382bec74d"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -167,7 +175,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a3af84a8-67b4-4919-97d4-5fe5742b7ad6"),
+                            Id = new Guid("81c1f599-ac64-4faa-8d21-a36bb6e9d609"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -175,7 +183,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f243d5a5-660f-4829-a82e-4c104eb04d5c"),
+                            Id = new Guid("4d29a292-ebe1-4b7f-8707-12e525a50e79"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",

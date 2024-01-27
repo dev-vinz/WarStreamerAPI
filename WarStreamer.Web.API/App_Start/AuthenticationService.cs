@@ -3,12 +3,16 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using AspNet.Security.OAuth.Discord;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using WarStreamer.Commons.Extensions;
 using WarStreamer.Commons.Tools;
+using WarStreamer.Interfaces.Maps;
+using WarStreamer.ViewModels;
 using WarStreamer.Web.API.Authentication;
 using WarStreamer.Web.API.Models;
 
@@ -16,6 +20,12 @@ namespace WarStreamer.Web.API.App_Start
 {
     public class AuthenticationService
     {
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                             CONSTANTS                             *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        private static readonly string CONFIG_AES = "AesKey";
+
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -51,7 +61,7 @@ namespace WarStreamer.Web.API.App_Start
                     ?? throw new ArgumentNullException(nameof(_jwtConfig));
 
                 _aesKey =
-                    _configuration.GetValue<string>("AesKey", null!)
+                    _configuration.GetValue<string>(CONFIG_AES, null!)
                     ?? throw new ArgumentNullException(nameof(_aesKey));
             }
         }
@@ -60,16 +70,59 @@ namespace WarStreamer.Web.API.App_Start
         |*                           PUBLIC METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public string BuildRefreshTokenFromDiscord(
-            string discordToken,
-            out string initializationVector
-        )
+        public string BuildJwtToken(DiscordUser user, string nonce)
         {
-            AesEncryption aes = new(_aesKey);
-            return aes.Encrypt(discordToken, out initializationVector);
+            // Build the security
+            JwtSecurityTokenHandler tokenHandler = new();
+
+            // Create RSA instance and import private key
+            using RSA rsa = RSA.Create();
+            rsa.ImportFromPem(_jwtConfig.PrivateKey);
+
+            // Export parameters and create security key
+            RSAParameters parameters = rsa.ExportParameters(true);
+            RsaSecurityKey securityKey = new(parameters) { KeyId = _jwtConfig.KeyId };
+
+            // Build token
+            SecurityTokenDescriptor tokenDescriptor =
+                new()
+                {
+                    Subject = new ClaimsIdentity(
+                        new[]
+                        {
+                            new Claim(JwtClaimTypes.Subject, user.Id),
+                            new Claim(JwtClaimTypes.Name, user.Username),
+                            new Claim(JwtClaimTypes.Nonce, nonce),
+                            new Claim(JwtClaimTypes.Role, "User")
+                        }
+                    ),
+                    Expires = DateTime.UtcNow.AddHours(2),
+                    SigningCredentials = new SigningCredentials(
+                        securityKey,
+                        SecurityAlgorithms.RsaSha256
+                    ),
+                    Issuer = _jwtConfig.Domain,
+                    Audience = _jwtConfig.Audience,
+                };
+
+            // Create whole token
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
-        public async Task<AuthenticationToken> GetAccessToken(string code, string codeVerifier)
+        public string DecryptToken(string cipherToken, string initVector)
+        {
+            AesEncryption aes = new(_aesKey);
+            return aes.Decrypt(cipherToken, initVector);
+        }
+
+        public string EncryptToken(string plainToken, out string initVector)
+        {
+            AesEncryption aes = new(_aesKey);
+            return aes.Encrypt(plainToken, out initVector);
+        }
+
+        public async Task<DiscordAuthTokens> GetDiscordTokens(string code, string codeVerifier)
         {
             // Create a new HttpClient
             _httpClient.DefaultRequestHeaders.Clear();
@@ -100,80 +153,10 @@ namespace WarStreamer.Web.API.App_Start
             // Get the token from response
             string content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<AuthenticationToken>(content)!;
+            return JsonConvert.DeserializeObject<DiscordAuthTokens>(content)!;
         }
 
-        public string GetDiscordRefreshToken(string cipherToken, string initializationVector)
-        {
-            AesEncryption aes = new(_aesKey);
-            return aes.Decrypt(cipherToken, initializationVector);
-        }
-
-        public string GetJwtToken(DiscordUser user, string nonce)
-        {
-            // Build the security
-            JwtSecurityTokenHandler tokenHandler = new();
-
-            // Create RSA instance and import private key
-            using RSA rsa = RSA.Create();
-            rsa.ImportFromPem(_jwtConfig.PrivateKey);
-
-            // Export parameters and create security key
-            RSAParameters parameters = rsa.ExportParameters(true);
-            RsaSecurityKey securityKey = new(parameters) { KeyId = _jwtConfig.KeyId };
-
-            // Build token
-            SecurityTokenDescriptor tokenDescriptor =
-                new()
-                {
-                    Subject = new ClaimsIdentity(
-                        new[]
-                        {
-                            new Claim("sub", user.Id),
-                            new Claim("name", user.GlobalName ?? string.Empty),
-                            new Claim("username", user.Username),
-                            new Claim("email", user.Email ?? string.Empty),
-                            new Claim("avatarUrl", user.AvatarUrl),
-                            new Claim("nonce", nonce)
-                        }
-                    ),
-                    Expires = DateTime.UtcNow.AddHours(2),
-                    SigningCredentials = new SigningCredentials(
-                        securityKey,
-                        SecurityAlgorithms.RsaSha256
-                    ),
-                    Issuer = _jwtConfig.Domain,
-                    Audience = _jwtConfig.Audience,
-                };
-
-            // Create whole token
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<DiscordUser> GetUserInformations(string accessToken)
-        {
-            // Create a new HttpClient
-            _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                "Bearer",
-                accessToken
-            );
-
-            // Make the request to discord
-            HttpResponseMessage response = await _httpClient.GetAsync(
-                DiscordAuthenticationDefaults.UserInformationEndpoint
-            );
-
-            response.EnsureSuccessStatusCode();
-
-            // Get the user from response
-            string content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<DiscordUser>(content)!;
-        }
-
-        public async Task<AuthenticationToken> RefreshAccessToken(string refreshToken)
+        public async Task<DiscordAuthTokens> GetDiscordTokens(string discordRefreshToken)
         {
             // Create a new HttpClient
             _httpClient.DefaultRequestHeaders.Clear();
@@ -187,7 +170,7 @@ namespace WarStreamer.Web.API.App_Start
                     "grant_type",
                     OpenIdConnectGrantTypes.RefreshToken
                 ),
-                new KeyValuePair<string, string>("refresh_token", refreshToken),
+                new KeyValuePair<string, string>("refresh_token", discordRefreshToken),
             ];
 
             // Make the request to Discord
@@ -201,7 +184,29 @@ namespace WarStreamer.Web.API.App_Start
             // Get the token from response
             string content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<AuthenticationToken>(content)!;
+            return JsonConvert.DeserializeObject<DiscordAuthTokens>(content)!;
+        }
+
+        public async Task<DiscordUser> GetUserInformations(string discordAccessToken)
+        {
+            // Create a new HttpClient
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer",
+                discordAccessToken
+            );
+
+            // Make the request to discord
+            HttpResponseMessage response = await _httpClient.GetAsync(
+                DiscordAuthenticationDefaults.UserInformationEndpoint
+            );
+
+            response.EnsureSuccessStatusCode();
+
+            // Get the user from response
+            string content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<DiscordUser>(content)!;
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -237,17 +242,128 @@ namespace WarStreamer.Web.API.App_Start
                         ValidIssuer = jwtConfiguration.Domain,
                         ValidAudience = jwtConfiguration.Audience,
                         ValidAlgorithms = new[] { SecurityAlgorithms.RsaSha256 },
+                        NameClaimType = JwtClaimTypes.Name,
+                        RoleClaimType = JwtClaimTypes.Role,
                     };
                     options.Events = new JwtBearerEvents
                     {
-                        OnAuthenticationFailed = context =>
-                        {
-                            return Task.CompletedTask;
-                        }
+                        OnAuthenticationFailed = context => AuthenticationFailed(context),
+                        OnTokenValidated = context => TokenValidated(context),
                     };
                 });
 
             services.AddHttpClient<AuthenticationService>();
+        }
+
+        private static Task AuthenticationFailed(AuthenticationFailedContext context)
+        {
+            // Get the refresh token map
+            IAuthTokenMap? authTokenMap =
+                context.HttpContext.RequestServices.GetService<IAuthTokenMap>();
+
+            // Verify it exists
+            if (authTokenMap == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            // Fetch the expired token
+            string? expiredToken = context
+                .Request.Headers.Authorization.FirstOrDefault()
+                ?.Split(" ")
+                .Last();
+
+            // Verify it exists
+            if (expiredToken == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            // If the exception is SecurityTokenExpired and the request is refresh
+            if (
+                context.Exception is SecurityTokenExpiredException
+                && context.Request.Path == "/auth/refresh"
+            )
+            {
+                JwtSecurityTokenHandler handler = new();
+
+                // If token can't be parsed
+                if (handler.ReadToken(expiredToken) is not JwtSecurityToken jsonToken)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Get the authentication token from the JWT token
+                AuthTokenViewModel? authToken = authTokenMap.GetByUserId(jsonToken.Subject);
+
+                // Verify it exists
+                if (authToken == null)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Get AES private key
+                string aesKey =
+                    context
+                        .HttpContext.RequestServices.GetService<IConfiguration>()
+                        ?.GetValue<string>(CONFIG_AES, null!)
+                    ?? throw new ArgumentNullException(nameof(_aesKey));
+
+                // Decrypt registered access key
+                AesEncryption aes = new(aesKey);
+                string oldAccessToken = aes.Decrypt(authToken.AccessToken, authToken.AccessIV);
+
+                // If the tokens aren't the same, deny the access
+                if (oldAccessToken != expiredToken)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Create temporary a claims identity with only the user id
+                ClaimsIdentity claims =
+                    new(
+                        new Claim[] { new(JwtClaimTypes.Subject, jsonToken.Subject), },
+                        "temp_refresh_authorization"
+                    );
+
+                context.Principal = new ClaimsPrincipal(claims);
+                context.Success();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private static Task TokenValidated(TokenValidatedContext context)
+        {
+            // Get the refresh token map
+            IAuthTokenMap? authTokenMap =
+                context.HttpContext.RequestServices.GetService<IAuthTokenMap>();
+
+            // Verify it exists
+            if (authTokenMap == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            // Ensure it's a jwt token
+            if (context.SecurityToken is not JsonWebToken jwtToken)
+            {
+                return Task.CompletedTask;
+            }
+
+            // Get the authentication token from the JWT token
+            AuthTokenViewModel? authToken = authTokenMap.GetByUserId(jwtToken.Subject);
+
+            // Verify it exists
+            if (authToken != null)
+            {
+                return Task.CompletedTask;
+            }
+
+            // Otherwise, throw an unauthorize exception
+            context.Fail(new UnauthorizedAccessException());
+
+            return Task.CompletedTask;
         }
     }
 }
