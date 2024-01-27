@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public bool Delete(TeamLogoViewModel viewModel);
 
-        public List<TeamLogoViewModel> GetAll();
-
         public List<TeamLogoViewModel> GetByUserId(string userId);
 
         public TeamLogoViewModel? GetByUserIdAndName(string userId, string name);

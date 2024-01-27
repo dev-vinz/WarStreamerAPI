@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
+using WarStreamer.Web.API.Extensions;
 
 namespace WarStreamer.Web.API.Controllers
 {
@@ -28,9 +29,12 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<AccountViewModel>> GetAll()
+        public ActionResult<List<AccountViewModel>> Get()
         {
-            return Ok(_accountMap.GetAll());
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            return Ok(_accountMap.GetByUserId(userId));
         }
 
         [HttpGet]
@@ -38,6 +42,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<AccountViewModel?> GetByTag(string userTag)
         {
@@ -55,6 +60,15 @@ namespace WarStreamer.Web.API.Controllers
                 return NotFound(new { error = $"Account with tag '{userTag}' not found" });
             }
 
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (account.UserId != userId)
+            {
+                return Forbid();
+            }
+
             return Ok(account);
         }
 
@@ -67,6 +81,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<AccountViewModel> Create([FromBody] AccountViewModel account)
         {
@@ -74,6 +89,15 @@ namespace WarStreamer.Web.API.Controllers
             if (_accountMap.GetByTag(account.Tag) != null)
             {
                 return Conflict(new { error = $"Account with tag '{account.Tag}' already exists" });
+            }
+
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (account.UserId != userId)
+            {
+                return Forbid();
             }
 
             return Created($"~/accounts/{account.Tag}", _accountMap.Create(account));
@@ -92,6 +116,7 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> Delete(string userTag)
         {
@@ -107,6 +132,15 @@ namespace WarStreamer.Web.API.Controllers
             if (account == null)
             {
                 return NotFound(new { error = $"Account with tag '{userTag}' not found" });
+            }
+
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (account.UserId != userId)
+            {
+                return Forbid();
             }
 
             return Ok(_accountMap.Delete(account));

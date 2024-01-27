@@ -119,56 +119,6 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(2)]
-        public void WhenGetAllOverlaySettings_ThenReturnsOverlaySettings()
-        {
-            List<OverlaySetting> settings = _repository.GetAll();
-
-            OverlaySetting setting = Assert.Single(settings);
-
-            Assert.Equal(USER_ID, setting.UserId);
-            Assert.Equal(FONT_ID, setting.FontId);
-            Assert.Equal(TEXT_COLOR, setting.TextColor);
-
-            Assert.Equal(IS_LOGO, setting.IsLogo);
-            Assert.Equal(LOGO_SIZE, setting.LogoSize);
-            Assert.Equal(LOGO_LOCATION_X, setting.LogoLocationX);
-            Assert.Equal(LOGO_LOCATION_Y, setting.LogoLocationY);
-
-            Assert.Equal(IS_CLAN_NAME, setting.IsClanName);
-            Assert.Equal(CLAN_NAME_SIZE, setting.ClanNameSize);
-            Assert.Equal(CLAN_NAME_LOCATION_X, setting.ClanNameLocationX);
-            Assert.Equal(CLAN_NAME_LOCATION_Y, setting.ClanNameLocationY);
-
-            Assert.Equal(IS_TOTAL_STARS, setting.IsTotalStars);
-            Assert.Equal(TOTAL_STARS_SIZE, setting.TotalStarsSize);
-            Assert.Equal(TOTAL_STARS_LOCATION_X, setting.TotalStarsLocationX);
-            Assert.Equal(TOTAL_STARS_LOCATION_Y, setting.TotalStarsLocationY);
-
-            Assert.Equal(IS_TOTAL_PERCENTAGE, setting.IsTotalPercentage);
-            Assert.Equal(TOTAL_PERCENTAGE_SIZE, setting.TotalPercentageSize);
-            Assert.Equal(TOTAL_PERCENTAGE_LOCATION_X, setting.TotalPercentageLocationX);
-            Assert.Equal(TOTAL_PERCENTAGE_LOCATION_Y, setting.TotalPercentageLocationY);
-
-            Assert.Equal(IS_AVERAGE_DURATION, setting.IsAverageDuration);
-            Assert.Equal(AVERAGE_DURATION_SIZE, setting.AverageDurationSize);
-            Assert.Equal(AVERAGE_DURATION_LOCATION_X, setting.AverageDurationLocationX);
-            Assert.Equal(AVERAGE_DURATION_LOCATION_Y, setting.AverageDurationLocationY);
-
-            Assert.Equal(IS_PLAYER_DETAILS, setting.IsPlayerDetails);
-            Assert.Equal(PLAYER_DETAILS_SIZE, setting.PlayerDetailsSize);
-            Assert.Equal(PLAYER_DETAILS_LOCATION_X, setting.PlayerDetailsLocationX);
-            Assert.Equal(PLAYER_DETAILS_LOCATION_Y, setting.PlayerDetailsLocationY);
-
-            Assert.Equal(IS_LAST_ATTACK_TO_WIN, setting.IsLastAttackToWin);
-            Assert.Equal(LAST_ATTACK_TO_WIN_SIZE, setting.LastAttackToWinSize);
-            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_X, setting.LastAttackToWinLocationX);
-            Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_Y, setting.LastAttackToWinLocationY);
-
-            Assert.Equal(MIRROR_REFLECTION, setting.MirrorReflection);
-        }
-
-        [Fact]
-        [TestOrder(3)]
         public void WhenGetOverlaySettingByUserId_ThenReturnsOverlaySetting()
         {
             OverlaySetting? setting = _repository.GetByUserId(USER_ID);
@@ -218,14 +168,14 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(4)]
+        [TestOrder(3)]
         public void WhenGetOverlaySettingByUserId_ThenReturnsNull()
         {
             Assert.Null(_repository.GetByUserId(FONT_ID));
         }
 
         [Fact]
-        [TestOrder(5)]
+        [TestOrder(4)]
         public void WhenUpdateOverlaySetting_ThenReturnsTrue()
         {
             OverlaySetting? setting = _repository.GetByUserId(USER_ID);
@@ -238,14 +188,14 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(5)]
         public void WhenDeleteOverlaySetting_ThenReturnsTrue()
         {
             OverlaySetting? setting = _repository.GetByUserId(USER_ID);
 
             Assert.NotNull(setting);
             Assert.True(_repository.Delete(setting));
-            Assert.Empty(_repository.GetAll());
+            Assert.Null(_repository.GetByUserId(USER_ID));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

@@ -18,7 +18,7 @@ namespace WarStreamer.Web.API.Models
         public string? GlobalName { get; private set; }
 
         [JsonProperty("avatar")]
-        private string AvatarHash { get; set; } = null!;
+        public string AvatarHash { get; private set; } = null!;
 
         [JsonProperty("email")]
         public string? Email { get; private set; }

@@ -28,18 +28,6 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<TeamLogo> GetAll()
-        {
-            try
-            {
-                return [.. Context.Set<TeamLogo>()];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public List<TeamLogo> GetByUserId(Guid userId)
         {
             try

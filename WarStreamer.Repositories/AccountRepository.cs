@@ -27,18 +27,6 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<Account> GetAll()
-        {
-            try
-            {
-                return [.. Context.Set<Account>()];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public Account? GetByTag(string tag)
         {
             try

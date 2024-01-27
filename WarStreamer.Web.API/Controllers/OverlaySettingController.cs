@@ -2,28 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
-using WarStreamer.Web.API.ResponseModels;
+using WarStreamer.Web.API.Extensions;
 
 namespace WarStreamer.Web.API.Controllers
 {
     [Authorize]
-    [Route("overlaysettings/")]
-    public class OverlaySettingController(
-        IWebHostEnvironment environment,
-        IImageMap imageMap,
-        IOverlaySettingMap overlaySettingMap,
-        IUserMap userMap
-    ) : Controller
+    [Route("overlaysetting/")]
+    public class OverlaySettingController(IOverlaySettingMap overlaySettingMap) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IWebHostEnvironment _environment = environment;
-
-        private readonly IImageMap _imageMap = imageMap;
         private readonly IOverlaySettingMap _overlaySettingMap = overlaySettingMap;
-        private readonly IUserMap _userMap = userMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -38,68 +29,21 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<OverlaySettingViewModel>> GetAll()
-        {
-            return Ok(_overlaySettingMap.GetAll());
-        }
-
-        [HttpGet]
-        [Route("{userId}")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<OverlaySettingViewModel> GetByUserId(string userId)
+        public ActionResult<OverlaySettingViewModel> Get()
         {
-            OverlaySettingViewModel? setting = _overlaySettingMap.GetByUserId(userId);
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
 
-            // Verify if the overlay setting exists
-            if (setting == null)
+            OverlaySettingViewModel? overlay = _overlaySettingMap.GetByUserId(userId);
+
+            // Verify if the user exists
+            if (overlay == null)
             {
-                return NotFound(
-                    new { error = $"Overlay setting with user id '{userId}' not found" }
-                );
+                return NotFound(new { error = "Overlay setting not found" });
             }
 
-            return Ok(setting);
-        }
-
-        [HttpGet]
-        [Route("{userId}/images")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<ImageResponseModel>> GetImages(string userId)
-        {
-            OverlaySettingViewModel? setting = _overlaySettingMap.GetByUserId(userId);
-
-            // Verify if the overlay setting exists
-            if (setting == null)
-            {
-                return NotFound(
-                    new { error = $"Overlay setting with user id '{userId}' not found" }
-                );
-            }
-
-            List<ImageResponseModel> images = _imageMap
-                .GetByOverlaySettingId(userId)
-                .Select(
-                    i =>
-                        new ImageResponseModel
-                        {
-                            OverlaySettingId = i.OverlaySettingId,
-                            Name = i.Name,
-                            Image = GetImage(i.OverlaySettingId, i.Name),
-                            LocationX = i.Location.X,
-                            LocationY = i.Location.Y,
-                            Width = i.Width,
-                            Height = i.Height
-                        }
-                )
-                .ToList();
-
-            return Ok(images);
+            return Ok(overlay);
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -110,34 +54,29 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<OverlaySettingViewModel> Create(
             [FromBody] OverlaySettingViewModel setting
         )
         {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (setting.UserId != userId)
+            {
+                return Forbid();
+            }
+
             // Verify if the overlay setting already exists
             if (_overlaySettingMap.GetByUserId(setting.UserId) != null)
             {
-                return Conflict(
-                    new
-                    {
-                        error = $"Overlay setting with user id '{setting.UserId}' already exists"
-                    }
-                );
+                return Conflict(new { error = "Overlay setting already exists" });
             }
 
-            // Verify if the user exists
-            if (_userMap.GetById(setting.UserId) == null)
-            {
-                return BadRequest(new { error = $"User with id '{setting.UserId}' not found" });
-            }
-
-            return Created(
-                $"~/overlaysettings/{setting.UserId}",
-                _overlaySettingMap.Create(setting)
-            );
+            return Created($"~/overlaysetting", _overlaySettingMap.Create(setting));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -145,51 +84,66 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpPut]
-        [Route("{userId}")]
+        [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(string userId, [FromBody] OverlaySettingViewModel setting)
+        public ActionResult<bool> Update([FromBody] OverlaySettingViewModel setting)
         {
-            // Verify if the overlay setting exists
-            if (_overlaySettingMap.GetByUserId(userId) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (setting.UserId != userId)
             {
-                return NotFound(
-                    new { error = $"Overlay setting with user id '{userId}' not found" }
-                );
+                return Forbid();
             }
 
-            // Create a new overlay setting with id
-            setting = new(userId)
-            {
-                FontId = setting.FontId,
-                TextColor = setting.TextColor,
-                LogoVisible = setting.LogoVisible,
-                LogoSize = setting.LogoSize,
-                LogoLocation = setting.LogoLocation,
-                ClanNameVisible = setting.ClanNameVisible,
-                ClanNameSize = setting.ClanNameSize,
-                ClanNameLocation = setting.ClanNameLocation,
-                TotalStarsVisible = setting.TotalStarsVisible,
-                TotalStarsSize = setting.TotalStarsSize,
-                TotalStarsLocation = setting.TotalStarsLocation,
-                TotalPercentageVisible = setting.TotalPercentageVisible,
-                TotalPercentageSize = setting.TotalPercentageSize,
-                TotalPercentageLocation = setting.TotalPercentageLocation,
-                AverageDurationVisible = setting.AverageDurationVisible,
-                AverageDurationSize = setting.AverageDurationSize,
-                AverageDurationLocation = setting.AverageDurationLocation,
-                PlayerDetailsVisible = setting.PlayerDetailsVisible,
-                PlayerDetailsSize = setting.PlayerDetailsSize,
-                PlayerDetailsLocation = setting.PlayerDetailsLocation,
-                LastAttackToWinVisible = setting.LastAttackToWinVisible,
-                LastAttackToWinSize = setting.LastAttackToWinSize,
-                LastAttackToWinLocation = setting.LastAttackToWinLocation,
-                MirrorReflection = setting.MirrorReflection,
-            };
+            OverlaySettingViewModel? anySetting = _overlaySettingMap.GetByUserId(userId);
 
-            return Ok(_overlaySettingMap.Update(setting));
+            // Verify if the overlay setting exists
+            if (anySetting == null)
+            {
+                return NotFound(new { error = $"Overlay setting not found" });
+            }
+
+            // Update the overlay setting
+            anySetting.FontId = setting.FontId;
+            anySetting.TextColor = setting.TextColor;
+
+            anySetting.LogoVisible = setting.LogoVisible;
+            anySetting.LogoSize = setting.LogoSize;
+            anySetting.LogoLocation = setting.LogoLocation;
+
+            anySetting.ClanNameVisible = setting.ClanNameVisible;
+            anySetting.ClanNameSize = setting.ClanNameSize;
+            anySetting.ClanNameLocation = setting.ClanNameLocation;
+
+            anySetting.TotalStarsVisible = setting.TotalStarsVisible;
+            anySetting.TotalStarsSize = setting.TotalStarsSize;
+            anySetting.TotalStarsLocation = setting.TotalStarsLocation;
+
+            anySetting.TotalPercentageVisible = setting.TotalPercentageVisible;
+            anySetting.TotalPercentageSize = setting.TotalPercentageSize;
+            anySetting.TotalPercentageLocation = setting.TotalPercentageLocation;
+
+            anySetting.AverageDurationVisible = setting.AverageDurationVisible;
+            anySetting.AverageDurationSize = setting.AverageDurationSize;
+            anySetting.AverageDurationLocation = setting.AverageDurationLocation;
+
+            anySetting.PlayerDetailsVisible = setting.PlayerDetailsVisible;
+            anySetting.PlayerDetailsSize = setting.PlayerDetailsSize;
+            anySetting.PlayerDetailsLocation = setting.PlayerDetailsLocation;
+
+            anySetting.LastAttackToWinVisible = setting.LastAttackToWinVisible;
+            anySetting.LastAttackToWinSize = setting.LastAttackToWinSize;
+            anySetting.LastAttackToWinLocation = setting.LastAttackToWinLocation;
+
+            anySetting.MirrorReflection = setting.MirrorReflection;
+
+            return Ok(_overlaySettingMap.Update(anySetting));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -197,33 +151,25 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpDelete]
-        [Route("{userId}")]
+        [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(string userId)
+        public ActionResult<bool> Delete()
         {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
             OverlaySettingViewModel? setting = _overlaySettingMap.GetByUserId(userId);
 
             // Verify if the overlay setting exists
             if (setting == null)
             {
-                return NotFound(
-                    new { error = $"Overlay setting with user id '{userId}' not found" }
-                );
+                return NotFound(new { error = $"Overlay setting not found" });
             }
 
             return Ok(_overlaySettingMap.Delete(setting));
-        }
-
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-        |*                          PRIVATE METHODS                          *|
-        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-        private byte[] GetImage(string overlaySettingId, string name)
-        {
-            return ImageController.GetImage(_environment, overlaySettingId, name);
         }
     }
 }

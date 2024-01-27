@@ -53,16 +53,19 @@ namespace WarStreamer.Web.API.App_Start
             // Tools
             {
                 _discordConfig =
-                    _configuration.GetSection<DiscordConfig>()
-                    ?? throw new ArgumentNullException(nameof(_discordConfig));
+                    configuration.GetSection<DiscordConfig>()
+                    ?? throw new ArgumentNullException(
+                        nameof(configuration),
+                        "Invalid Discord Key"
+                    );
 
                 _jwtConfig =
-                    _configuration.GetSection<JwtConfig>()
-                    ?? throw new ArgumentNullException(nameof(_jwtConfig));
+                    configuration.GetSection<JwtConfig>()
+                    ?? throw new ArgumentNullException(nameof(configuration), "Invalid JWT key");
 
                 _aesKey =
-                    _configuration.GetValue<string>(CONFIG_AES, null!)
-                    ?? throw new ArgumentNullException(nameof(_aesKey));
+                    configuration.GetValue<string>(CONFIG_AES, null!)
+                    ?? throw new ArgumentNullException(nameof(configuration), "Invalid AES key");
             }
         }
 
@@ -307,7 +310,7 @@ namespace WarStreamer.Web.API.App_Start
                     context
                         .HttpContext.RequestServices.GetService<IConfiguration>()
                         ?.GetValue<string>(CONFIG_AES, null!)
-                    ?? throw new ArgumentNullException(nameof(_aesKey));
+                    ?? throw new ArgumentNullException(nameof(context), "Invalid AES key");
 
                 // Decrypt registered access key
                 AesEncryption aes = new(aesKey);

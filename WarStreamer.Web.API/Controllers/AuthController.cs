@@ -13,8 +13,12 @@ namespace WarStreamer.Web.API.Controllers
 {
     [Authorize]
     [Route("auth/")]
-    public class AuthController(AuthenticationService authService, IAuthTokenMap authTokenMap)
-        : Controller
+    public class AuthController(
+        AuthenticationService authService,
+        IWebHostEnvironment environment,
+        IAuthTokenMap authTokenMap,
+        IUserMap userMap
+    ) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
@@ -22,7 +26,10 @@ namespace WarStreamer.Web.API.Controllers
 
         private readonly AuthenticationService _authService = authService;
 
+        private readonly IWebHostEnvironment _environment = environment;
+
         private readonly IAuthTokenMap _authTokenMap = authTokenMap;
+        private readonly IUserMap _userMap = userMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -136,6 +143,27 @@ namespace WarStreamer.Web.API.Controllers
                 {
                     // Token isn't valid anymore, but old one hasn't been deleted
                     _authTokenMap.Delete(anyAuthToken);
+                }
+
+                UserViewModel? anyUser = _userMap.GetById(user.Id);
+
+                // Create user if he doesn't exists
+                if (anyUser == null)
+                {
+                    anyUser = new UserViewModel(user.Id)
+                    {
+                        LanguageId = "4d29a292-ebe1-4b7f-8707-12e525a50e79",
+                        TierLevel = 0,
+                        NewsLetter = false,
+                    };
+
+                    UserViewModel userCreated = _userMap.Create(anyUser);
+
+                    // Create the user folder, for future images and logos
+                    if (!Directory.Exists($@"{_environment.WebRootPath}\{userCreated.Id}"))
+                    {
+                        Directory.CreateDirectory($@"{_environment.WebRootPath}\{userCreated.Id}");
+                    }
                 }
 
                 // Build the JWT token

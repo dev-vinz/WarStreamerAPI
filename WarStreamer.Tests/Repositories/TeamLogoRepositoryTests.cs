@@ -53,19 +53,6 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(2)]
-        public void WhenGetAllTeamLogos_ThenReturnsTeamLogos()
-        {
-            List<TeamLogo> logos = _repository.GetAll();
-
-            TeamLogo logo = Assert.Single(logos);
-
-            Assert.Equal(TEAM_NAME.ToUpper(), logo.TeamName);
-            Assert.Equal(USER_ID, logo.UserId);
-            Assert.Equal(CLAN_TAGS, logo.ClanTags);
-        }
-
-        [Fact]
-        [TestOrder(3)]
         public void WhenGetTeamLogosByUserId_ThenReturnsTeamLogos()
         {
             List<TeamLogo> logos = _repository.GetByUserId(USER_ID);
@@ -78,14 +65,14 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(4)]
+        [TestOrder(3)]
         public void WhenGetTeamLogosByUserId_ThenReturnsEmpty()
         {
             Assert.Empty(_repository.GetByUserId(USER_ID_2));
         }
 
         [Fact]
-        [TestOrder(5)]
+        [TestOrder(4)]
         public void WhenGetTeamLogoByUserIdAndName_ThenReturnsTeamLogo()
         {
             TeamLogo? logo = _repository.GetByUserIdAndName(USER_ID, TEAM_NAME);
@@ -98,7 +85,7 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(5)]
         public void WhenGetTeamLogoByUserIdAndName_ThenReturnsNull()
         {
             TeamLogo? logo = _repository.GetByUserIdAndName(USER_ID_2, TEAM_NAME);
@@ -107,13 +94,13 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(7)]
+        [TestOrder(6)]
         public void WhenDeleteTeamLogo_ThenReturnsTrue()
         {
-            TeamLogo logo = Assert.Single(_repository.GetAll());
+            TeamLogo logo = Assert.Single(_repository.GetByUserId(USER_ID));
 
             Assert.True(_repository.Delete(logo));
-            Assert.Empty(_repository.GetAll());
+            Assert.Empty(_repository.GetByUserId(USER_ID));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

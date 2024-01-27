@@ -31,11 +31,6 @@ namespace WarStreamer.Maps
             return _service.Delete(setting);
         }
 
-        public List<OverlaySettingViewModel> GetAll()
-        {
-            return DomainToViewModel(_service.GetAll());
-        }
-
         public OverlaySettingViewModel? GetByUserId(string userId)
         {
             Guid guid = Guid.Empty.ParseDiscordId(userId);
@@ -104,11 +99,6 @@ namespace WarStreamer.Maps
                 ),
                 MirrorReflection = domain.MirrorReflection,
             };
-        }
-
-        private static List<OverlaySettingViewModel> DomainToViewModel(List<OverlaySetting> domain)
-        {
-            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static OverlaySetting ViewModelToDomain(

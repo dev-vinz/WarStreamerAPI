@@ -58,20 +58,6 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(2)]
-        public void WhenGetAllWarOverlays_ThenReturnsWarOverlays()
-        {
-            List<WarOverlay> overlays = _repository.GetAll();
-
-            WarOverlay overlay = Assert.Single(overlays);
-
-            Assert.Equal(USER_ID, overlay.UserId);
-            Assert.Equal(ID, overlay.Id);
-            Assert.Equal(CLAN_TAG, overlay.ClanTag);
-            Assert.Equal(IS_ENDED, overlay.IsEnded);
-        }
-
-        [Fact]
-        [TestOrder(3)]
         public void WhenGetWarOverlaysByUserId_ThenReturnsWarOverlays()
         {
             List<WarOverlay> overlays = _repository.GetByUserId(USER_ID);
@@ -85,14 +71,14 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(4)]
+        [TestOrder(3)]
         public void WhenGetWarOverlaysByUserId_ThenReturnsEmpty()
         {
             Assert.Empty(_repository.GetByUserId(USER_ID_2));
         }
 
         [Fact]
-        [TestOrder(5)]
+        [TestOrder(4)]
         public void WhenGetWarOverlayByUserIdAndId_ThenReturnsWarOverlay()
         {
             WarOverlay? overlay = _repository.GetByUserIdAndId(USER_ID, ID);
@@ -106,7 +92,7 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(5)]
         public void WhenGetOverlayByUserIdAndId_ThenReturnsNull()
         {
             WarOverlay? overlay = _repository.GetByUserIdAndId(USER_ID, ID + 1);
@@ -115,7 +101,7 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(7)]
+        [TestOrder(6)]
         public void WhenUpdateWarOverlay_ThenReturnsTrue()
         {
             WarOverlay overlay = Assert.Single(_repository.GetByUserId(USER_ID));
@@ -126,20 +112,20 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.True(_repository.Update(overlay));
 
-            WarOverlay updatedOverlay = Assert.Single(_repository.GetAll());
+            WarOverlay updatedOverlay = Assert.Single(_repository.GetByUserId(USER_ID));
 
             Assert.Equal(overlay.LastCheckout, updatedOverlay.LastCheckout);
             Assert.Equal(overlay.IsEnded, updatedOverlay.IsEnded);
         }
 
         [Fact]
-        [TestOrder(8)]
+        [TestOrder(7)]
         public void WhenDeleteWarOverlay_ThenReturnsTrue()
         {
             WarOverlay overlay = Assert.Single(_repository.GetByUserId(USER_ID));
 
             Assert.True(_repository.Delete(overlay));
-            Assert.Empty(_repository.GetAll());
+            Assert.Empty(_repository.GetByUserId(USER_ID));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

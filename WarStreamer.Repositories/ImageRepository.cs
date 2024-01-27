@@ -28,18 +28,6 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<Image> GetAll()
-        {
-            try
-            {
-                return [.. Context.Set<Image>()];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public Image? GetByOverlaySettingIdAndName(Guid overlaySettingId, string name)
         {
             try

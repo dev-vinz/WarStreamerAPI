@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public bool Delete(AccountViewModel viewModel);
 
-        public List<AccountViewModel> GetAll();
-
         public AccountViewModel? GetByTag(string tag);
 
         public List<AccountViewModel> GetByUserId(string userId);

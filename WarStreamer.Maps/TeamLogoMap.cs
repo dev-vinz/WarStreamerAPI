@@ -30,11 +30,6 @@ namespace WarStreamer.Maps
             return _service.Delete(logo);
         }
 
-        public List<TeamLogoViewModel> GetAll()
-        {
-            return DomainToViewModel(_service.GetAll());
-        }
-
         public List<TeamLogoViewModel> GetByUserId(string userId)
         {
             Guid guid = Guid.Empty.ParseDiscordId(userId);

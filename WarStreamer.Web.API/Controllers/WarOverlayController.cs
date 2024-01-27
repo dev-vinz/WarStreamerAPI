@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
+using WarStreamer.Web.API.Extensions;
 
 namespace WarStreamer.Web.API.Controllers
 {
     [Authorize]
     [Route("waroverlays/")]
-    public class WarOverlayController(IUserMap userMap, IWarOverlayMap overlayMap) : Controller
+    public class WarOverlayController(IWarOverlayMap overlayMap) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private readonly IUserMap _userMap = userMap;
         private readonly IWarOverlayMap _overlayMap = overlayMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -29,18 +29,11 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<WarOverlayViewModel>> GetAll()
+        public ActionResult<List<WarOverlayViewModel>> Get()
         {
-            return Ok(_overlayMap.GetAll());
-        }
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
 
-        [HttpGet]
-        [Route("{userId}")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<WarOverlayViewModel>> GetAllByUserId(string userId)
-        {
             return Ok(_overlayMap.GetByUserId(userId));
         }
 
@@ -52,32 +45,29 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public ActionResult<WarOverlayViewModel> Create([FromBody] WarOverlayViewModel overlay)
         {
-            // Verify if the user exists
-            if (_userMap.GetById(overlay.UserId) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (overlay.UserId != userId)
             {
-                return BadRequest(new { error = $"User with id '{overlay.UserId}' not found" });
+                return Forbid();
             }
 
             // Verify if the war overlay already exists
             if (_overlayMap.GetByUserIdAndId(overlay.UserId, overlay.Id) != null)
             {
                 return Conflict(
-                    new
-                    {
-                        error = $"War overlay with user id '{overlay.UserId}' and id '{overlay.Id}' already exists"
-                    }
+                    new { error = $"War overlay with id '{overlay.Id}' already exists" }
                 );
             }
 
-            return Created(
-                $"~/waroverlays/{overlay.UserId}/{overlay.Id}",
-                _overlayMap.Create(overlay)
-            );
+            return Created($"~/waroverlays/{overlay.Id}", _overlayMap.Create(overlay));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -85,33 +75,39 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpPut]
-        [Route("{userId}/{id}")]
+        [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(
-            string userId,
-            int id,
-            [FromBody] WarOverlayViewModel overlay
-        )
+        public ActionResult<bool> Update(int id, [FromBody] WarOverlayViewModel overlay)
         {
-            // Verify if the war overlay exists
-            if (_overlayMap.GetByUserIdAndId(userId, id) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (overlay.UserId != userId)
             {
-                return NotFound(
-                    new { error = $"War overlay with user id '{userId}' and id '{id}' not found" }
-                );
+                return Forbid();
             }
 
-            // Create a new war overlay with the same ids
-            overlay = new(userId, id, overlay.ClanTag)
-            {
-                LastCheckout = overlay.LastCheckout,
-                IsEnded = overlay.IsEnded,
-            };
+            WarOverlayViewModel? anyOverlay = _overlayMap.GetByUserIdAndId(
+                overlay.UserId,
+                overlay.Id
+            );
 
-            return Ok(_overlayMap.Update(overlay));
+            // Verify if the war overlay exists
+            if (anyOverlay == null)
+            {
+                return NotFound(new { error = $"War overlay with id '{id}' not found" });
+            }
+
+            // Update the overlay
+            anyOverlay.LastCheckout = overlay.LastCheckout;
+            anyOverlay.IsEnded = overlay.IsEnded;
+
+            return Ok(_overlayMap.Update(anyOverlay));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -119,21 +115,22 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpDelete]
-        [Route("{userId}/{id}")]
+        [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(string userId, int id)
+        public ActionResult<bool> Delete(int id)
         {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
             WarOverlayViewModel? overlay = _overlayMap.GetByUserIdAndId(userId, id);
 
             // Verify if the war overlay exists
             if (overlay == null)
             {
-                return NotFound(
-                    new { error = $"War overlay with user id '{userId}' and id '{id}' not found" }
-                );
+                return NotFound(new { error = $"War overlay with id '{id}' not found" });
             }
 
             return Ok(_overlayMap.Delete(overlay));

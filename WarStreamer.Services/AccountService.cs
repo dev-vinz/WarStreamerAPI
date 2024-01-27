@@ -26,11 +26,6 @@ namespace WarStreamer.Services
             return _repository.Delete(domain);
         }
 
-        public List<Account> GetAll()
-        {
-            return _repository.GetAll();
-        }
-
         public Account? GetByTag(string tag)
         {
             return _repository.GetByTag(tag);

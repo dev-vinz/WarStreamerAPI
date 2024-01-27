@@ -62,11 +62,11 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(2)]
-        public void WhenGetAllUsers_ThenReturnsUsers()
+        public void WhenGetUser_ThenReturnsUser()
         {
-            List<User> users = _repository.GetAll();
+            User? user = _repository.GetById(USER_ID);
 
-            User user = Assert.Single(users);
+            Assert.NotNull(user);
 
             Assert.Equal(USER_ID, user.Id);
             Assert.Equal(LANGUAGE_ID, user.LanguageId);
@@ -117,7 +117,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.NotNull(user);
             Assert.True(_repository.Delete(user));
-            Assert.Empty(_repository.GetAll());
+            Assert.Null(_repository.GetById(USER_ID));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

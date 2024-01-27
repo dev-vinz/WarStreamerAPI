@@ -25,18 +25,6 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<User> GetAll()
-        {
-            try
-            {
-                return [.. Context.Set<User>()];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public User? GetById(Guid id)
         {
             try

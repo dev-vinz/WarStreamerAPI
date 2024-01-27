@@ -10,8 +10,6 @@ namespace WarStreamer.Interfaces.Repositories
 
         public bool Delete(WarOverlay domain);
 
-        public List<WarOverlay> GetAll();
-
         public List<WarOverlay> GetByUserId(Guid userId);
 
         public WarOverlay? GetByUserIdAndId(Guid userId, int id);

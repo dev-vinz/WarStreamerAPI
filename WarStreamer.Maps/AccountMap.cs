@@ -30,11 +30,6 @@ namespace WarStreamer.Maps
             return _service.Delete(account);
         }
 
-        public List<AccountViewModel> GetAll()
-        {
-            return DomainToViewModel(_service.GetAll());
-        }
-
         public AccountViewModel? GetByTag(string tag)
         {
             Account? account = _service.GetByTag(tag);

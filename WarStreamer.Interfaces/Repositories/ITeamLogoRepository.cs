@@ -10,8 +10,6 @@ namespace WarStreamer.Interfaces.Repositories
 
         public bool Delete(TeamLogo domain);
 
-        public List<TeamLogo> GetAll();
-
         public List<TeamLogo> GetByUserId(Guid userId);
 
         public TeamLogo? GetByUserIdAndName(Guid userId, string name);

@@ -27,18 +27,6 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public List<WarOverlay> GetAll()
-        {
-            try
-            {
-                return [.. Context.Set<WarOverlay>()];
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public List<WarOverlay> GetByUserId(Guid userId)
         {
             try

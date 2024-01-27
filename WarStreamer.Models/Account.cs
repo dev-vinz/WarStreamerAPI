@@ -32,6 +32,14 @@ namespace WarStreamer.Models
                 Tag = tag.ToUpper().Replace('O', '0');
                 UserId = userId;
             }
+
+            // Security
+            {
+                if (!Tag.StartsWith('#'))
+                {
+                    Tag = $"#{Tag}";
+                }
+            }
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

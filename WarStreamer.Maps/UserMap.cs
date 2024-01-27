@@ -30,11 +30,6 @@ namespace WarStreamer.Maps
             return _service.Delete(user);
         }
 
-        public List<UserViewModel> GetAll()
-        {
-            return DomainToViewModel(_service.GetAll());
-        }
-
         public UserViewModel? GetById(string id)
         {
             Guid guid = Guid.Empty.ParseDiscordId(id);
@@ -64,11 +59,6 @@ namespace WarStreamer.Maps
                 TierLevel = domain.TierLevel,
                 NewsLetter = domain.NewsLetter,
             };
-        }
-
-        private static List<UserViewModel> DomainToViewModel(List<User> domain)
-        {
-            return domain.Select(DomainToViewModel).ToList();
         }
 
         private static User ViewModelToDomain(UserViewModel viewModel, Guid userId)

@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Services
 
         public bool Delete(Account domain);
 
-        public List<Account> GetAll();
-
         public Account? GetByTag(string tag);
 
         public List<Account> GetByUserId(Guid userId);

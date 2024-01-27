@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public bool Delete(WarOverlayViewModel viewModel);
 
-        public List<WarOverlayViewModel> GetAll();
-
         public List<WarOverlayViewModel> GetByUserId(string userId);
 
         public WarOverlayViewModel? GetByUserIdAndId(string userId, int id);

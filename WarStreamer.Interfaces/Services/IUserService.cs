@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Services
 
         public bool Delete(User domain);
 
-        public List<User> GetAll();
-
         public User? GetById(Guid id);
 
         public bool Update(User domain);

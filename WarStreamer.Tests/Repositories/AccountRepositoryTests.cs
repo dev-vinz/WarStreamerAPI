@@ -51,9 +51,9 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(2)]
-        public void WhenGetAllAccounts_ThenReturnsAccounts()
+        public void WhenGetAllAccountsByUserId_ThenReturnsAccounts()
         {
-            List<Account> accounts = _repository.GetAll();
+            List<Account> accounts = _repository.GetByUserId(USER_ID);
 
             Account account = Assert.Single(accounts);
 
@@ -63,27 +63,13 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(3)]
-        public void WhenGetAllAccountsByUserId_ThenReturnsAccounts()
-        {
-            List<Account> accounts = _repository.GetByUserId(USER_ID);
-
-            Assert.Single(accounts);
-
-            Account account = accounts.Single();
-
-            Assert.Equal(TAG, account.Tag);
-            Assert.Equal(USER_ID, account.UserId);
-        }
-
-        [Fact]
-        [TestOrder(4)]
         public void WhenGetAllAccountsByUserId_ThenReturnsEmpty()
         {
             Assert.Empty(_repository.GetByUserId(USER_ID_2));
         }
 
         [Fact]
-        [TestOrder(5)]
+        [TestOrder(4)]
         public void WhenGetAccountByTag_ThenReturnsAccount()
         {
             Account? account = _repository.GetByTag(TAG);
@@ -95,21 +81,21 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(5)]
         public void WhenGetAccountByTag_ThenReturnsNull()
         {
             Assert.Null(_repository.GetByTag(string.Empty));
         }
 
         [Fact]
-        [TestOrder(7)]
+        [TestOrder(6)]
         public void WhenDeleteAccount_ThenReturnsTrue()
         {
             Account? account = _repository.GetByTag(TAG);
 
             Assert.NotNull(account);
             Assert.True(_repository.Delete(account));
-            Assert.Empty(_repository.GetAll());
+            Assert.Empty(_repository.GetByUserId(USER_ID));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

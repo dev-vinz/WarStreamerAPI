@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
+using WarStreamer.Web.API.Extensions;
 using WarStreamer.Web.API.RequestModels;
 using WarStreamer.Web.API.ResponseModels;
 
@@ -9,11 +10,8 @@ namespace WarStreamer.Web.API.Controllers
 {
     [Authorize]
     [Route("teamlogos/")]
-    public class TeamLogoController(
-        IWebHostEnvironment environment,
-        ITeamLogoMap logoMap,
-        IUserMap userMap
-    ) : Controller
+    public class TeamLogoController(IWebHostEnvironment environment, ITeamLogoMap logoMap)
+        : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             CONSTANTS                             *|
@@ -29,7 +27,6 @@ namespace WarStreamer.Web.API.Controllers
         private readonly IWebHostEnvironment _environment = environment;
 
         private readonly ITeamLogoMap _logoMap = logoMap;
-        private readonly IUserMap _userMap = userMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -44,19 +41,14 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<TeamLogoResponseModel>> GetAll()
+        public ActionResult<List<TeamLogoResponseModel>> Get()
         {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
             List<TeamLogoResponseModel> result = _logoMap
-                .GetAll()
-                .Select(
-                    i =>
-                        new TeamLogoResponseModel
-                        {
-                            TeamName = i.TeamName,
-                            UserId = i.UserId,
-                            Logo = GetLogo(i.UserId, i.TeamName),
-                        }
-                )
+                .GetByUserId(userId)
+                .Select(ToResponseModel)
                 .ToList();
 
             return Ok(result);
@@ -68,25 +60,28 @@ namespace WarStreamer.Web.API.Controllers
 
         [HttpPost]
         [Route("")]
-        [Consumes("multipart/form-data")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<TeamLogoResponseModel> Create(
             [FromForm] TeamLogoRequestModel logoRequest
         )
         {
-            // Verify that user id exists
-            if (_userMap.GetById(logoRequest.UserId) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+            string userGuid = User.GetDiscordIdAsGuid().ToString();
+
+            // Ensure both user ids are the same
+            if (logoRequest.UserId != userId)
             {
-                return BadRequest(new { error = $"User with id '{logoRequest.UserId}' not found" });
+                return Forbid();
             }
 
             // Verify if a logo already exists with this name
-            if (_logoMap.GetByUserIdAndName(logoRequest.UserId, logoRequest.TeamName) != null)
+            if (_logoMap.GetByUserIdAndName(userId, logoRequest.TeamName) != null)
             {
                 return Conflict(
                     new { error = $"Team logo with name '{logoRequest.TeamName}' already exists" }
@@ -94,7 +89,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Try to save the logo in wwwroot folder
-            if (!TrySaveLogo(logoRequest.Logo, logoRequest.UserId, logoRequest.TeamName))
+            if (!TrySaveLogo(logoRequest.Logo, userGuid, logoRequest.TeamName))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -103,13 +98,13 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Create a team logo viewmodel...
-            TeamLogoViewModel logo = new(logoRequest.TeamName, logoRequest.UserId);
+            TeamLogoViewModel logo = new(logoRequest.TeamName, userId);
 
             // ... and get the created one
             TeamLogoViewModel createdLogo = _logoMap.Create(logo);
 
             // Try to recover the logo from wwwroot folder
-            if (!TryGetLogo(createdLogo.UserId, createdLogo.TeamName, out byte[] imageData))
+            if (!TryGetLogo(createdLogo.UserId, createdLogo.TeamName, out byte[] logoData))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -123,13 +118,10 @@ namespace WarStreamer.Web.API.Controllers
                 {
                     UserId = createdLogo.UserId,
                     TeamName = createdLogo.TeamName,
-                    Logo = imageData,
+                    Logo = logoData,
                 };
 
-            return Created(
-                $"~/teamlogos/{createdLogo.UserId}/{createdLogo.TeamName}",
-                logoResponse
-            );
+            return Created($"~/teamlogos/{createdLogo.TeamName}", logoResponse);
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -137,27 +129,33 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpPut]
-        [Route("{userId}/{name}")]
+        [Route("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Update(
-            string userId,
-            string name,
-            [FromForm] TeamLogoRequestModel logoRequest
-        )
+        public ActionResult<bool> Update(string name, [FromForm] TeamLogoRequestModel logoRequest)
         {
-            // Verify if the team logo exists
-            if (_logoMap.GetByUserIdAndName(userId, name) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (logoRequest.UserId != userId)
             {
-                return NotFound(
-                    new { error = $"Team logo with user id '{userId}' and name '{name}' not found" }
-                );
+                return Forbid();
+            }
+
+            TeamLogoViewModel? anyLogo = _logoMap.GetByUserIdAndName(userId, name);
+
+            // Verify if the team logo exists
+            if (anyLogo == null)
+            {
+                return NotFound(new { error = $"Team logo with name '{name}' not found" });
             }
 
             // Try to update the logo in wwwroot folder
-            if (!TrySaveLogo(logoRequest.Logo, userId, name))
+            if (!TrySaveLogo(logoRequest.Logo, anyLogo.UserId, anyLogo.TeamName))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -165,10 +163,10 @@ namespace WarStreamer.Web.API.Controllers
                 );
             }
 
-            // Create a new team logo viewmodel
-            TeamLogoViewModel logo = new(name, userId) { ClanTags = logoRequest.ClanTags };
+            // Update team logo
+            anyLogo.ClanTags = logoRequest.ClanTags;
 
-            return Ok(_logoMap.Update(logo));
+            return Ok(_logoMap.Update(anyLogo));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -176,29 +174,30 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpDelete]
-        [Route("{userId}/{name}")]
+        [Route("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(string userId, string name)
+        public ActionResult<bool> Delete(string name)
         {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
             TeamLogoViewModel? logo = _logoMap.GetByUserIdAndName(userId, name);
 
             // Verify if the team logo exists
             if (logo == null)
             {
-                return NotFound(
-                    new { error = $"Team logo with user id '{userId}' and name '{name}' not found" }
-                );
+                return NotFound(new { error = $"Team logo with name '{name}' not found" });
             }
 
             // Delete the logo in wwwroot folder
-            string path = $@"{_environment.WebRootPath}\{userId}\{RELATIVE_PATH}";
+            string path = $@"{_environment.WebRootPath}\{logo.UserId}\{RELATIVE_PATH}";
 
-            if (System.IO.File.Exists($@"{path}\{name.ToUpper()}.png"))
+            if (System.IO.File.Exists($@"{path}\{logo.TeamName}.png"))
             {
-                System.IO.File.Delete($@"{path}\{name.ToUpper()}.png");
+                System.IO.File.Delete($@"{path}\{logo.TeamName}.png");
             }
 
             return Ok(_logoMap.Delete(logo));
@@ -254,8 +253,6 @@ namespace WarStreamer.Web.API.Controllers
             string name
         )
         {
-            // OverlaySettingId = UserId in this case
-
             if (file == null || file.Length < 1)
             {
                 return false;
@@ -291,6 +288,16 @@ namespace WarStreamer.Web.API.Controllers
         private byte[] GetLogo(string userId, string name)
         {
             return GetLogo(_environment, userId, name);
+        }
+
+        private TeamLogoResponseModel ToResponseModel(TeamLogoViewModel logo)
+        {
+            return new TeamLogoResponseModel
+            {
+                TeamName = logo.TeamName,
+                UserId = logo.UserId,
+                Logo = GetLogo(logo.UserId, logo.TeamName),
+            };
         }
 
         private bool TryGetLogo(string userId, string name, out byte[] logo)

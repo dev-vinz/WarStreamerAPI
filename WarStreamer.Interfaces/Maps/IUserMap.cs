@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Maps
 
         public bool Delete(UserViewModel viewModel);
 
-        public List<UserViewModel> GetAll();
-
         public UserViewModel? GetById(string id);
 
         public bool Update(UserViewModel viewModel);

@@ -26,11 +26,6 @@ namespace WarStreamer.Services
             return _repository.Delete(domain);
         }
 
-        public List<TeamLogo> GetAll()
-        {
-            return _repository.GetAll();
-        }
-
         public List<TeamLogo> GetByUserId(Guid userId)
         {
             return _repository.GetByUserId(userId);

@@ -26,11 +26,6 @@ namespace WarStreamer.Services
             return _repository.Delete(domain);
         }
 
-        public List<WarOverlay> GetAll()
-        {
-            return _repository.GetAll();
-        }
-
         public List<WarOverlay> GetByUserId(Guid userId)
         {
             return _repository.GetByUserId(userId);

@@ -67,24 +67,6 @@ namespace WarStreamer.Tests.Repositories
 
         [Fact]
         [TestOrder(2)]
-        public void WhenGetAllImages_ThenReturnsImages()
-        {
-            List<Image> images = _repository.GetAll();
-
-            Assert.Single(images);
-
-            Image image = images.Single();
-
-            Assert.Equal(NAME.ToUpper(), image.Name);
-            Assert.Equal(OVERLAY_SETTING_ID, image.OverlaySettingId);
-            Assert.Equal(LOCATION_X, image.LocationX);
-            Assert.Equal(LOCATION_Y, image.LocationY);
-            Assert.Equal(WIDTH, image.Width);
-            Assert.Equal(HEIGHT, image.Height);
-        }
-
-        [Fact]
-        [TestOrder(3)]
         public void WhenGetAllImagesByOverlaySettingId_ThenReturnsImages()
         {
             List<Image> images = _repository.GetByOverlaySettingId(OVERLAY_SETTING_ID);
@@ -100,14 +82,14 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(4)]
+        [TestOrder(3)]
         public void WhenGetAllImagesByOverlaySettingId_ThenReturnsEmpty()
         {
             Assert.Empty(_repository.GetByOverlaySettingId(OVERLAY_SETTING_ID_2));
         }
 
         [Fact]
-        [TestOrder(5)]
+        [TestOrder(4)]
         public void WhenUpdateImage_ThenReturnsTrue()
         {
             Image? image = _repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID, NAME);
@@ -123,7 +105,7 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(6)]
+        [TestOrder(5)]
         public void WhenGetImageById_ThenReturnsImage()
         {
             Image? image = _repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID, NAME);
@@ -139,21 +121,21 @@ namespace WarStreamer.Tests.Repositories
         }
 
         [Fact]
-        [TestOrder(7)]
+        [TestOrder(6)]
         public void WhenGetImageById_ThenReturnsNull()
         {
             Assert.Null(_repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID_2, NAME));
         }
 
         [Fact]
-        [TestOrder(8)]
+        [TestOrder(7)]
         public void WhenDeleteImage_ThenReturnsTrue()
         {
             Image? image = _repository.GetByOverlaySettingIdAndName(OVERLAY_SETTING_ID, NAME);
 
             Assert.NotNull(image);
             Assert.True(_repository.Delete(image));
-            Assert.Empty(_repository.GetAll());
+            Assert.Empty(_repository.GetByOverlaySettingId(OVERLAY_SETTING_ID));
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

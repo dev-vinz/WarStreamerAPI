@@ -30,11 +30,6 @@ namespace WarStreamer.Maps
             return _service.Delete(image);
         }
 
-        public List<ImageViewModel> GetAll()
-        {
-            return DomainToViewModel(_service.GetAll());
-        }
-
         public ImageViewModel? GetByOverlaySettingIdAndName(string overlaySettingId, string name)
         {
             Guid guid = Guid.Empty.ParseDiscordId(overlaySettingId);

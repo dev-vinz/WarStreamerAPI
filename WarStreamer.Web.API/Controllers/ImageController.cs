@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
+using WarStreamer.Web.API.Extensions;
 using WarStreamer.Web.API.RequestModels;
 using WarStreamer.Web.API.ResponseModels;
 
@@ -44,26 +45,62 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<ImageResponseModel>> GetAll()
+        public ActionResult<List<ImageResponseModel>> Get()
         {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
             List<ImageResponseModel> result = _imageMap
-                .GetAll()
-                .Select(
-                    i =>
-                        new ImageResponseModel
-                        {
-                            OverlaySettingId = i.OverlaySettingId,
-                            Name = i.Name,
-                            Image = GetImage(i.OverlaySettingId, i.Name),
-                            LocationX = i.Location.X,
-                            LocationY = i.Location.Y,
-                            Width = i.Width,
-                            Height = i.Height
-                        }
-                )
+                .GetByOverlaySettingId(userId)
+                .Select(ToResponseModel)
                 .ToList();
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("{name}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<ImageResponseModel> GetByName(string name)
+        {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            ImageViewModel? image = _imageMap.GetByOverlaySettingIdAndName(userId, name);
+
+            // Verify it exists
+            if (image == null)
+            {
+                return NotFound(new { error = $"Image with name '{name}' not found" });
+            }
+
+            // Try get image
+            if (!TryGetImage(image.OverlaySettingId, image.Name, out byte[] imageData))
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { error = "Cannot get image from server" }
+                );
+            }
+
+            // Create full response with image in body
+            ImageResponseModel imageResponse =
+                new()
+                {
+                    OverlaySettingId = image.OverlaySettingId,
+                    Name = image.Name,
+                    Image = imageData,
+                    LocationX = image.Location.X,
+                    LocationY = image.Location.Y,
+                    Width = image.Width,
+                    Height = image.Height,
+                };
+
+            return Ok(imageResponse);
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -76,28 +113,29 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ImageResponseModel> Create([FromForm] ImageRequestModel imageRequest)
         {
-            // Verify if the OverlaySetting exists
-            if (_overlaySettingMap.GetByUserId(imageRequest.OverlaySettingId) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+            string userGuid = User.GetDiscordIdAsGuid().ToString();
+
+            // Ensure both user ids are the same
+            if (imageRequest.OverlaySettingId != userId)
             {
-                return BadRequest(
-                    new
-                    {
-                        error = $"Overlay setting with id '{imageRequest.OverlaySettingId}' not found"
-                    }
-                );
+                return Forbid();
+            }
+
+            // Verify if the OverlaySetting exists
+            if (_overlaySettingMap.GetByUserId(userId) == null)
+            {
+                return BadRequest(new { error = "Overlay setting not defined" });
             }
 
             // Verify if the Image already exists
-            if (
-                _imageMap.GetByOverlaySettingIdAndName(
-                    imageRequest.OverlaySettingId,
-                    imageRequest.Name
-                ) != null
-            )
+            if (_imageMap.GetByOverlaySettingIdAndName(userId, imageRequest.Name) != null)
             {
                 return Conflict(
                     new { error = $"Image with name '{imageRequest.Name}' already exists" }
@@ -105,7 +143,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Try to save the image in wwwroot folder
-            if (!TrySaveImage(imageRequest.Image, imageRequest.OverlaySettingId, imageRequest.Name))
+            if (!TrySaveImage(imageRequest.Image, userGuid, imageRequest.Name))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -149,10 +187,7 @@ namespace WarStreamer.Web.API.Controllers
                     Height = createdImage.Height,
                 };
 
-            return Created(
-                $"~/images/{createdImage.OverlaySettingId}/{createdImage.Name}",
-                imageResponse
-            );
+            return Created($"~/images/{createdImage.Name}", imageResponse);
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -160,31 +195,34 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpPut]
-        [Route("{overlaySettingId}/{name}")]
+        [Route("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<bool> Update(
-            string overlaySettingId,
-            string name,
-            [FromForm] ImageRequestModel imageRequest
-        )
+        public ActionResult<bool> Update(string name, [FromForm] ImageRequestModel imageRequest)
         {
-            // Verify if the image exists
-            if (_imageMap.GetByOverlaySettingIdAndName(overlaySettingId, name) == null)
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            // Ensure both user ids are the same
+            if (imageRequest.OverlaySettingId != userId)
             {
-                return NotFound(
-                    new
-                    {
-                        error = $"Image with overlay setting id '{overlaySettingId}' and name '{name}' not found"
-                    }
-                );
+                return Forbid();
+            }
+
+            ImageViewModel? anyImage = _imageMap.GetByOverlaySettingIdAndName(userId, name);
+
+            // Verify if the image exists
+            if (anyImage == null)
+            {
+                return NotFound(new { error = $"Image with name '{name}' not found" });
             }
 
             // Try to update the image in wwwroot folder
-            if (!TrySaveImage(imageRequest.Image, overlaySettingId, name))
+            if (!TrySaveImage(imageRequest.Image, anyImage.OverlaySettingId, anyImage.Name))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -192,16 +230,12 @@ namespace WarStreamer.Web.API.Controllers
                 );
             }
 
-            // Create a new image viewmodel
-            ImageViewModel image =
-                new(overlaySettingId, name)
-                {
-                    Location = new(imageRequest.LocationX, imageRequest.LocationY),
-                    Width = imageRequest.Width,
-                    Height = imageRequest.Height,
-                };
+            // Update the image
+            anyImage.Location = new(imageRequest.LocationX, imageRequest.LocationY);
+            anyImage.Width = imageRequest.Width;
+            anyImage.Height = imageRequest.Height;
 
-            return Ok(_imageMap.Update(image));
+            return Ok(_imageMap.Update(anyImage));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -209,32 +243,30 @@ namespace WarStreamer.Web.API.Controllers
         \* * * * * * * * * * * * * * * * * */
 
         [HttpDelete]
-        [Route("{overlaySettingId}/{name}")]
+        [Route("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(string overlaySettingId, string name)
+        public ActionResult<bool> Delete(string name)
         {
-            ImageViewModel? image = _imageMap.GetByOverlaySettingIdAndName(overlaySettingId, name);
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            ImageViewModel? image = _imageMap.GetByOverlaySettingIdAndName(userId, name);
 
             // Verify if the image exists
             if (image == null)
             {
-                return NotFound(
-                    new
-                    {
-                        error = $"Image with overlay setting id '{overlaySettingId}' and name '{name}' not found"
-                    }
-                );
+                return NotFound(new { error = $"Image with name '{name}' not found" });
             }
 
             // Delete the image in wwwroot folder
-            string path = $@"{_environment.WebRootPath}\{overlaySettingId}\{RELATIVE_PATH}";
+            string path = $@"{_environment.WebRootPath}\{image.OverlaySettingId}\{RELATIVE_PATH}";
 
-            if (System.IO.File.Exists($@"{path}\{name.ToUpper()}.png"))
+            if (System.IO.File.Exists($@"{path}\{image.Name}.png"))
             {
-                System.IO.File.Delete($@"{path}\{name.ToUpper()}.png");
+                System.IO.File.Delete($@"{path}\{image.Name}.png");
             }
 
             return Ok(_imageMap.Delete(image));
@@ -331,6 +363,20 @@ namespace WarStreamer.Web.API.Controllers
         private byte[] GetImage(string overlaySettingId, string name)
         {
             return GetImage(_environment, overlaySettingId, name);
+        }
+
+        private ImageResponseModel ToResponseModel(ImageViewModel image)
+        {
+            return new ImageResponseModel
+            {
+                OverlaySettingId = image.OverlaySettingId,
+                Name = image.Name,
+                Image = GetImage(image.OverlaySettingId, image.Name),
+                LocationX = image.Location.X,
+                LocationY = image.Location.Y,
+                Width = image.Width,
+                Height = image.Height
+            };
         }
 
         private bool TryGetImage(string overlaySettingId, string name, out byte[] image)

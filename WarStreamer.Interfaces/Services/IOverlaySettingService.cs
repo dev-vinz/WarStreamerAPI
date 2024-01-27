@@ -12,8 +12,6 @@ namespace WarStreamer.Interfaces.Services
 
         public bool Delete(OverlaySetting domain);
 
-        public List<OverlaySetting> GetAll();
-
         public OverlaySetting? GetByUserId(Guid userId);
 
         public bool Update(OverlaySetting domain);
