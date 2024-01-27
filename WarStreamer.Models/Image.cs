@@ -4,7 +4,7 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
 {
-    [PrimaryKey(nameof(OverlaySettingId), nameof(Name))]
+    [PrimaryKey(nameof(UserId), nameof(Name))]
     public class Image : Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -12,7 +12,7 @@ namespace WarStreamer.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid OverlaySettingId { get; private set; }
+        public Guid UserId { get; private set; }
 
         public string Name { get; private set; }
 
@@ -24,21 +24,23 @@ namespace WarStreamer.Models
 
         public int Height { get; set; }
 
+        public bool IsUsed { get; set; }
+
         /* * * * * * * * * * * * * * * * * *\
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
 
-        public OverlaySetting OverlaySetting { get; set; } = null!;
+        public User User { get; set; } = null!;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Image(Guid overlaySettingId, string name)
+        public Image(Guid userId, string name)
         {
             // Inputs
             {
-                OverlaySettingId = overlaySettingId;
+                UserId = userId;
                 Name = name.ToUpper();
             }
         }
@@ -59,6 +61,7 @@ namespace WarStreamer.Models
                 image.LocationY = LocationY;
                 image.Width = Width;
                 image.Height = Height;
+                image.IsUsed = IsUsed;
             }
             else
             {
@@ -77,14 +80,14 @@ namespace WarStreamer.Models
             {
                 Image? image = obj as Image;
 
-                return (image?.OverlaySettingId.Equals(OverlaySettingId) ?? false)
+                return (image?.UserId.Equals(UserId) ?? false)
                     && image.Name.Equals(Name, StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(OverlaySettingId, Name);
+            return HashCode.Combine(UserId, Name);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\

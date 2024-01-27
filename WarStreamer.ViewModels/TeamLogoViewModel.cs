@@ -34,12 +34,12 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogoViewModel(string teamName, string userId)
+        public TeamLogoViewModel(string userId, string teamName)
         {
             // Inputs
             {
-                _teamName = teamName;
                 _userId = userId;
+                _teamName = teamName;
             }
 
             // Outputs

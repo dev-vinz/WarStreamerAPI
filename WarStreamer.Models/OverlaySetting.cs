@@ -85,8 +85,6 @@ namespace WarStreamer.Models
 
         public Font Font { get; set; } = null!;
 
-        public ICollection<Image> Images { get; set; } = new List<Image>();
-
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

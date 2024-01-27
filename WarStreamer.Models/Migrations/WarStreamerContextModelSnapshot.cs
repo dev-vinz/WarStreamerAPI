@@ -42,7 +42,6 @@ namespace WarStreamer.Models.Migrations
             modelBuilder.Entity("WarStreamer.Models.AuthToken", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccessIV")
@@ -93,25 +92,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ff193217-486e-4b9f-a63c-64f04909a0ba"),
+                            Id = new Guid("26082a0f-5eb1-481d-be36-2056dd9d5dcd"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("d785fa52-0316-4250-b161-c6713c263083"),
+                            Id = new Guid("76c29079-e36e-4b21-a54a-f1136c3dade3"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("54cbb611-5421-42a6-b5b7-ffb75f4a6181"),
+                            Id = new Guid("90278b54-85f7-4d1a-8eb1-e04b8d8c5bef"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("463f666e-16ff-4ff7-9545-f7c382bec74d"),
+                            Id = new Guid("279ba36e-9913-4f76-b54f-47b3c49f2661"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -119,7 +118,7 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.Image", b =>
                 {
-                    b.Property<Guid>("OverlaySettingId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -128,6 +127,9 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<int>("Height")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LocationX")
                         .HasColumnType("int");
@@ -138,7 +140,7 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int>("Width")
                         .HasColumnType("int");
 
-                    b.HasKey("OverlaySettingId", "Name");
+                    b.HasKey("UserId", "Name");
 
                     b.ToTable("Images");
                 });
@@ -172,7 +174,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("81c1f599-ac64-4faa-8d21-a36bb6e9d609"),
+                            Id = new Guid("477eb317-2026-485a-9de6-f1b31b44b337"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -180,7 +182,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4d29a292-ebe1-4b7f-8707-12e525a50e79"),
+                            Id = new Guid("65a350b4-7ec2-4fc6-88b0-f8cb36a39bea"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
@@ -297,21 +299,19 @@ namespace WarStreamer.Models.Migrations
 
             modelBuilder.Entity("WarStreamer.Models.TeamLogo", b =>
                 {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TeamName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ClanTags")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TeamName", "UserId");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "TeamName");
 
                     b.ToTable("TeamLogos");
                 });
@@ -371,15 +371,26 @@ namespace WarStreamer.Models.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WarStreamer.Models.Image", b =>
+            modelBuilder.Entity("WarStreamer.Models.AuthToken", b =>
                 {
-                    b.HasOne("WarStreamer.Models.OverlaySetting", "OverlaySetting")
-                        .WithMany("Images")
-                        .HasForeignKey("OverlaySettingId")
+                    b.HasOne("WarStreamer.Models.User", "User")
+                        .WithOne("AuthToken")
+                        .HasForeignKey("WarStreamer.Models.AuthToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OverlaySetting");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WarStreamer.Models.Image", b =>
+                {
+                    b.HasOne("WarStreamer.Models.User", "User")
+                        .WithMany("Images")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WarStreamer.Models.OverlaySetting", b =>
@@ -443,14 +454,14 @@ namespace WarStreamer.Models.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("WarStreamer.Models.OverlaySetting", b =>
-                {
-                    b.Navigation("Images");
-                });
-
             modelBuilder.Entity("WarStreamer.Models.User", b =>
                 {
                     b.Navigation("Accounts");
+
+                    b.Navigation("AuthToken")
+                        .IsRequired();
+
+                    b.Navigation("Images");
 
                     b.Navigation("OverlaySetting");
 

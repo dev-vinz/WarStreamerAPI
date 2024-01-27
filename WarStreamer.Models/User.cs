@@ -24,6 +24,10 @@ namespace WarStreamer.Models
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
 
+        public AuthToken AuthToken { get; set; } = null!;
+
+        public ICollection<Image> Images { get; set; } = new List<Image>();
+
         public Language Language { get; set; } = null!;
 
         public OverlaySetting? OverlaySetting { get; set; }

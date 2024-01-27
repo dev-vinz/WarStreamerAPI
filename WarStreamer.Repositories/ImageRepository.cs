@@ -28,25 +28,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public Image? GetByOverlaySettingIdAndName(Guid overlaySettingId, string name)
-        {
-            try
-            {
-                return Context
-                    .Set<Image>()
-                    .FirstOrDefault(
-                        i =>
-                            i.OverlaySettingId == overlaySettingId
-                            && EF.Functions.Like(i.Name, name)
-                    );
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public List<Image> GetByOverlaySettingId(Guid overlaySettingId)
+        public List<Image> GetByUserId(Guid userId)
         {
             try
             {
@@ -54,7 +36,38 @@ namespace WarStreamer.Repositories
                 [
                     .. Context
                         .Set<Image>()
-                        .Where(i => i.OverlaySettingId == overlaySettingId),
+                        .Where(i => i.UserId == userId),
+                ];
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Image? GetByUserIdAndName(Guid userId, string name)
+        {
+            try
+            {
+                return Context
+                    .Set<Image>()
+                    .FirstOrDefault(i => i.UserId == userId && EF.Functions.Like(i.Name, name));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Image> GetUsedByUserId(Guid userId)
+        {
+            try
+            {
+                return
+                [
+                    .. Context
+                        .Set<Image>()
+                        .Where(i => i.UserId == userId && i.IsUsed)
                 ];
             }
             catch (Exception)

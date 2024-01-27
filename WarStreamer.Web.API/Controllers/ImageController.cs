@@ -51,7 +51,7 @@ namespace WarStreamer.Web.API.Controllers
             string userId = User.GetDiscordId();
 
             List<ImageResponseModel> result = _imageMap
-                .GetByOverlaySettingId(userId)
+                .GetByUserId(userId)
                 .Select(ToResponseModel)
                 .ToList();
 
@@ -70,7 +70,7 @@ namespace WarStreamer.Web.API.Controllers
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();
 
-            ImageViewModel? image = _imageMap.GetByOverlaySettingIdAndName(userId, name);
+            ImageViewModel? image = _imageMap.GetByUserIdAndName(userId, name);
 
             // Verify it exists
             if (image == null)
@@ -79,7 +79,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Try get image
-            if (!TryGetImage(image.OverlaySettingId, image.Name, out byte[] imageData))
+            if (!TryGetImage(image.UserId, image.Name, out byte[] imageData))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -91,13 +91,14 @@ namespace WarStreamer.Web.API.Controllers
             ImageResponseModel imageResponse =
                 new()
                 {
-                    OverlaySettingId = image.OverlaySettingId,
+                    UserId = image.UserId,
                     Name = image.Name,
                     Image = imageData,
                     LocationX = image.Location.X,
                     LocationY = image.Location.Y,
                     Width = image.Width,
                     Height = image.Height,
+                    IsUsed = image.IsUsed,
                 };
 
             return Ok(imageResponse);
@@ -123,7 +124,7 @@ namespace WarStreamer.Web.API.Controllers
             string userGuid = User.GetDiscordIdAsGuid().ToString();
 
             // Ensure both user ids are the same
-            if (imageRequest.OverlaySettingId != userId)
+            if (imageRequest.UserId != userId)
             {
                 return Forbid();
             }
@@ -135,7 +136,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Verify if the Image already exists
-            if (_imageMap.GetByOverlaySettingIdAndName(userId, imageRequest.Name) != null)
+            if (_imageMap.GetByUserIdAndName(userId, imageRequest.Name) != null)
             {
                 return Conflict(
                     new { error = $"Image with name '{imageRequest.Name}' already exists" }
@@ -153,20 +154,19 @@ namespace WarStreamer.Web.API.Controllers
 
             // Create a new image viewmodel to save
             ImageViewModel image =
-                new(imageRequest.OverlaySettingId, imageRequest.Name)
+                new(imageRequest.UserId, imageRequest.Name)
                 {
                     Location = new(imageRequest.LocationX, imageRequest.LocationY),
                     Width = imageRequest.Width,
                     Height = imageRequest.Height,
+                    IsUsed = imageRequest.IsUsed,
                 };
 
             // Get the created image
             ImageViewModel createdImage = _imageMap.Create(image);
 
             // Try to recover the image saved on wwwroot folder
-            if (
-                !TryGetImage(createdImage.OverlaySettingId, createdImage.Name, out byte[] imageData)
-            )
+            if (!TryGetImage(createdImage.UserId, createdImage.Name, out byte[] imageData))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -178,13 +178,14 @@ namespace WarStreamer.Web.API.Controllers
             ImageResponseModel imageResponse =
                 new()
                 {
-                    OverlaySettingId = createdImage.OverlaySettingId,
+                    UserId = createdImage.UserId,
                     Name = createdImage.Name,
                     Image = imageData,
                     LocationX = createdImage.Location.X,
                     LocationY = createdImage.Location.Y,
                     Width = createdImage.Width,
                     Height = createdImage.Height,
+                    IsUsed = createdImage.IsUsed,
                 };
 
             return Created($"~/images/{createdImage.Name}", imageResponse);
@@ -208,12 +209,12 @@ namespace WarStreamer.Web.API.Controllers
             string userId = User.GetDiscordId();
 
             // Ensure both user ids are the same
-            if (imageRequest.OverlaySettingId != userId)
+            if (imageRequest.UserId != userId)
             {
                 return Forbid();
             }
 
-            ImageViewModel? anyImage = _imageMap.GetByOverlaySettingIdAndName(userId, name);
+            ImageViewModel? anyImage = _imageMap.GetByUserIdAndName(userId, name);
 
             // Verify if the image exists
             if (anyImage == null)
@@ -222,7 +223,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Try to update the image in wwwroot folder
-            if (!TrySaveImage(imageRequest.Image, anyImage.OverlaySettingId, anyImage.Name))
+            if (!TrySaveImage(imageRequest.Image, anyImage.UserId, anyImage.Name))
             {
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
@@ -234,6 +235,7 @@ namespace WarStreamer.Web.API.Controllers
             anyImage.Location = new(imageRequest.LocationX, imageRequest.LocationY);
             anyImage.Width = imageRequest.Width;
             anyImage.Height = imageRequest.Height;
+            anyImage.IsUsed = imageRequest.IsUsed;
 
             return Ok(_imageMap.Update(anyImage));
         }
@@ -253,7 +255,7 @@ namespace WarStreamer.Web.API.Controllers
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();
 
-            ImageViewModel? image = _imageMap.GetByOverlaySettingIdAndName(userId, name);
+            ImageViewModel? image = _imageMap.GetByUserIdAndName(userId, name);
 
             // Verify if the image exists
             if (image == null)
@@ -262,7 +264,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Delete the image in wwwroot folder
-            string path = $@"{_environment.WebRootPath}\{image.OverlaySettingId}\{RELATIVE_PATH}";
+            string path = $@"{_environment.WebRootPath}\{image.UserId}\{RELATIVE_PATH}";
 
             if (System.IO.File.Exists($@"{path}\{image.Name}.png"))
             {
@@ -276,20 +278,16 @@ namespace WarStreamer.Web.API.Controllers
         |*              STATIC             *|
         \* * * * * * * * * * * * * * * * * */
 
-        public static byte[] GetImage(
-            IWebHostEnvironment environment,
-            string overlaySettingId,
-            string name
-        )
+        public static byte[] GetImage(IWebHostEnvironment environment, string userId, string name)
         {
-            TryGetImage(environment, overlaySettingId, name, out byte[] image);
+            TryGetImage(environment, userId, name, out byte[] image);
 
             return image;
         }
 
         public static bool TryGetImage(
             IWebHostEnvironment environment,
-            string overlaySettingId,
+            string userId,
             string name,
             out byte[] image
         )
@@ -297,7 +295,7 @@ namespace WarStreamer.Web.API.Controllers
             // Default image
             image = null!;
 
-            string path = $@"{environment.WebRootPath}\{overlaySettingId}\{RELATIVE_PATH}";
+            string path = $@"{environment.WebRootPath}\{userId}\{RELATIVE_PATH}";
 
             if (!Directory.Exists(path))
             {
@@ -322,12 +320,10 @@ namespace WarStreamer.Web.API.Controllers
         public static bool TrySaveImage(
             IWebHostEnvironment environment,
             IFormFile? file,
-            string overlaySettingId,
+            string userId,
             string name
         )
         {
-            // OverlaySettingId = UserId in this case
-
             if (file == null || file.Length < 1)
             {
                 return false;
@@ -339,7 +335,7 @@ namespace WarStreamer.Web.API.Controllers
                 return false;
             }
 
-            string path = $@"{environment.WebRootPath}\{overlaySettingId}\{RELATIVE_PATH}";
+            string path = $@"{environment.WebRootPath}\{userId}\{RELATIVE_PATH}";
 
             if (!Directory.Exists(path))
             {
@@ -360,33 +356,34 @@ namespace WarStreamer.Web.API.Controllers
         |*                          PRIVATE METHODS                          *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        private byte[] GetImage(string overlaySettingId, string name)
+        private byte[] GetImage(string userId, string name)
         {
-            return GetImage(_environment, overlaySettingId, name);
+            return GetImage(_environment, userId, name);
         }
 
         private ImageResponseModel ToResponseModel(ImageViewModel image)
         {
             return new ImageResponseModel
             {
-                OverlaySettingId = image.OverlaySettingId,
+                UserId = image.UserId,
                 Name = image.Name,
-                Image = GetImage(image.OverlaySettingId, image.Name),
+                Image = GetImage(image.UserId, image.Name),
                 LocationX = image.Location.X,
                 LocationY = image.Location.Y,
                 Width = image.Width,
-                Height = image.Height
+                Height = image.Height,
+                IsUsed = image.IsUsed,
             };
         }
 
-        private bool TryGetImage(string overlaySettingId, string name, out byte[] image)
+        private bool TryGetImage(string userId, string name, out byte[] image)
         {
-            return TryGetImage(_environment, overlaySettingId, name, out image);
+            return TryGetImage(_environment, userId, name, out image);
         }
 
-        private bool TrySaveImage(IFormFile? file, string overlaySettingId, string name)
+        private bool TrySaveImage(IFormFile? file, string userId, string name)
         {
-            return TrySaveImage(_environment, file, overlaySettingId, name);
+            return TrySaveImage(_environment, file, userId, name);
         }
     }
 }

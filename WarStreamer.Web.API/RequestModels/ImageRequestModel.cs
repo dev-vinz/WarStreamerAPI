@@ -5,7 +5,7 @@ namespace WarStreamer.Web.API.RequestModels
     public class ImageRequestModel
     {
         [Required]
-        public string OverlaySettingId { get; set; } = null!;
+        public string UserId { get; set; } = null!;
 
         [Required]
         public string Name { get; set; } = null!;
@@ -24,5 +24,8 @@ namespace WarStreamer.Web.API.RequestModels
 
         [Required]
         public int Height { get; set; }
+
+        [Required]
+        public bool IsUsed { get; set; }
     }
 }

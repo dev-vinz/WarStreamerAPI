@@ -26,7 +26,7 @@ namespace WarStreamer.Maps
 
         public bool Delete(TeamLogoViewModel viewModel)
         {
-            TeamLogo logo = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
+            TeamLogo logo = ViewModelToDomain(Guid.Parse(viewModel.UserId), viewModel);
             return _service.Delete(logo);
         }
 
@@ -45,7 +45,7 @@ namespace WarStreamer.Maps
 
         public bool Update(TeamLogoViewModel viewModel)
         {
-            TeamLogo logo = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));
+            TeamLogo logo = ViewModelToDomain(Guid.Parse(viewModel.UserId), viewModel);
             return _service.Update(logo);
         }
 
@@ -70,14 +70,14 @@ namespace WarStreamer.Maps
             return domain.Select(DomainToViewModel).ToList();
         }
 
-        private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel, Guid userId)
+        private static TeamLogo ViewModelToDomain(Guid userId, TeamLogoViewModel viewModel)
         {
-            return new(viewModel.TeamName, userId) { ClanTags = [.. viewModel.ClanTags] };
+            return new(userId, viewModel.TeamName) { ClanTags = [.. viewModel.ClanTags] };
         }
 
         private static TeamLogo ViewModelToDomain(TeamLogoViewModel viewModel)
         {
-            return ViewModelToDomain(viewModel, Guid.Empty.ParseDiscordId(viewModel.UserId));
+            return ViewModelToDomain(Guid.Empty.ParseDiscordId(viewModel.UserId), viewModel);
         }
     }
 }

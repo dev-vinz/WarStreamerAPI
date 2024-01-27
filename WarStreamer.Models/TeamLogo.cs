@@ -5,18 +5,18 @@ using WarStreamer.Models.EntityBase;
 
 namespace WarStreamer.Models
 {
-    [PrimaryKey(nameof(TeamName), nameof(UserId))]
+    [PrimaryKey(nameof(UserId), nameof(TeamName))]
     public class TeamLogo : Entity
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             PROPERTIES                            *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        [MaxLength(50)]
-        public string TeamName { get; private set; } = null!;
-
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid UserId { get; private set; }
+
+        [MaxLength(50)]
+        public string TeamName { get; private set; } = null!;
 
         public string[] ClanTags { get; set; }
 
@@ -30,12 +30,12 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public TeamLogo(string teamName, Guid userId)
+        public TeamLogo(Guid userId, string teamName)
         {
             // Inputs
             {
-                TeamName = teamName.ToUpper();
                 UserId = userId;
+                TeamName = teamName.ToUpper();
                 ClanTags = [];
             }
         }

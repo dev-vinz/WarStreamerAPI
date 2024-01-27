@@ -67,7 +67,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingTeamLogo_ThenTeamLogoCopied()
         {
             TeamLogo logo = CreateTeamLogoOne();
-            Entity copy = new TeamLogo(logo.TeamName, logo.UserId);
+            Entity copy = new TeamLogo(logo.UserId, logo.TeamName);
 
             Assert.NotNull(logo);
 
@@ -90,7 +90,7 @@ namespace WarStreamer.Tests.Models
 
         private static TeamLogo CreateTeamLogoOne()
         {
-            return new(TEAM_NAME, Guid.Empty.ParseDiscordId(USER_ID_ONE))
+            return new(Guid.Empty.ParseDiscordId(USER_ID_ONE), TEAM_NAME)
             {
                 ClanTags = CLAN_TAGS_ONE
             };
@@ -98,7 +98,7 @@ namespace WarStreamer.Tests.Models
 
         private static TeamLogo CreateTeamLogoTwo()
         {
-            return new(TEAM_NAME, Guid.Empty.ParseDiscordId(USER_ID_TWO))
+            return new(Guid.Empty.ParseDiscordId(USER_ID_TWO), TEAM_NAME)
             {
                 ClanTags = CLAN_TAGS_TWO
             };

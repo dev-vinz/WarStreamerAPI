@@ -17,6 +17,7 @@ namespace WarStreamer.Web.API.Controllers
         AuthenticationService authService,
         IWebHostEnvironment environment,
         IAuthTokenMap authTokenMap,
+        ILanguageMap languageMap,
         IUserMap userMap
     ) : Controller
     {
@@ -29,6 +30,7 @@ namespace WarStreamer.Web.API.Controllers
         private readonly IWebHostEnvironment _environment = environment;
 
         private readonly IAuthTokenMap _authTokenMap = authTokenMap;
+        private readonly ILanguageMap _languageMap = languageMap;
         private readonly IUserMap _userMap = userMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -152,7 +154,7 @@ namespace WarStreamer.Web.API.Controllers
                 {
                     anyUser = new UserViewModel(user.Id)
                     {
-                        LanguageId = "4d29a292-ebe1-4b7f-8707-12e525a50e79",
+                        LanguageId = _languageMap.GetAll().First().Id,
                         TierLevel = 0,
                         NewsLetter = false,
                     };

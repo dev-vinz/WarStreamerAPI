@@ -3,17 +3,25 @@ using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
 using WarStreamer.Web.API.Extensions;
+using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
     [Authorize]
     [Route("overlaysetting/")]
-    public class OverlaySettingController(IOverlaySettingMap overlaySettingMap) : Controller
+    public class OverlaySettingController(
+        IWebHostEnvironment environment,
+        IImageMap imageMap,
+        IOverlaySettingMap overlaySettingMap
+    ) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                               FIELDS                              *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+        private readonly IWebHostEnvironment _environment = environment;
+
+        private readonly IImageMap _imageMap = imageMap;
         private readonly IOverlaySettingMap _overlaySettingMap = overlaySettingMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -44,6 +52,25 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             return Ok(overlay);
+        }
+
+        [HttpGet]
+        [Route("images")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<ImageResponseModel> GetImages()
+        {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            List<ImageResponseModel> result = _imageMap
+                .GetUsedByUserId(userId)
+                .Select(ToResponseModel)
+                .ToList();
+
+            return Ok(result);
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -170,6 +197,30 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             return Ok(_overlaySettingMap.Delete(setting));
+        }
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                          PRIVATE METHODS                          *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        private byte[] GetImage(string userId, string name)
+        {
+            return ImageController.GetImage(_environment, userId, name);
+        }
+
+        private ImageResponseModel ToResponseModel(ImageViewModel image)
+        {
+            return new ImageResponseModel
+            {
+                UserId = image.UserId,
+                Name = image.Name,
+                Image = GetImage(image.UserId, image.Name),
+                LocationX = image.Location.X,
+                LocationY = image.Location.Y,
+                Width = image.Width,
+                Height = image.Height,
+                IsUsed = image.IsUsed,
+            };
         }
     }
 }

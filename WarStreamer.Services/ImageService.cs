@@ -26,14 +26,19 @@ namespace WarStreamer.Services
             return _repository.Delete(domain);
         }
 
-        public Image? GetByOverlaySettingIdAndName(Guid overlaySettingId, string name)
+        public List<Image> GetByUserId(Guid userId)
         {
-            return _repository.GetByOverlaySettingIdAndName(overlaySettingId, name);
+            return _repository.GetByUserId(userId);
         }
 
-        public List<Image> GetByOverlaySettingId(Guid overlaySettingId)
+        public Image? GetByUserIdAndName(Guid userId, string name)
         {
-            return _repository.GetByOverlaySettingId(overlaySettingId);
+            return _repository.GetByUserIdAndName(userId, name);
+        }
+
+        public List<Image> GetUsedByUserId(Guid userId)
+        {
+            return _repository.GetUsedByUserId(userId);
         }
 
         public bool Update(Image domain)

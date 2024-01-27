@@ -2,7 +2,7 @@
 {
     public class ImageResponseModel
     {
-        public string OverlaySettingId { get; set; } = null!;
+        public string UserId { get; set; } = null!;
 
         public string Name { get; set; } = null!;
 
@@ -15,5 +15,7 @@
         public int Width { get; set; }
 
         public int Height { get; set; }
+
+        public bool IsUsed { get; set; }
     }
 }

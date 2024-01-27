@@ -113,7 +113,7 @@ namespace WarStreamer.Tests.Repositories
 
         private static TeamLogo CreateTeamLogo()
         {
-            return new(TEAM_NAME, USER_ID) { ClanTags = CLAN_TAGS };
+            return new(USER_ID, TEAM_NAME) { ClanTags = CLAN_TAGS };
         }
     }
 }

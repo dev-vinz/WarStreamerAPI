@@ -24,6 +24,12 @@ namespace WarStreamer.Models
 
         public DateTimeOffset ExpiresAt { get; private set; }
 
+        /* * * * * * * * * * * * * * * * * *\
+        |*            SHORTCUTS            *|
+        \* * * * * * * * * * * * * * * * * */
+
+        public User User { get; set; } = null!;
+
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

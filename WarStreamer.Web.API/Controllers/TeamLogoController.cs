@@ -98,7 +98,7 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Create a team logo viewmodel...
-            TeamLogoViewModel logo = new(logoRequest.TeamName, userId);
+            TeamLogoViewModel logo = new(userId, logoRequest.TeamName);
 
             // ... and get the created one
             TeamLogoViewModel createdLogo = _logoMap.Create(logo);

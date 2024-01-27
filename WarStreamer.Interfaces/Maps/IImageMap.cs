@@ -12,9 +12,11 @@ namespace WarStreamer.Interfaces.Maps
 
         public bool Delete(ImageViewModel viewModel);
 
-        public ImageViewModel? GetByOverlaySettingIdAndName(string overlaySettingId, string name);
+        public List<ImageViewModel> GetByUserId(string userId);
 
-        public List<ImageViewModel> GetByOverlaySettingId(string overlaySettingId);
+        public ImageViewModel? GetByUserIdAndName(string userId, string name);
+
+        public List<ImageViewModel> GetUsedByUserId(string userId);
 
         public bool Update(ImageViewModel viewModel);
     }

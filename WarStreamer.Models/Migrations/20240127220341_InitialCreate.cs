@@ -14,23 +14,6 @@ namespace WarStreamer.Models.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AuthTokens",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccessIV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscordToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscordIV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IssuedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AuthTokens", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Fonts",
                 columns: table => new
                 {
@@ -97,6 +80,52 @@ namespace WarStreamer.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuthTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccessIV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscordToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscordIV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IssuedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthTokens", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_AuthTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    LocationX = table.Column<int>(type: "int", nullable: false),
+                    LocationY = table.Column<int>(type: "int", nullable: false),
+                    Width = table.Column<int>(type: "int", nullable: false),
+                    Height = table.Column<int>(type: "int", nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => new { x.UserId, x.Name });
+                    table.ForeignKey(
+                        name: "FK_Images_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OverlaySettings",
                 columns: table => new
                 {
@@ -154,13 +183,13 @@ namespace WarStreamer.Models.Migrations
                 name: "TeamLogos",
                 columns: table => new
                 {
-                    TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TeamName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     ClanTags = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamLogos", x => new { x.TeamName, x.UserId });
+                    table.PrimaryKey("PK_TeamLogos", x => new { x.UserId, x.TeamName });
                     table.ForeignKey(
                         name: "FK_TeamLogos_Users_UserId",
                         column: x => x.UserId,
@@ -190,37 +219,15 @@ namespace WarStreamer.Models.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
-                {
-                    OverlaySettingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false, collation: "SQL_Latin1_General_CP1_CI_AS"),
-                    LocationX = table.Column<int>(type: "int", nullable: false),
-                    LocationY = table.Column<int>(type: "int", nullable: false),
-                    Width = table.Column<int>(type: "int", nullable: false),
-                    Height = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => new { x.OverlaySettingId, x.Name });
-                    table.ForeignKey(
-                        name: "FK_Images_OverlaySettings_OverlaySettingId",
-                        column: x => x.OverlaySettingId,
-                        principalTable: "OverlaySettings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Fonts",
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("463f666e-16ff-4ff7-9545-f7c382bec74d"), "Roboto", "roboto.ttf" },
-                    { new Guid("54cbb611-5421-42a6-b5b7-ffb75f4a6181"), "Quicksand", "quicksand.otf" },
-                    { new Guid("d785fa52-0316-4250-b161-c6713c263083"), "Poppins", "poppins.otf" },
-                    { new Guid("ff193217-486e-4b9f-a63c-64f04909a0ba"), "Clash of Clans", "supercell-magic.ttf" }
+                    { new Guid("26082a0f-5eb1-481d-be36-2056dd9d5dcd"), "Clash of Clans", "supercell-magic.ttf" },
+                    { new Guid("279ba36e-9913-4f76-b54f-47b3c49f2661"), "Roboto", "roboto.ttf" },
+                    { new Guid("76c29079-e36e-4b21-a54a-f1136c3dade3"), "Poppins", "poppins.otf" },
+                    { new Guid("90278b54-85f7-4d1a-8eb1-e04b8d8c5bef"), "Quicksand", "quicksand.otf" }
                 });
 
             migrationBuilder.InsertData(
@@ -228,8 +235,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("4d29a292-ebe1-4b7f-8707-12e525a50e79"), "fr-FR", "Français", "🇫🇷", "fr" },
-                    { new Guid("81c1f599-ac64-4faa-8d21-a36bb6e9d609"), "en-US", "English", "🇬🇧", "en" }
+                    { new Guid("477eb317-2026-485a-9de6-f1b31b44b337"), "en-US", "English", "🇬🇧", "en" },
+                    { new Guid("65a350b4-7ec2-4fc6-88b0-f8cb36a39bea"), "fr-FR", "Français", "🇫🇷", "fr" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -241,11 +248,6 @@ namespace WarStreamer.Models.Migrations
                 name: "IX_OverlaySettings_FontId",
                 table: "OverlaySettings",
                 column: "FontId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeamLogos_UserId",
-                table: "TeamLogos",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_LanguageId",
@@ -266,13 +268,13 @@ namespace WarStreamer.Models.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "OverlaySettings");
+
+            migrationBuilder.DropTable(
                 name: "TeamLogos");
 
             migrationBuilder.DropTable(
                 name: "WarOverlays");
-
-            migrationBuilder.DropTable(
-                name: "OverlaySettings");
 
             migrationBuilder.DropTable(
                 name: "Fonts");

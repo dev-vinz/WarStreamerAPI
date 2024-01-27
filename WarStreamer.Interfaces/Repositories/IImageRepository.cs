@@ -10,9 +10,11 @@ namespace WarStreamer.Interfaces.Repositories
 
         public bool Delete(Image domain);
 
-        public Image? GetByOverlaySettingIdAndName(Guid overlaySettingId, string name);
+        public List<Image> GetByUserId(Guid userId);
 
-        public List<Image> GetByOverlaySettingId(Guid overlaySettingId);
+        public Image? GetByUserIdAndName(Guid userId, string name);
+
+        public List<Image> GetUsedByUserId(Guid userId);
 
         public Image Save(Image domain);
 

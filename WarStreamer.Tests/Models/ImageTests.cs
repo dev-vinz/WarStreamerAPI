@@ -12,11 +12,12 @@ namespace WarStreamer.Tests.Models
 
         private const string NAME_ONE = "Image 1";
         private const string NAME_TWO = "Image 2";
-        private const string OVERLAY_SETTING_ID = "0";
+        private const string USER_ID = "0";
         private const int LOCATION_X = 100;
         private const int LOCATION_Y = 150;
         private const int WIDTH = 600;
         private const int HEIGHT = 900;
+        private const bool IS_USED = true;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -29,11 +30,12 @@ namespace WarStreamer.Tests.Models
 
             Assert.NotNull(image);
             Assert.Equal(NAME_ONE.ToUpper(), image.Name);
-            Assert.Equal(Guid.Empty.ParseDiscordId(OVERLAY_SETTING_ID), image.OverlaySettingId);
+            Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID), image.UserId);
             Assert.Equal(LOCATION_X, image.LocationX);
             Assert.Equal(LOCATION_Y, image.LocationY);
             Assert.Equal(WIDTH, image.Width);
             Assert.Equal(HEIGHT, image.Height);
+            Assert.Equal(IS_USED, image.IsUsed);
         }
 
         [Fact]
@@ -72,7 +74,7 @@ namespace WarStreamer.Tests.Models
         public void WhenCopyingImage_ThenImageCopied()
         {
             Image image = CreateImageOne();
-            Entity copy = new Image(image.OverlaySettingId, image.Name);
+            Entity copy = new Image(image.UserId, image.Name);
 
             Assert.NotNull(image);
 
@@ -84,6 +86,7 @@ namespace WarStreamer.Tests.Models
             Assert.Equal(image.LocationY, copyImage.LocationY);
             Assert.Equal(image.Width, copyImage.Width);
             Assert.Equal(image.Height, copyImage.Height);
+            Assert.Equal(IS_USED, image.IsUsed);
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -96,23 +99,25 @@ namespace WarStreamer.Tests.Models
 
         private static Image CreateImageOne()
         {
-            return new(Guid.Empty.ParseDiscordId(OVERLAY_SETTING_ID), NAME_ONE)
+            return new(Guid.Empty.ParseDiscordId(USER_ID), NAME_ONE)
             {
                 LocationX = LOCATION_X,
                 LocationY = LOCATION_Y,
                 Width = WIDTH,
                 Height = HEIGHT,
+                IsUsed = IS_USED,
             };
         }
 
         private static Image CreateImageTwo()
         {
-            return new(Guid.Empty.ParseDiscordId(OVERLAY_SETTING_ID), NAME_TWO)
+            return new(Guid.Empty.ParseDiscordId(USER_ID), NAME_TWO)
             {
                 LocationX = LOCATION_Y,
                 LocationY = LOCATION_X,
                 Width = HEIGHT,
                 Height = WIDTH,
+                IsUsed = !IS_USED,
             };
         }
     }
