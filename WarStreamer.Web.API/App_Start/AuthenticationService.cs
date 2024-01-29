@@ -240,6 +240,7 @@ namespace WarStreamer.Web.API.App_Start
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = securityKey,
                         ValidIssuer = jwtConfiguration.Domain,
@@ -285,7 +286,10 @@ namespace WarStreamer.Web.API.App_Start
             // If the exception is SecurityTokenExpired and the request is refresh
             if (
                 context.Exception is SecurityTokenExpiredException
-                && context.Request.Path == "/auth/refresh"
+                && (
+                    context.Request.Path == "/auth/refresh"
+                    || context.Request.Path == "/auth/logout"
+                )
             )
             {
                 JwtSecurityTokenHandler handler = new();
@@ -326,7 +330,7 @@ namespace WarStreamer.Web.API.App_Start
                 ClaimsIdentity claims =
                     new(
                         new Claim[] { new(JwtClaimTypes.Subject, jsonToken.Subject), },
-                        "temp_refresh_authorization"
+                        "temp_logout_refresh_authorization"
                     );
 
                 context.Principal = new ClaimsPrincipal(claims);

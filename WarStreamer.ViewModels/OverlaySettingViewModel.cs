@@ -32,6 +32,9 @@ namespace WarStreamer.ViewModels
         private bool _lastAttackToWinVisible;
         private int? _lastAttackToWinSize;
         private Location2D? _lastAttackToWinLocation;
+        private bool _heroesEquipmentsVisible;
+        private int? _heroesEquipmentsSize;
+        private Location2D? _heroesEquipmentsLocation;
         private bool _mirrorReflection;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -322,6 +325,45 @@ namespace WarStreamer.ViewModels
                 if (_lastAttackToWinVisible)
                 {
                     _lastAttackToWinLocation = value;
+                }
+            }
+        }
+
+        public bool HeroesEquipmentsVisible
+        {
+            get => _heroesEquipmentsVisible;
+            set
+            {
+                _heroesEquipmentsVisible = value;
+
+                if (!_heroesEquipmentsVisible)
+                {
+                    _heroesEquipmentsSize = null;
+                    _heroesEquipmentsLocation = null;
+                }
+            }
+        }
+
+        public int? HeroesEquipmentsSize
+        {
+            get => _heroesEquipmentsSize;
+            set
+            {
+                if (_heroesEquipmentsVisible)
+                {
+                    _heroesEquipmentsSize = value;
+                }
+            }
+        }
+
+        public Location2D? HeroesEquipmentsLocation
+        {
+            get => _heroesEquipmentsLocation;
+            set
+            {
+                if (_heroesEquipmentsVisible)
+                {
+                    _heroesEquipmentsLocation = value;
                 }
             }
         }

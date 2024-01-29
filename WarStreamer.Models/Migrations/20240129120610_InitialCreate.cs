@@ -160,6 +160,10 @@ namespace WarStreamer.Models.Migrations
                     LastAttackToWinSize = table.Column<int>(type: "int", nullable: true),
                     LastAttackToWinLocationX = table.Column<int>(type: "int", nullable: true),
                     LastAttackToWinLocationY = table.Column<int>(type: "int", nullable: true),
+                    IsHeroesEquipments = table.Column<bool>(type: "bit", nullable: false),
+                    HeroesEquipmentsSize = table.Column<int>(type: "int", nullable: true),
+                    HeroesEquipmentLocationX = table.Column<int>(type: "int", nullable: true),
+                    HeroesEquipmentLocationY = table.Column<int>(type: "int", nullable: true),
                     MirrorReflection = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -224,10 +228,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("26082a0f-5eb1-481d-be36-2056dd9d5dcd"), "Clash of Clans", "supercell-magic.ttf" },
-                    { new Guid("279ba36e-9913-4f76-b54f-47b3c49f2661"), "Roboto", "roboto.ttf" },
-                    { new Guid("76c29079-e36e-4b21-a54a-f1136c3dade3"), "Poppins", "poppins.otf" },
-                    { new Guid("90278b54-85f7-4d1a-8eb1-e04b8d8c5bef"), "Quicksand", "quicksand.otf" }
+                    { new Guid("306c6f04-7216-4b17-9c04-3562030ebff2"), "Roboto", "roboto.ttf" },
+                    { new Guid("ab505c94-d2b2-49f5-b916-d24436543a38"), "Quicksand", "quicksand.otf" },
+                    { new Guid("b6ad6687-8ebf-4142-9668-4afb831a5a55"), "Poppins", "poppins.otf" },
+                    { new Guid("e58eb0b2-fb22-444e-a5a0-ddde0173eea7"), "Clash of Clans", "supercell-magic.ttf" }
                 });
 
             migrationBuilder.InsertData(
@@ -235,8 +239,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("477eb317-2026-485a-9de6-f1b31b44b337"), "en-US", "English", "🇬🇧", "en" },
-                    { new Guid("65a350b4-7ec2-4fc6-88b0-f8cb36a39bea"), "fr-FR", "Français", "🇫🇷", "fr" }
+                    { new Guid("5a29db8f-2150-47a4-81b0-fb01d9d1e4ad"), "fr-FR", "Français", "🇫🇷", "fr" },
+                    { new Guid("79fbe53c-581c-4b59-a8d3-beee46450ca4"), "en-US", "English", "🇬🇧", "en" }
                 });
 
             migrationBuilder.CreateIndex(

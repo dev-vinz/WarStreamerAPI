@@ -168,6 +168,10 @@ namespace WarStreamer.Web.API.Controllers
             anySetting.LastAttackToWinSize = setting.LastAttackToWinSize;
             anySetting.LastAttackToWinLocation = setting.LastAttackToWinLocation;
 
+            anySetting.HeroesEquipmentsVisible = setting.HeroesEquipmentsVisible;
+            anySetting.HeroesEquipmentsSize = setting.HeroesEquipmentsSize;
+            anySetting.HeroesEquipmentsLocation = setting.HeroesEquipmentsLocation;
+
             anySetting.MirrorReflection = setting.MirrorReflection;
 
             return Ok(_overlaySettingMap.Update(anySetting));

@@ -139,7 +139,7 @@ namespace WarStreamer.Web.API.Controllers
                 // If token is still valid, refresh them
                 if (anyAuthToken?.ExpiresAt >= DateTime.UtcNow)
                 {
-                    return await RefreshTokens();
+                    return await RefreshTokens(anyAuthToken);
                 }
                 else if (anyAuthToken != null)
                 {
@@ -249,12 +249,7 @@ namespace WarStreamer.Web.API.Controllers
                 // Verify token exists
                 if (authToken == null)
                 {
-                    return Unauthorized(
-                        new
-                        {
-                            error = $"No authentication token registered for user with id '{userId}'"
-                        }
-                    );
+                    return Unauthorized(new { error = "No authentication token registered" });
                 }
 
                 // Verify that authentication token is still valid
@@ -264,6 +259,32 @@ namespace WarStreamer.Web.API.Controllers
                     return Unauthorized(new { error = "Authentication token has expired" });
                 }
 
+                return await RefreshTokens(authToken);
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        /* * * * * * * * * * * * * * * * * *\
+        |*               PUT               *|
+        \* * * * * * * * * * * * * * * * * */
+
+        /* * * * * * * * * * * * * * * * * *\
+        |*              DELETE             *|
+        \* * * * * * * * * * * * * * * * * */
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                          PRIVATE METHODS                          *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        private async Task<ActionResult<TokenResponseModel>> RefreshTokens(
+            AuthTokenViewModel authToken
+        )
+        {
+            try
+            {
                 // Decrypt the discord refresh token
                 string discordRefreshToken = _authService.DecryptToken(
                     authToken.DiscordToken,
@@ -309,18 +330,6 @@ namespace WarStreamer.Web.API.Controllers
             {
                 return BadRequest(new { error = "Discord refresh token invalid" });
             }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
         }
-
-        /* * * * * * * * * * * * * * * * * *\
-        |*               PUT               *|
-        \* * * * * * * * * * * * * * * * * */
-
-        /* * * * * * * * * * * * * * * * * *\
-        |*              DELETE             *|
-        \* * * * * * * * * * * * * * * * * */
     }
 }

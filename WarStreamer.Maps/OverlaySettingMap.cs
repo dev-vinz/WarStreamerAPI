@@ -97,6 +97,12 @@ namespace WarStreamer.Maps
                     domain.LastAttackToWinLocationX ?? 0,
                     domain.LastAttackToWinLocationY ?? 0
                 ),
+                HeroesEquipmentsVisible = domain.IsHeroesEquipments,
+                HeroesEquipmentsSize = domain.HeroesEquipmentsSize,
+                HeroesEquipmentsLocation = new Location2D(
+                    domain.HeroesEquipmentLocationX ?? 0,
+                    domain.HeroesEquipmentLocationY ?? 0
+                ),
                 MirrorReflection = domain.MirrorReflection,
             };
         }
@@ -138,6 +144,10 @@ namespace WarStreamer.Maps
                 LastAttackToWinSize = viewModel.LastAttackToWinSize,
                 LastAttackToWinLocationX = viewModel.LastAttackToWinLocation?.X,
                 LastAttackToWinLocationY = viewModel.LastAttackToWinLocation?.Y,
+                IsHeroesEquipments = viewModel.HeroesEquipmentsVisible,
+                HeroesEquipmentsSize = viewModel.HeroesEquipmentsSize,
+                HeroesEquipmentLocationX = viewModel.HeroesEquipmentsLocation?.X,
+                HeroesEquipmentLocationY = viewModel.HeroesEquipmentsLocation?.Y,
                 MirrorReflection = viewModel.MirrorReflection,
             };
         }

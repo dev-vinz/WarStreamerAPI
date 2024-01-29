@@ -43,6 +43,10 @@ namespace WarStreamer.Tests.Models
         private const int LAST_ATTACK_TO_WIN_SIZE = 20;
         private const int LAST_ATTACK_TO_WIN_LOCATION_X = 700;
         private const int LAST_ATTACK_TO_WIN_LOCATION_Y = 700;
+        private const bool IS_HEROES_EQUIPMENTS = true;
+        private const int HEROES_EQUIPMENTS_SIZE = 40;
+        private const int HEROES_EQUIPMENTS_LOCATION_X = 800;
+        private const int HEROES_EQUIPMENTS_LOCATION_Y = 800;
         private const bool MIRROR_REFLECTION = false;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -94,6 +98,11 @@ namespace WarStreamer.Tests.Models
             Assert.Equal(LAST_ATTACK_TO_WIN_SIZE, setting.LastAttackToWinSize);
             Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_X, setting.LastAttackToWinLocationX);
             Assert.Equal(LAST_ATTACK_TO_WIN_LOCATION_Y, setting.LastAttackToWinLocationY);
+
+            Assert.Equal(IS_HEROES_EQUIPMENTS, setting.IsHeroesEquipments);
+            Assert.Equal(HEROES_EQUIPMENTS_SIZE, setting.HeroesEquipmentsSize);
+            Assert.Equal(HEROES_EQUIPMENTS_LOCATION_X, setting.HeroesEquipmentLocationX);
+            Assert.Equal(HEROES_EQUIPMENTS_LOCATION_Y, setting.HeroesEquipmentLocationY);
 
             Assert.Equal(MIRROR_REFLECTION, setting.MirrorReflection);
         }
@@ -180,6 +189,11 @@ namespace WarStreamer.Tests.Models
             Assert.Equal(setting.LastAttackToWinLocationX, copySetting.LastAttackToWinLocationX);
             Assert.Equal(setting.LastAttackToWinLocationY, copySetting.LastAttackToWinLocationY);
 
+            Assert.Equal(setting.IsHeroesEquipments, copySetting.IsHeroesEquipments);
+            Assert.Equal(setting.HeroesEquipmentsSize, copySetting.HeroesEquipmentsSize);
+            Assert.Equal(setting.HeroesEquipmentLocationX, copySetting.HeroesEquipmentLocationX);
+            Assert.Equal(setting.HeroesEquipmentLocationY, copySetting.HeroesEquipmentLocationY);
+
             Assert.Equal(setting.MirrorReflection, copySetting.MirrorReflection);
         }
 
@@ -225,6 +239,10 @@ namespace WarStreamer.Tests.Models
                 LastAttackToWinSize = LAST_ATTACK_TO_WIN_SIZE,
                 LastAttackToWinLocationX = LAST_ATTACK_TO_WIN_LOCATION_X,
                 LastAttackToWinLocationY = LAST_ATTACK_TO_WIN_LOCATION_Y,
+                IsHeroesEquipments = IS_HEROES_EQUIPMENTS,
+                HeroesEquipmentsSize = HEROES_EQUIPMENTS_SIZE,
+                HeroesEquipmentLocationX = HEROES_EQUIPMENTS_LOCATION_X,
+                HeroesEquipmentLocationY = HEROES_EQUIPMENTS_LOCATION_Y,
                 MirrorReflection = MIRROR_REFLECTION,
             };
         }
@@ -248,6 +266,7 @@ namespace WarStreamer.Tests.Models
                 IsAverageDuration = !IS_AVERAGE_DURATION,
                 IsPlayerDetails = !IS_PLAYER_DETAILS,
                 IsLastAttackToWin = !IS_LAST_ATTACK_TO_WIN,
+                IsHeroesEquipments = !IS_HEROES_EQUIPMENTS,
                 MirrorReflection = !MIRROR_REFLECTION,
             };
         }

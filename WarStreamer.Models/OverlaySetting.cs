@@ -75,6 +75,14 @@ namespace WarStreamer.Models
 
         public int? LastAttackToWinLocationY { get; set; }
 
+        public bool IsHeroesEquipments { get; set; }
+
+        public int? HeroesEquipmentsSize { get; set; }
+
+        public int? HeroesEquipmentLocationX { get; set; }
+
+        public int? HeroesEquipmentLocationY { get; set; }
+
         public bool MirrorReflection { get; set; }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -146,6 +154,11 @@ namespace WarStreamer.Models
                 setting.LastAttackToWinSize = LastAttackToWinSize;
                 setting.LastAttackToWinLocationX = LastAttackToWinLocationX;
                 setting.LastAttackToWinLocationY = LastAttackToWinLocationY;
+
+                setting.IsHeroesEquipments = IsHeroesEquipments;
+                setting.HeroesEquipmentsSize = HeroesEquipmentsSize;
+                setting.HeroesEquipmentLocationX = HeroesEquipmentLocationX;
+                setting.HeroesEquipmentLocationY = HeroesEquipmentLocationY;
 
                 setting.MirrorReflection = MirrorReflection;
             }

@@ -92,25 +92,25 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("26082a0f-5eb1-481d-be36-2056dd9d5dcd"),
+                            Id = new Guid("e58eb0b2-fb22-444e-a5a0-ddde0173eea7"),
                             DisplayName = "Clash of Clans",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("76c29079-e36e-4b21-a54a-f1136c3dade3"),
+                            Id = new Guid("b6ad6687-8ebf-4142-9668-4afb831a5a55"),
                             DisplayName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("90278b54-85f7-4d1a-8eb1-e04b8d8c5bef"),
+                            Id = new Guid("ab505c94-d2b2-49f5-b916-d24436543a38"),
                             DisplayName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("279ba36e-9913-4f76-b54f-47b3c49f2661"),
+                            Id = new Guid("306c6f04-7216-4b17-9c04-3562030ebff2"),
                             DisplayName = "Roboto",
                             FileName = "roboto.ttf"
                         });
@@ -174,7 +174,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("477eb317-2026-485a-9de6-f1b31b44b337"),
+                            Id = new Guid("79fbe53c-581c-4b59-a8d3-beee46450ca4"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -182,7 +182,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("65a350b4-7ec2-4fc6-88b0-f8cb36a39bea"),
+                            Id = new Guid("5a29db8f-2150-47a4-81b0-fb01d9d1e4ad"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
@@ -217,10 +217,22 @@ namespace WarStreamer.Models.Migrations
                     b.Property<Guid?>("FontId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("HeroesEquipmentLocationX")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HeroesEquipmentLocationY")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("HeroesEquipmentsSize")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAverageDuration")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsClanName")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHeroesEquipments")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsLastAttackToWin")
