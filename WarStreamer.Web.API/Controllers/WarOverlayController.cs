@@ -37,6 +37,27 @@ namespace WarStreamer.Web.API.Controllers
             return Ok(_overlayMap.GetByUserId(userId));
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<WarOverlayViewModel?> GetById(int id)
+        {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            WarOverlayViewModel? overlay = _overlayMap.GetByUserIdAndId(userId, id);
+
+            if (overlay == null)
+            {
+                return NotFound(new { error = $"War overlay with id '{id}' not found" });
+            }
+
+            return Ok(overlay);
+        }
+
         /* * * * * * * * * * * * * * * * * *\
         |*               POST              *|
         \* * * * * * * * * * * * * * * * * */
