@@ -54,6 +54,47 @@ namespace WarStreamer.Web.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("{name}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<TeamLogoResponseModel> Get(string name)
+        {
+            // Get user id from JWT authorization
+            string userId = User.GetDiscordId();
+
+            TeamLogoViewModel? logo = _logoMap.GetByUserIdAndName(userId, name);
+
+            if (logo == null)
+            {
+                return NotFound(new { error = $"Team logo with name '{name}' not found" });
+            }
+
+            // Try to recover the logo from wwwroot folder
+            if (!TryGetLogo(logo.UserId, logo.TeamName, out byte[] logoData))
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { error = "Cannot get team logo from server" }
+                );
+            }
+
+            // Create a full response with the logo in body
+            TeamLogoResponseModel logoResponse =
+                new()
+                {
+                    UserId = logo.UserId,
+                    TeamName = logo.TeamName,
+                    Logo = logoData,
+                    ClanTags = logo.ClanTags
+                };
+
+            return Ok(logoResponse);
+        }
+
         /* * * * * * * * * * * * * * * * * *\
         |*               POST              *|
         \* * * * * * * * * * * * * * * * * */
@@ -98,7 +139,8 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Create a team logo viewmodel...
-            TeamLogoViewModel logo = new(userId, logoRequest.TeamName);
+            TeamLogoViewModel logo =
+                new(userId, logoRequest.TeamName) { ClanTags = logoRequest.ClanTags };
 
             // ... and get the created one
             TeamLogoViewModel createdLogo = _logoMap.Create(logo);
@@ -119,6 +161,7 @@ namespace WarStreamer.Web.API.Controllers
                     UserId = createdLogo.UserId,
                     TeamName = createdLogo.TeamName,
                     Logo = logoData,
+                    ClanTags = createdLogo.ClanTags
                 };
 
             return Created($"~/teamlogos/{createdLogo.TeamName}", logoResponse);
@@ -297,6 +340,7 @@ namespace WarStreamer.Web.API.Controllers
                 TeamName = logo.TeamName,
                 UserId = logo.UserId,
                 Logo = GetLogo(logo.UserId, logo.TeamName),
+                ClanTags = logo.ClanTags,
             };
         }
 

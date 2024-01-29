@@ -18,7 +18,7 @@ namespace WarStreamer.Web.API.Models
         public string? GlobalName { get; private set; }
 
         [JsonProperty("avatar")]
-        public string AvatarHash { get; private set; } = null!;
+        private string AvatarHash { get; set; } = null!;
 
         [JsonProperty("email")]
         public string? Email { get; private set; }
@@ -27,6 +27,6 @@ namespace WarStreamer.Web.API.Models
         |*            SHORTCUTS            *|
         \* * * * * * * * * * * * * * * * * */
 
-        public string AvatarUrl => $"https://cdn.discordapp.com/avatars/{Id}/{AvatarHash}.png";
+        public string Avatar => $"https://cdn.discordapp.com/avatars/{Id}/{AvatarHash}.png";
     }
 }
