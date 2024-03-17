@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WarStreamer.Interfaces.Maps;
 using WarStreamer.ViewModels;
+using WarStreamer.Web.API.ResponseModels;
 
 namespace WarStreamer.Web.API.Controllers
 {
@@ -36,9 +37,11 @@ namespace WarStreamer.Web.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<List<FontViewModel>> GetAll()
+        public ActionResult<List<FontResponseModel>> GetAll()
         {
-            return Ok(_fontMap.GetAll());
+            List<FontResponseModel> result = _fontMap.GetAll().Select(ToResponseModel).ToList();
+
+            return Ok(result);
         }
 
         [HttpGet]
@@ -47,7 +50,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<FontViewModel?> GetById(Guid fontId)
+        public ActionResult<FontResponseModel?> GetById(Guid fontId)
         {
             FontViewModel? font = _fontMap.GetById(fontId);
 
@@ -57,39 +60,7 @@ namespace WarStreamer.Web.API.Controllers
                 return NotFound(new { error = $"Font with id '{fontId}' not found" });
             }
 
-            return Ok(font);
-        }
-
-        [HttpGet]
-        [Route("{fontId}/file")]
-        [Produces("application/octet-stream")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult GetFontById(Guid fontId)
-        {
-            FontViewModel? font = _fontMap.GetById(fontId);
-
-            // Verify if the font exists
-            if (font == null)
-            {
-                return NotFound(new { error = $"Font with id '{fontId}' not found" });
-            }
-
-            // Recover file from wwwroot folder
-            string path = $@"{_environment.WebRootPath}\{RELATIVE_PATH}";
-
-            // Copy into a byte array
-            using FileStream filestream = new($@"{path}\{font.FileName}", FileMode.Open);
-            using MemoryStream stream = new();
-
-            filestream.CopyTo(stream);
-            byte[] bytes = stream.ToArray();
-
-            return new FileContentResult(bytes, "application/octet-stream")
-            {
-                FileDownloadName = font.FileName
-            };
+            return Ok(ToResponseModel(font));
         }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -103,5 +74,70 @@ namespace WarStreamer.Web.API.Controllers
         /* * * * * * * * * * * * * * * * * *\
         |*              DELETE             *|
         \* * * * * * * * * * * * * * * * * */
+
+
+        /* * * * * * * * * * * * * * * * * *\
+        |*              STATIC             *|
+        \* * * * * * * * * * * * * * * * * */
+
+        public static byte[] GetFont(IWebHostEnvironment environment, string fileName)
+        {
+            TryGetFont(environment, fileName, out byte[] font);
+
+            return font;
+        }
+
+        public static bool TryGetFont(
+            IWebHostEnvironment environment,
+            string fileName,
+            out byte[] font
+        )
+        {
+            // Default font
+            font = null!;
+
+            // Recover file from wwwroot folder
+            string path = $@"{environment.WebRootPath}\{RELATIVE_PATH}";
+
+            if (!Directory.Exists(path))
+            {
+                return false;
+            }
+
+            try
+            {
+                // Copy into a byte array
+                using FileStream filestream = new($@"{path}\{fileName}", FileMode.Open);
+                using MemoryStream stream = new();
+
+                filestream.CopyTo(stream);
+                font = stream.ToArray();
+
+                return true;
+            }
+            catch (FileNotFoundException) { }
+
+            return false;
+        }
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
+        |*                          PRIVATE METHODS                          *|
+        \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        private byte[] GetFont(string fileName)
+        {
+            return GetFont(_environment, fileName);
+        }
+
+        private FontResponseModel ToResponseModel(FontViewModel font)
+        {
+            return new FontResponseModel
+            {
+                Id = font.Id,
+                DisplayName = font.DisplayName,
+                FamilyName = font.FamilyName,
+                File = GetFont(font.FileName)
+            };
+        }
     }
 }

@@ -59,7 +59,7 @@ namespace WarStreamer.Maps
 
         private static TeamLogoViewModel DomainToViewModel(TeamLogo domain)
         {
-            return new TeamLogoViewModel(domain.TeamName, $"{domain.UserId}")
+            return new TeamLogoViewModel($"{domain.UserId}", domain.TeamName)
             {
                 ClanTags = [.. domain.ClanTags]
             };

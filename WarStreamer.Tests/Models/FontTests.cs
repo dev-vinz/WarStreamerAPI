@@ -12,6 +12,7 @@ namespace WarStreamer.Tests.Models
         private static readonly Guid ID_ONE = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
         private static readonly Guid ID_TWO = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
         private const string DISPLAY_NAME = "Quicksand";
+        private const string FAMILY_NAME = "Supercell-Magic";
         private const string FILE_NAME = "Quicksand Light.ttf";
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
@@ -25,6 +26,7 @@ namespace WarStreamer.Tests.Models
 
             Assert.NotNull(font);
             Assert.Equal(DISPLAY_NAME, font.DisplayName);
+            Assert.Equal(FAMILY_NAME, font.FamilyName);
             Assert.Equal(FILE_NAME, font.FileName);
         }
 
@@ -81,12 +83,12 @@ namespace WarStreamer.Tests.Models
 
         private static Font CreateFontOne()
         {
-            return new(ID_ONE, DISPLAY_NAME, FILE_NAME);
+            return new(ID_ONE, DISPLAY_NAME, FAMILY_NAME, FILE_NAME);
         }
 
         private static Font CreateFontTwo()
         {
-            return new(ID_TWO, FILE_NAME, DISPLAY_NAME);
+            return new(ID_TWO, FILE_NAME, DISPLAY_NAME, FAMILY_NAME);
         }
     }
 }

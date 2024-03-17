@@ -53,10 +53,10 @@ namespace WarStreamer.Models
             if (entity is TeamLogo logo)
             {
                 // Erase array
-                ClanTags = new string[logo.ClanTags.Length];
+                logo.ClanTags = new string[ClanTags.Length];
 
                 // And copy
-                Array.Copy(logo.ClanTags, ClanTags, ClanTags.Length);
+                Array.Copy(ClanTags, logo.ClanTags, ClanTags.Length);
             }
             else
             {

@@ -102,6 +102,7 @@ namespace WarStreamer.Web.API.Controllers
         [HttpPost]
         [Route("")]
         [Produces("application/json")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -182,9 +183,10 @@ namespace WarStreamer.Web.API.Controllers
         {
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();
+            string userGuid = User.GetDiscordIdAsGuid().ToString();
 
             // Ensure both user ids are the same
-            if (logoRequest.UserId != userId)
+            if (logoRequest.UserId != userGuid)
             {
                 return Forbid();
             }

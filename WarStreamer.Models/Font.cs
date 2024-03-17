@@ -16,6 +16,8 @@ namespace WarStreamer.Models
 
         public string DisplayName { get; private set; }
 
+        public string FamilyName { get; private set; }
+
         public string FileName { get; private set; }
 
         /* * * * * * * * * * * * * * * * * *\
@@ -28,18 +30,19 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public Font(Guid id, string displayName, string fileName)
+        public Font(Guid id, string displayName, string familyName, string fileName)
         {
             // Inputs
             {
                 Id = id;
                 DisplayName = displayName;
+                FamilyName = familyName;
                 FileName = fileName;
             }
         }
 
-        public Font(string displayName, string fileName)
-            : this(Guid.NewGuid(), displayName, fileName) { }
+        public Font(string displayName, string familyName, string fileName)
+            : this(Guid.NewGuid(), displayName, familyName, fileName) { }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

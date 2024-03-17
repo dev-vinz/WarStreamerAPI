@@ -38,7 +38,7 @@ namespace WarStreamer.Maps
 
         private static FontViewModel DomainToViewModel(Font domain)
         {
-            return new($"{domain.Id}", domain.DisplayName, domain.FileName);
+            return new($"{domain.Id}", domain.DisplayName, domain.FamilyName, domain.FileName);
         }
 
         private static List<FontViewModel> DomainToViewModel(List<Font> domain)

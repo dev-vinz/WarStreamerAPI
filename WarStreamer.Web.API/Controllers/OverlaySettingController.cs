@@ -45,7 +45,7 @@ namespace WarStreamer.Web.API.Controllers
 
             OverlaySettingViewModel? overlay = _overlaySettingMap.GetByUserId(userId);
 
-            // Verify if the user exists
+            // Verify if the overlay exists
             if (overlay == null)
             {
                 return NotFound(new { error = "Overlay setting not found" });
@@ -146,9 +146,10 @@ namespace WarStreamer.Web.API.Controllers
         {
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();
+            string userguid = User.GetDiscordIdAsGuid().ToString();
 
             // Ensure both user ids are the same
-            if (setting.UserId != userId)
+            if (setting.UserId != userguid)
             {
                 return Forbid();
             }
@@ -244,8 +245,7 @@ namespace WarStreamer.Web.API.Controllers
                 UserId = image.UserId,
                 Name = image.Name,
                 Image = GetImage(image.UserId, image.Name),
-                LocationX = image.Location.X,
-                LocationY = image.Location.Y,
+                Location = image.Location,
                 Width = image.Width,
                 Height = image.Height,
                 IsUsed = image.IsUsed,

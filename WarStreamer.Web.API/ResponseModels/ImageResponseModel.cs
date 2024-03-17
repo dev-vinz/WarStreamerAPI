@@ -1,4 +1,6 @@
-﻿namespace WarStreamer.Web.API.ResponseModels
+﻿using WarStreamer.Commons.Tools;
+
+namespace WarStreamer.Web.API.ResponseModels
 {
     public class ImageResponseModel
     {
@@ -8,9 +10,7 @@
 
         public byte[] Image { get; set; } = null!;
 
-        public int LocationX { get; set; }
-
-        public int LocationY { get; set; }
+        public Location2D Location { get; set; } = null!;
 
         public int Width { get; set; }
 

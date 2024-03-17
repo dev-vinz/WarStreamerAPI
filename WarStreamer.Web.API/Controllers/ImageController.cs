@@ -10,11 +10,7 @@ namespace WarStreamer.Web.API.Controllers
 {
     [Authorize]
     [Route("images/")]
-    public class ImageController(
-        IWebHostEnvironment environment,
-        IImageMap imageMap,
-        IOverlaySettingMap overlaySettingMap
-    ) : Controller
+    public class ImageController(IWebHostEnvironment environment, IImageMap imageMap) : Controller
     {
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                             CONSTANTS                             *|
@@ -30,7 +26,6 @@ namespace WarStreamer.Web.API.Controllers
         private readonly IWebHostEnvironment _environment = environment;
 
         private readonly IImageMap _imageMap = imageMap;
-        private readonly IOverlaySettingMap _overlaySettingMap = overlaySettingMap;
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|
@@ -94,8 +89,7 @@ namespace WarStreamer.Web.API.Controllers
                     UserId = image.UserId,
                     Name = image.Name,
                     Image = imageData,
-                    LocationX = image.Location.X,
-                    LocationY = image.Location.Y,
+                    Location = image.Location,
                     Width = image.Width,
                     Height = image.Height,
                     IsUsed = image.IsUsed,
@@ -112,7 +106,6 @@ namespace WarStreamer.Web.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -127,12 +120,6 @@ namespace WarStreamer.Web.API.Controllers
             if (imageRequest.UserId != userId)
             {
                 return Forbid();
-            }
-
-            // Verify if the OverlaySetting exists
-            if (_overlaySettingMap.GetByUserId(userId) == null)
-            {
-                return BadRequest(new { error = "Overlay setting not defined" });
             }
 
             // Verify if the Image already exists
@@ -181,8 +168,7 @@ namespace WarStreamer.Web.API.Controllers
                     UserId = createdImage.UserId,
                     Name = createdImage.Name,
                     Image = imageData,
-                    LocationX = createdImage.Location.X,
-                    LocationY = createdImage.Location.Y,
+                    Location = createdImage.Location,
                     Width = createdImage.Width,
                     Height = createdImage.Height,
                     IsUsed = createdImage.IsUsed,
@@ -207,9 +193,10 @@ namespace WarStreamer.Web.API.Controllers
         {
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();
+            string userGuid = User.GetDiscordIdAsGuid().ToString();
 
             // Ensure both user ids are the same
-            if (imageRequest.UserId != userId)
+            if (imageRequest.UserId != userGuid)
             {
                 return Forbid();
             }
@@ -368,8 +355,7 @@ namespace WarStreamer.Web.API.Controllers
                 UserId = image.UserId,
                 Name = image.Name,
                 Image = GetImage(image.UserId, image.Name),
-                LocationX = image.Location.X,
-                LocationY = image.Location.Y,
+                Location = image.Location,
                 Width = image.Width,
                 Height = image.Height,
                 IsUsed = image.IsUsed,

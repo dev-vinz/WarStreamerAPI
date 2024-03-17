@@ -18,7 +18,7 @@ namespace WarStreamer.Models.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("SQL_Latin1_General_CP1_CS_AS")
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -81,6 +81,10 @@ namespace WarStreamer.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FamilyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,26 +96,30 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e58eb0b2-fb22-444e-a5a0-ddde0173eea7"),
+                            Id = new Guid("07674fff-ac7f-4504-bf52-0de0702c578a"),
                             DisplayName = "Clash of Clans",
+                            FamilyName = "Supercell-Magic",
                             FileName = "supercell-magic.ttf"
                         },
                         new
                         {
-                            Id = new Guid("b6ad6687-8ebf-4142-9668-4afb831a5a55"),
+                            Id = new Guid("824a4925-7e82-45a0-ae0c-2e5f4b776fdc"),
                             DisplayName = "Poppins",
+                            FamilyName = "Poppins",
                             FileName = "poppins.otf"
                         },
                         new
                         {
-                            Id = new Guid("ab505c94-d2b2-49f5-b916-d24436543a38"),
+                            Id = new Guid("3bee4154-a692-48aa-8e62-94b2b349069b"),
                             DisplayName = "Quicksand",
+                            FamilyName = "Quicksand",
                             FileName = "quicksand.otf"
                         },
                         new
                         {
-                            Id = new Guid("306c6f04-7216-4b17-9c04-3562030ebff2"),
+                            Id = new Guid("b7c0af0a-d8ea-4fda-a872-3b7116890594"),
                             DisplayName = "Roboto",
+                            FamilyName = "Roboto",
                             FileName = "roboto.ttf"
                         });
                 });
@@ -174,19 +182,19 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("79fbe53c-581c-4b59-a8d3-beee46450ca4"),
+                            Id = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
-                            ShortcutValue = "en"
+                            ShortcutValue = "EN"
                         },
                         new
                         {
-                            Id = new Guid("5a29db8f-2150-47a4-81b0-fb01d9d1e4ad"),
+                            Id = new Guid("0f50c7de-d1a0-4fd0-b962-0498ba33bae8"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
-                            ShortcutValue = "fr"
+                            ShortcutValue = "FR"
                         });
                 });
 
@@ -307,6 +315,110 @@ namespace WarStreamer.Models.Migrations
                     b.HasIndex("FontId");
 
                     b.ToTable("OverlaySettings");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-000000000000"),
+                            AverageDurationLocationX = 365,
+                            AverageDurationLocationY = 330,
+                            AverageDurationSize = 20,
+                            ClanNameLocationX = 320,
+                            ClanNameLocationY = 220,
+                            ClanNameSize = 20,
+                            FontId = new Guid("824a4925-7e82-45a0-ae0c-2e5f4b776fdc"),
+                            HeroesEquipmentLocationX = 320,
+                            HeroesEquipmentLocationY = 495,
+                            HeroesEquipmentsSize = 120,
+                            IsAverageDuration = true,
+                            IsClanName = true,
+                            IsHeroesEquipments = true,
+                            IsLastAttackToWin = true,
+                            IsLogo = true,
+                            IsPlayerDetails = true,
+                            IsTotalPercentage = true,
+                            IsTotalStars = true,
+                            LastAttackToWinLocationX = 320,
+                            LastAttackToWinLocationY = 665,
+                            LastAttackToWinSize = 14,
+                            LogoLocationX = 320,
+                            LogoLocationY = 100,
+                            LogoSize = 100,
+                            MirrorReflection = true,
+                            PlayerDetailsLocationX = 320,
+                            PlayerDetailsLocationY = 495,
+                            PlayerDetailsSize = 120,
+                            TextColor = "#FCFBF4",
+                            TotalPercentageLocationX = 365,
+                            TotalPercentageLocationY = 280,
+                            TotalPercentageSize = 20,
+                            TotalStarsLocationX = 270,
+                            TotalStarsLocationY = 305,
+                            TotalStarsSize = 50
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            AverageDurationLocationX = 365,
+                            AverageDurationLocationY = 150,
+                            AverageDurationSize = 20,
+                            ClanNameLocationX = 320,
+                            ClanNameLocationY = 215,
+                            ClanNameSize = 20,
+                            FontId = new Guid("07674fff-ac7f-4504-bf52-0de0702c578a"),
+                            IsAverageDuration = true,
+                            IsClanName = true,
+                            IsHeroesEquipments = false,
+                            IsLastAttackToWin = true,
+                            IsLogo = false,
+                            IsPlayerDetails = false,
+                            IsTotalPercentage = true,
+                            IsTotalStars = true,
+                            LastAttackToWinLocationX = 320,
+                            LastAttackToWinLocationY = 285,
+                            LastAttackToWinSize = 10,
+                            MirrorReflection = false,
+                            TextColor = "#FCFBF4",
+                            TotalPercentageLocationX = 270,
+                            TotalPercentageLocationY = 150,
+                            TotalPercentageSize = 20,
+                            TotalStarsLocationX = 320,
+                            TotalStarsLocationY = 60,
+                            TotalStarsSize = 60
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            AverageDurationLocationX = 560,
+                            AverageDurationLocationY = 370,
+                            AverageDurationSize = 20,
+                            ClanNameLocationX = 390,
+                            ClanNameLocationY = 370,
+                            ClanNameSize = 20,
+                            FontId = new Guid("3bee4154-a692-48aa-8e62-94b2b349069b"),
+                            IsAverageDuration = true,
+                            IsClanName = true,
+                            IsHeroesEquipments = false,
+                            IsLastAttackToWin = false,
+                            IsLogo = true,
+                            IsPlayerDetails = true,
+                            IsTotalPercentage = true,
+                            IsTotalStars = true,
+                            LogoLocationX = 390,
+                            LogoLocationY = 220,
+                            LogoSize = 120,
+                            MirrorReflection = true,
+                            PlayerDetailsLocationX = 460,
+                            PlayerDetailsLocationY = 505,
+                            PlayerDetailsSize = 100,
+                            TextColor = "#FCFBF4",
+                            TotalPercentageLocationX = 550,
+                            TotalPercentageLocationY = 295,
+                            TotalPercentageSize = 30,
+                            TotalStarsLocationX = 560,
+                            TotalStarsLocationY = 190,
+                            TotalStarsSize = 60
+                        });
                 });
 
             modelBuilder.Entity("WarStreamer.Models.TeamLogo", b =>
@@ -347,6 +459,29 @@ namespace WarStreamer.Models.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            LanguageId = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            NewsLetter = false,
+                            TierLevel = 0L
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            LanguageId = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            NewsLetter = false,
+                            TierLevel = 0L
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            LanguageId = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            NewsLetter = false,
+                            TierLevel = 0L
+                        });
                 });
 
             modelBuilder.Entity("WarStreamer.Models.WarOverlay", b =>
@@ -354,8 +489,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ClanTag")
                         .IsRequired()

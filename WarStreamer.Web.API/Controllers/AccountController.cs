@@ -61,10 +61,10 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Get user id from JWT authorization
-            string userId = User.GetDiscordId();
+            string userGuid = User.GetDiscordIdAsGuid().ToString();
 
             // Ensure both user ids are the same
-            if (account.UserId != userId)
+            if (account.UserId != userGuid)
             {
                 return Forbid();
             }
@@ -135,10 +135,10 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Get user id from JWT authorization
-            string userId = User.GetDiscordId();
+            string userGuid = User.GetDiscordIdAsGuid().ToString();
 
             // Ensure both user ids are the same
-            if (account.UserId != userId)
+            if (account.UserId != userGuid)
             {
                 return Forbid();
             }
