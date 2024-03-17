@@ -38,6 +38,12 @@ namespace WarStreamer.Maps
             return setting != null ? DomainToViewModel(setting) : null;
         }
 
+        public OverlaySettingViewModel? GetDefaultById(Guid id)
+        {
+            OverlaySetting? setting = _service.GetByUserId(id);
+            return setting != null ? DomainToViewModel(setting) : null;
+        }
+
         public bool Update(OverlaySettingViewModel viewModel)
         {
             OverlaySetting setting = ViewModelToDomain(viewModel, Guid.Parse(viewModel.UserId));

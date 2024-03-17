@@ -55,6 +55,31 @@ namespace WarStreamer.Web.API.Controllers
         }
 
         [HttpGet]
+        [Route("defaults/{overlayId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<OverlaySettingViewModel> GetDefaultById(string overlayId)
+        {
+            if (!Guid.TryParse(overlayId, out Guid id))
+            {
+                return BadRequest(new { error = "Overlay id format is not supported" });
+            }
+
+            OverlaySettingViewModel? overlay = _overlaySettingMap.GetDefaultById(id);
+
+            // Verify if the overlay exists
+            if (overlay == null)
+            {
+                return NotFound(
+                    new { error = $"Default overlay setting with id '{overlayId}' not found" }
+                );
+            }
+
+            return Ok(overlay);
+        }
+
+        [HttpGet]
         [Route("images")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
