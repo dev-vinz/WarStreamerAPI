@@ -44,7 +44,7 @@ namespace WarStreamer.Repositories
             }
         }
 
-        public WarOverlay? GetByUserIdAndId(Guid userId, int id)
+        public WarOverlay? GetByUserIdAndId(Guid userId, Guid id)
         {
             try
             {

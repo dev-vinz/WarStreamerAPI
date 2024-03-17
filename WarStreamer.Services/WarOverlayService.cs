@@ -31,7 +31,7 @@ namespace WarStreamer.Services
             return _repository.GetByUserId(userId);
         }
 
-        public WarOverlay? GetByUserIdAndId(Guid userId, int id)
+        public WarOverlay? GetByUserIdAndId(Guid userId, Guid id)
         {
             return _repository.GetByUserIdAndId(userId, id);
         }

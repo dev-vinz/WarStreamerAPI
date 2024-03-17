@@ -36,7 +36,7 @@ namespace WarStreamer.Maps
             return DomainToViewModel(_service.GetByUserId(guid));
         }
 
-        public WarOverlayViewModel? GetByUserIdAndId(string userId, int id)
+        public WarOverlayViewModel? GetByUserIdAndId(string userId, Guid id)
         {
             Guid guid = Guid.Empty.ParseDiscordId(userId);
             WarOverlay? overlay = _service.GetByUserIdAndId(guid, id);

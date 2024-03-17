@@ -14,8 +14,8 @@ namespace WarStreamer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid UserId { get; private set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; private set; }
 
         public string ClanTag { get; private set; }
 
@@ -33,7 +33,7 @@ namespace WarStreamer.Models
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlay(Guid userId, int id, string clanTag)
+        public WarOverlay(Guid userId, Guid id, string clanTag)
         {
             // Inputs
             {
@@ -42,6 +42,9 @@ namespace WarStreamer.Models
                 ClanTag = clanTag;
             }
         }
+
+        public WarOverlay(Guid userId, string clanTag)
+            : this(userId, Guid.NewGuid(), clanTag) { }
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
         |*                           PUBLIC METHODS                          *|

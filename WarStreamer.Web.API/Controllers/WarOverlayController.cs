@@ -43,7 +43,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<WarOverlayViewModel?> GetById(int id)
+        public ActionResult<WarOverlayViewModel?> GetById(Guid id)
         {
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();
@@ -141,7 +141,7 @@ namespace WarStreamer.Web.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> Delete(int id)
+        public ActionResult<bool> Delete(Guid id)
         {
             // Get user id from JWT authorization
             string userId = User.GetDiscordId();

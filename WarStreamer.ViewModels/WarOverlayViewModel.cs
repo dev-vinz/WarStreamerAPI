@@ -7,7 +7,7 @@
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _userId;
-        private readonly int _id;
+        private readonly Guid _id;
         private readonly string _clanTag;
         private DateTimeOffset _lastCheckout;
         private bool _isEnded;
@@ -21,7 +21,7 @@
             get => _userId;
         }
 
-        public int Id
+        public Guid Id
         {
             get => _id;
         }
@@ -47,7 +47,7 @@
         |*                            CONSTRUCTORS                           *|
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-        public WarOverlayViewModel(string userId, int id, string clanTag)
+        public WarOverlayViewModel(string userId, Guid id, string clanTag)
         {
             // Inputs
             {

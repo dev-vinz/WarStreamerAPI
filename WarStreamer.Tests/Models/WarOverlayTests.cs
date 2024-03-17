@@ -11,8 +11,8 @@ namespace WarStreamer.Tests.Models
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private const string USER_ID = "1";
-        private const int ID_ONE = 0;
-        private const int ID_TWO = 1;
+        private static readonly Guid ID_ONE = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private static readonly Guid ID_TWO = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
         private const string CLAN_TAG = "#ABCDEFG";
         private const bool IS_ENDED = false;
 
