@@ -14,8 +14,10 @@ namespace WarStreamer.Tests.Repositories
 
         private static readonly Guid USER_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560e");
         private static readonly Guid FONT_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
+        private const int WIDTH = 10;
+        private const int HEIGHT = 20;
         private const string TEXT_COLOR = "#000000";
-        private const string TEXT_COLOR_UPDATED = "#FF0000";
+        private const string BACKGROUND_COLOR = "#FF0000";
         private const bool IS_LOGO = true;
         private const int LOGO_SIZE = 8;
         private const int LOGO_LOCATION_X = 100;
@@ -80,8 +82,12 @@ namespace WarStreamer.Tests.Repositories
             Assert.NotNull(setting);
 
             Assert.Equal(USER_ID, setting.UserId);
+            Assert.Equal(WIDTH, setting.Width);
+            Assert.Equal(HEIGHT, setting.Height);
+
             Assert.Equal(FONT_ID, setting.FontId);
             Assert.Equal(TEXT_COLOR, setting.TextColor);
+            Assert.Equal(BACKGROUND_COLOR, setting.BackgroundColor);
 
             Assert.Equal(IS_LOGO, setting.IsLogo);
             Assert.Equal(LOGO_SIZE, setting.LogoSize);
@@ -135,8 +141,12 @@ namespace WarStreamer.Tests.Repositories
             Assert.NotNull(setting);
 
             Assert.Equal(USER_ID, setting.UserId);
+            Assert.Equal(WIDTH, setting.Width);
+            Assert.Equal(HEIGHT, setting.Height);
+
             Assert.Equal(FONT_ID, setting.FontId);
             Assert.Equal(TEXT_COLOR, setting.TextColor);
+            Assert.Equal(BACKGROUND_COLOR, setting.BackgroundColor);
 
             Assert.Equal(IS_LOGO, setting.IsLogo);
             Assert.Equal(LOGO_SIZE, setting.LogoSize);
@@ -196,7 +206,7 @@ namespace WarStreamer.Tests.Repositories
 
             Assert.NotNull(setting);
 
-            setting.TextColor = TEXT_COLOR_UPDATED;
+            setting.TextColor = BACKGROUND_COLOR;
 
             Assert.True(_repository.Update(setting));
         }
@@ -224,8 +234,11 @@ namespace WarStreamer.Tests.Repositories
         {
             return new(USER_ID)
             {
+                Width = WIDTH,
+                Height = HEIGHT,
                 FontId = FONT_ID,
                 TextColor = TEXT_COLOR,
+                BackgroundColor = BACKGROUND_COLOR,
                 IsLogo = IS_LOGO,
                 LogoSize = LOGO_SIZE,
                 LogoLocationX = LOGO_LOCATION_X,

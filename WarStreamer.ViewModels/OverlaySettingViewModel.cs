@@ -9,8 +9,11 @@ namespace WarStreamer.ViewModels
         \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
         private readonly string _userId;
+        private int _width;
+        private int _height;
         private string? _fontId;
         private string _textColor;
+        private string? _backgroundColor;
         private bool _logoVisible;
         private int? _logoSize;
         private Location2D? _logoLocation;
@@ -46,6 +49,18 @@ namespace WarStreamer.ViewModels
             get => _userId;
         }
 
+        public int Width
+        {
+            get => _width;
+            set => _width = value;
+        }
+
+        public int Height
+        {
+            get => _height;
+            set => _height = value;
+        }
+
         public string? FontId
         {
             get => _fontId;
@@ -56,6 +71,12 @@ namespace WarStreamer.ViewModels
         {
             get => _textColor;
             set => _textColor = value;
+        }
+
+        public string? BackgroundColor
+        {
+            get => _backgroundColor;
+            set => _backgroundColor = value;
         }
 
         public bool LogoVisible

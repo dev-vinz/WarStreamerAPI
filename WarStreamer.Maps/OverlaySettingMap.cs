@@ -62,8 +62,11 @@ namespace WarStreamer.Maps
         {
             return new($"{domain.UserId}")
             {
+                Width = domain.Width,
+                Height = domain.Height,
                 FontId = domain.FontId?.ToString(),
                 TextColor = domain.TextColor,
+                BackgroundColor = domain.BackgroundColor,
                 LogoVisible = domain.IsLogo,
                 LogoSize = domain.LogoSize,
                 LogoLocation = new Location2D(domain.LogoLocationX ?? 0, domain.LogoLocationY ?? 0),
@@ -120,8 +123,11 @@ namespace WarStreamer.Maps
         {
             return new(userId)
             {
+                Width = viewModel.Width,
+                Height = viewModel.Height,
                 FontId = viewModel.FontId != null ? Guid.Parse(viewModel.FontId) : null,
                 TextColor = viewModel.TextColor,
+                BackgroundColor = viewModel.BackgroundColor,
                 IsLogo = viewModel.LogoVisible,
                 LogoSize = viewModel.LogoSize,
                 LogoLocationX = viewModel.LogoLocation?.X,

@@ -163,8 +163,12 @@ namespace WarStreamer.Web.API.Controllers
             }
 
             // Update the overlay setting
+            anySetting.Width = setting.Width;
+            anySetting.Height = setting.Height;
+
             anySetting.FontId = setting.FontId;
             anySetting.TextColor = setting.TextColor;
+            anySetting.BackgroundColor = setting.BackgroundColor;
 
             anySetting.LogoVisible = setting.LogoVisible;
             anySetting.LogoSize = setting.LogoSize;

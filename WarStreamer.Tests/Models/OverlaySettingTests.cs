@@ -12,9 +12,12 @@ namespace WarStreamer.Tests.Models
 
         private const string USER_ID_ONE = "1";
         private const string USER_ID_TWO = "2";
+        private const int WIDTH = 10;
+        private const int HEIGHT = 20;
         private static readonly Guid FONT_ID = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560d");
         private static readonly Guid FONT_ID_2 = Guid.Parse("01e75c83-c6f5-4192-b57e-7427cec5560c");
         private const string TEXT_COLOR = "#000000";
+        private const string BACKGROUND_COLOR = "#FFFFFF";
         private const bool IS_LOGO = true;
         private const int LOGO_SIZE = 8;
         private const int LOGO_LOCATION_X = 100;
@@ -61,8 +64,12 @@ namespace WarStreamer.Tests.Models
             Assert.NotNull(setting);
 
             Assert.Equal(Guid.Empty.ParseDiscordId(USER_ID_ONE), setting.UserId);
+            Assert.Equal(WIDTH, setting.Width);
+            Assert.Equal(HEIGHT, setting.Height);
+
             Assert.Equal(FONT_ID, setting.FontId);
             Assert.Equal(TEXT_COLOR, setting.TextColor);
+            Assert.Equal(BACKGROUND_COLOR, setting.BackgroundColor);
 
             Assert.Equal(IS_LOGO, setting.IsLogo);
             Assert.Equal(LOGO_SIZE, setting.LogoSize);
@@ -151,8 +158,12 @@ namespace WarStreamer.Tests.Models
 
             OverlaySetting copySetting = (OverlaySetting)copy;
 
+            Assert.Equal(setting.Width, copySetting.Width);
+            Assert.Equal(setting.Height, copySetting.Height);
+
             Assert.Equal(setting.FontId, copySetting.FontId);
             Assert.Equal(setting.TextColor, copySetting.TextColor);
+            Assert.Equal(setting.BackgroundColor, copySetting.BackgroundColor);
 
             Assert.Equal(setting.IsLogo, copySetting.IsLogo);
             Assert.Equal(setting.LogoSize, copySetting.LogoSize);
@@ -209,8 +220,11 @@ namespace WarStreamer.Tests.Models
         {
             return new(Guid.Empty.ParseDiscordId(USER_ID_ONE))
             {
+                Width = WIDTH,
+                Height = HEIGHT,
                 FontId = FONT_ID,
                 TextColor = TEXT_COLOR,
+                BackgroundColor = BACKGROUND_COLOR,
                 IsLogo = IS_LOGO,
                 LogoSize = LOGO_SIZE,
                 LogoLocationX = LOGO_LOCATION_X,
@@ -251,8 +265,11 @@ namespace WarStreamer.Tests.Models
         {
             return new(Guid.Empty.ParseDiscordId(USER_ID_TWO))
             {
+                Width = HEIGHT,
+                Height = WIDTH,
                 FontId = FONT_ID_2,
                 TextColor = TEXT_COLOR,
+                BackgroundColor = BACKGROUND_COLOR,
                 IsLogo = !IS_LOGO,
                 IsClanName = IS_CLAN_NAME,
                 ClanNameLocationX = LOGO_LOCATION_X,

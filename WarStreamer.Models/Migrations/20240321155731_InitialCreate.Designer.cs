@@ -12,7 +12,7 @@ using WarStreamer.Models.Context;
 namespace WarStreamer.Models.Migrations
 {
     [DbContext(typeof(WarStreamerContext))]
-    [Migration("20240317111844_InitialCreate")]
+    [Migration("20240321155731_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -99,31 +99,31 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("07674fff-ac7f-4504-bf52-0de0702c578a"),
+                            Id = new Guid("e7b1e3f0-d1db-466e-9fbc-a88064d82b01"),
                             DisplayName = "Clash of Clans",
                             FamilyName = "Supercell-Magic",
-                            FileName = "supercell-magic.ttf"
+                            FileName = "supercell-magic.woff"
                         },
                         new
                         {
-                            Id = new Guid("824a4925-7e82-45a0-ae0c-2e5f4b776fdc"),
+                            Id = new Guid("76803f46-8876-4767-97d0-a378c69b4768"),
                             DisplayName = "Poppins",
                             FamilyName = "Poppins",
-                            FileName = "poppins.otf"
+                            FileName = "poppins.woff"
                         },
                         new
                         {
-                            Id = new Guid("3bee4154-a692-48aa-8e62-94b2b349069b"),
+                            Id = new Guid("9ca2d461-0c9f-4c71-bc7f-761cf4635797"),
                             DisplayName = "Quicksand",
                             FamilyName = "Quicksand",
-                            FileName = "quicksand.otf"
+                            FileName = "quicksand.woff"
                         },
                         new
                         {
-                            Id = new Guid("b7c0af0a-d8ea-4fda-a872-3b7116890594"),
+                            Id = new Guid("210429cb-dd49-47e3-b8a5-99f4b1ac00c7"),
                             DisplayName = "Roboto",
                             FamilyName = "Roboto",
-                            FileName = "roboto.ttf"
+                            FileName = "roboto.woff"
                         });
                 });
 
@@ -185,7 +185,7 @@ namespace WarStreamer.Models.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            Id = new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"),
                             CultureInfo = "en-US",
                             DisplayValue = "English",
                             FlagEmoji = "🇬🇧",
@@ -193,7 +193,7 @@ namespace WarStreamer.Models.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0f50c7de-d1a0-4fd0-b962-0498ba33bae8"),
+                            Id = new Guid("85ecc9b5-7aba-4e81-8cab-191930e3ca74"),
                             CultureInfo = "fr-FR",
                             DisplayValue = "Français",
                             FlagEmoji = "🇫🇷",
@@ -216,6 +216,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int?>("AverageDurationSize")
                         .HasColumnType("int");
 
+                    b.Property<string>("BackgroundColor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ClanNameLocationX")
                         .HasColumnType("int");
 
@@ -227,6 +230,9 @@ namespace WarStreamer.Models.Migrations
 
                     b.Property<Guid?>("FontId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
 
                     b.Property<int?>("HeroesEquipmentLocationX")
                         .HasColumnType("int");
@@ -313,6 +319,9 @@ namespace WarStreamer.Models.Migrations
                     b.Property<int?>("TotalStarsSize")
                         .HasColumnType("int");
 
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId");
 
                     b.HasIndex("FontId");
@@ -326,10 +335,12 @@ namespace WarStreamer.Models.Migrations
                             AverageDurationLocationX = 365,
                             AverageDurationLocationY = 330,
                             AverageDurationSize = 20,
+                            BackgroundColor = "#00FF00",
                             ClanNameLocationX = 320,
                             ClanNameLocationY = 220,
                             ClanNameSize = 20,
-                            FontId = new Guid("824a4925-7e82-45a0-ae0c-2e5f4b776fdc"),
+                            FontId = new Guid("76803f46-8876-4767-97d0-a378c69b4768"),
+                            Height = 720,
                             HeroesEquipmentLocationX = 320,
                             HeroesEquipmentLocationY = 495,
                             HeroesEquipmentsSize = 120,
@@ -357,18 +368,21 @@ namespace WarStreamer.Models.Migrations
                             TotalPercentageSize = 20,
                             TotalStarsLocationX = 270,
                             TotalStarsLocationY = 305,
-                            TotalStarsSize = 50
+                            TotalStarsSize = 50,
+                            Width = 1280
                         },
                         new
                         {
                             UserId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            AverageDurationLocationX = 365,
+                            AverageDurationLocationX = 100,
                             AverageDurationLocationY = 150,
                             AverageDurationSize = 20,
-                            ClanNameLocationX = 320,
+                            BackgroundColor = "#00FF00",
+                            ClanNameLocationX = 145,
                             ClanNameLocationY = 215,
                             ClanNameSize = 20,
-                            FontId = new Guid("07674fff-ac7f-4504-bf52-0de0702c578a"),
+                            FontId = new Guid("e7b1e3f0-d1db-466e-9fbc-a88064d82b01"),
+                            Height = 330,
                             IsAverageDuration = true,
                             IsClanName = true,
                             IsHeroesEquipments = false,
@@ -377,28 +391,31 @@ namespace WarStreamer.Models.Migrations
                             IsPlayerDetails = false,
                             IsTotalPercentage = true,
                             IsTotalStars = true,
-                            LastAttackToWinLocationX = 320,
+                            LastAttackToWinLocationX = 145,
                             LastAttackToWinLocationY = 285,
                             LastAttackToWinSize = 10,
                             MirrorReflection = false,
                             TextColor = "#FCFBF4",
-                            TotalPercentageLocationX = 270,
+                            TotalPercentageLocationX = 195,
                             TotalPercentageLocationY = 150,
                             TotalPercentageSize = 20,
-                            TotalStarsLocationX = 320,
+                            TotalStarsLocationX = 145,
                             TotalStarsLocationY = 60,
-                            TotalStarsSize = 60
+                            TotalStarsSize = 60,
+                            Width = 580
                         },
                         new
                         {
                             UserId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            AverageDurationLocationX = 560,
-                            AverageDurationLocationY = 370,
+                            AverageDurationLocationX = 280,
+                            AverageDurationLocationY = 260,
                             AverageDurationSize = 20,
-                            ClanNameLocationX = 390,
-                            ClanNameLocationY = 370,
+                            BackgroundColor = "#00FF00",
+                            ClanNameLocationX = 130,
+                            ClanNameLocationY = 260,
                             ClanNameSize = 20,
-                            FontId = new Guid("3bee4154-a692-48aa-8e62-94b2b349069b"),
+                            FontId = new Guid("9ca2d461-0c9f-4c71-bc7f-761cf4635797"),
+                            Height = 510,
                             IsAverageDuration = true,
                             IsClanName = true,
                             IsHeroesEquipments = false,
@@ -407,20 +424,21 @@ namespace WarStreamer.Models.Migrations
                             IsPlayerDetails = true,
                             IsTotalPercentage = true,
                             IsTotalStars = true,
-                            LogoLocationX = 390,
-                            LogoLocationY = 220,
+                            LogoLocationX = 110,
+                            LogoLocationY = 110,
                             LogoSize = 120,
                             MirrorReflection = true,
-                            PlayerDetailsLocationX = 460,
-                            PlayerDetailsLocationY = 505,
+                            PlayerDetailsLocationX = 180,
+                            PlayerDetailsLocationY = 395,
                             PlayerDetailsSize = 100,
                             TextColor = "#FCFBF4",
-                            TotalPercentageLocationX = 550,
-                            TotalPercentageLocationY = 295,
+                            TotalPercentageLocationX = 270,
+                            TotalPercentageLocationY = 185,
                             TotalPercentageSize = 30,
-                            TotalStarsLocationX = 560,
-                            TotalStarsLocationY = 190,
-                            TotalStarsSize = 60
+                            TotalStarsLocationX = 280,
+                            TotalStarsLocationY = 80,
+                            TotalStarsSize = 60,
+                            Width = 720
                         });
                 });
 
@@ -467,21 +485,21 @@ namespace WarStreamer.Models.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000000"),
-                            LanguageId = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            LanguageId = new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"),
                             NewsLetter = false,
                             TierLevel = 0L
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            LanguageId = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            LanguageId = new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"),
                             NewsLetter = false,
                             TierLevel = 0L
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            LanguageId = new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"),
+                            LanguageId = new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"),
                             NewsLetter = false,
                             TierLevel = 0L
                         });

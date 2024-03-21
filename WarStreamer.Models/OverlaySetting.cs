@@ -15,9 +15,15 @@ namespace WarStreamer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid UserId { get; private set; }
 
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
         public Guid? FontId { get; set; }
 
         public string TextColor { get; set; } = null!;
+
+        public string? BackgroundColor { get; set; }
 
         public bool IsLogo { get; set; }
 
@@ -117,8 +123,12 @@ namespace WarStreamer.Models
         {
             if (entity is OverlaySetting setting)
             {
+                setting.Width = Width;
+                setting.Height = Height;
+
                 setting.FontId = FontId;
                 setting.TextColor = TextColor;
+                setting.BackgroundColor = BackgroundColor;
 
                 setting.IsLogo = IsLogo;
                 setting.LogoSize = LogoSize;

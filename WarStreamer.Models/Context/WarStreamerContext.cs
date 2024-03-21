@@ -119,10 +119,10 @@ namespace WarStreamer.Models.Context
             \* * * * * * * * * * * * * * * * * */
 
             // Create Fond seeder
-            Font cocFont = new("Clash of Clans", "Supercell-Magic", "supercell-magic.ttf");
-            Font poppinsFont = new("Poppins", "Poppins", "poppins.otf");
-            Font quicksandFont = new("Quicksand", "Quicksand", "quicksand.otf");
-            Font robotoFont = new("Roboto", "Roboto", "roboto.ttf");
+            Font cocFont = new("Clash of Clans", "Supercell-Magic", "supercell-magic.woff");
+            Font poppinsFont = new("Poppins", "Poppins", "poppins.woff");
+            Font quicksandFont = new("Quicksand", "Quicksand", "quicksand.woff");
+            Font robotoFont = new("Roboto", "Roboto", "roboto.woff");
 
             modelBuilder.Entity<Font>().HasData(cocFont, poppinsFont, quicksandFont, robotoFont);
 
@@ -163,8 +163,11 @@ namespace WarStreamer.Models.Context
                 .HasData(
                     new OverlaySetting(new Guid("00000000-0000-0000-0000-000000000000"))
                     {
+                        Width = 1280,
+                        Height = 720,
                         FontId = poppinsFont.Id,
                         TextColor = "#FCFBF4",
+                        BackgroundColor = "#00FF00",
                         IsLogo = true,
                         LogoSize = 100,
                         LogoLocationX = 320,
@@ -201,61 +204,67 @@ namespace WarStreamer.Models.Context
                     },
                     new OverlaySetting(new Guid("00000000-0000-0000-0000-000000000001"))
                     {
+                        Width = 580,
+                        Height = 330,
                         FontId = cocFont.Id,
                         TextColor = "#FCFBF4",
+                        BackgroundColor = "#00FF00",
                         IsLogo = false,
                         IsClanName = true,
                         ClanNameSize = 20,
-                        ClanNameLocationX = 320,
+                        ClanNameLocationX = 145,
                         ClanNameLocationY = 215,
                         IsTotalStars = true,
                         TotalStarsSize = 60,
-                        TotalStarsLocationX = 320,
+                        TotalStarsLocationX = 145,
                         TotalStarsLocationY = 60,
                         IsTotalPercentage = true,
                         TotalPercentageSize = 20,
-                        TotalPercentageLocationX = 270,
+                        TotalPercentageLocationX = 195,
                         TotalPercentageLocationY = 150,
                         IsAverageDuration = true,
                         AverageDurationSize = 20,
-                        AverageDurationLocationX = 365,
+                        AverageDurationLocationX = 100,
                         AverageDurationLocationY = 150,
                         IsPlayerDetails = false,
                         IsLastAttackToWin = true,
                         LastAttackToWinSize = 10,
-                        LastAttackToWinLocationX = 320,
+                        LastAttackToWinLocationX = 145,
                         LastAttackToWinLocationY = 285,
                         IsHeroesEquipments = false,
                         MirrorReflection = false
                     },
                     new OverlaySetting(new Guid("00000000-0000-0000-0000-000000000002"))
                     {
+                        Width = 720,
+                        Height = 510,
                         FontId = quicksandFont.Id,
                         TextColor = "#FCFBF4",
+                        BackgroundColor = "#00FF00",
                         IsLogo = true,
                         LogoSize = 120,
-                        LogoLocationX = 390,
-                        LogoLocationY = 220,
+                        LogoLocationX = 110,
+                        LogoLocationY = 110,
                         IsClanName = true,
                         ClanNameSize = 20,
-                        ClanNameLocationX = 390,
-                        ClanNameLocationY = 370,
+                        ClanNameLocationX = 130,
+                        ClanNameLocationY = 260,
                         IsTotalStars = true,
                         TotalStarsSize = 60,
-                        TotalStarsLocationX = 560,
-                        TotalStarsLocationY = 190,
+                        TotalStarsLocationX = 280,
+                        TotalStarsLocationY = 80,
                         IsTotalPercentage = true,
                         TotalPercentageSize = 30,
-                        TotalPercentageLocationX = 550,
-                        TotalPercentageLocationY = 295,
+                        TotalPercentageLocationX = 270,
+                        TotalPercentageLocationY = 185,
                         IsAverageDuration = true,
                         AverageDurationSize = 20,
-                        AverageDurationLocationX = 560,
-                        AverageDurationLocationY = 370,
+                        AverageDurationLocationX = 280,
+                        AverageDurationLocationY = 260,
                         IsPlayerDetails = true,
                         PlayerDetailsSize = 100,
-                        PlayerDetailsLocationX = 460,
-                        PlayerDetailsLocationY = 505,
+                        PlayerDetailsLocationX = 180,
+                        PlayerDetailsLocationY = 395,
                         IsLastAttackToWin = false,
                         IsHeroesEquipments = false,
                         MirrorReflection = true,

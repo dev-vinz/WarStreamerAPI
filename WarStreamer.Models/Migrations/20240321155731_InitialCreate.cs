@@ -131,8 +131,11 @@ namespace WarStreamer.Models.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Width = table.Column<int>(type: "int", nullable: false),
+                    Height = table.Column<int>(type: "int", nullable: false),
                     FontId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TextColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BackgroundColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsLogo = table.Column<bool>(type: "bit", nullable: false),
                     LogoSize = table.Column<int>(type: "int", nullable: true),
                     LogoLocationX = table.Column<int>(type: "int", nullable: true),
@@ -229,10 +232,10 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "DisplayName", "FamilyName", "FileName" },
                 values: new object[,]
                 {
-                    { new Guid("07674fff-ac7f-4504-bf52-0de0702c578a"), "Clash of Clans", "Supercell-Magic", "supercell-magic.ttf" },
-                    { new Guid("3bee4154-a692-48aa-8e62-94b2b349069b"), "Quicksand", "Quicksand", "quicksand.otf" },
-                    { new Guid("824a4925-7e82-45a0-ae0c-2e5f4b776fdc"), "Poppins", "Poppins", "poppins.otf" },
-                    { new Guid("b7c0af0a-d8ea-4fda-a872-3b7116890594"), "Roboto", "Roboto", "roboto.ttf" }
+                    { new Guid("210429cb-dd49-47e3-b8a5-99f4b1ac00c7"), "Roboto", "Roboto", "roboto.woff" },
+                    { new Guid("76803f46-8876-4767-97d0-a378c69b4768"), "Poppins", "Poppins", "poppins.woff" },
+                    { new Guid("9ca2d461-0c9f-4c71-bc7f-761cf4635797"), "Quicksand", "Quicksand", "quicksand.woff" },
+                    { new Guid("e7b1e3f0-d1db-466e-9fbc-a88064d82b01"), "Clash of Clans", "Supercell-Magic", "supercell-magic.woff" }
                 });
 
             migrationBuilder.InsertData(
@@ -240,8 +243,8 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "CultureInfo", "DisplayValue", "FlagEmoji", "ShortcutValue" },
                 values: new object[,]
                 {
-                    { new Guid("0f50c7de-d1a0-4fd0-b962-0498ba33bae8"), "fr-FR", "Français", "🇫🇷", "FR" },
-                    { new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"), "en-US", "English", "🇬🇧", "EN" }
+                    { new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"), "en-US", "English", "🇬🇧", "EN" },
+                    { new Guid("85ecc9b5-7aba-4e81-8cab-191930e3ca74"), "fr-FR", "Français", "🇫🇷", "FR" }
                 });
 
             migrationBuilder.InsertData(
@@ -249,19 +252,19 @@ namespace WarStreamer.Models.Migrations
                 columns: new[] { "Id", "LanguageId", "NewsLetter", "TierLevel" },
                 values: new object[,]
                 {
-                    { new Guid("00000000-0000-0000-0000-000000000000"), new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"), false, 0L },
-                    { new Guid("00000000-0000-0000-0000-000000000001"), new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"), false, 0L },
-                    { new Guid("00000000-0000-0000-0000-000000000002"), new Guid("8e0bee00-fff2-40fb-bd99-3ef401f631fc"), false, 0L }
+                    { new Guid("00000000-0000-0000-0000-000000000000"), new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"), false, 0L },
+                    { new Guid("00000000-0000-0000-0000-000000000001"), new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"), false, 0L },
+                    { new Guid("00000000-0000-0000-0000-000000000002"), new Guid("56b86e3d-9109-4579-a3e3-1d07cfe942f7"), false, 0L }
                 });
 
             migrationBuilder.InsertData(
                 table: "OverlaySettings",
-                columns: new[] { "Id", "AverageDurationLocationX", "AverageDurationLocationY", "AverageDurationSize", "ClanNameLocationX", "ClanNameLocationY", "ClanNameSize", "FontId", "HeroesEquipmentLocationX", "HeroesEquipmentLocationY", "HeroesEquipmentsSize", "IsAverageDuration", "IsClanName", "IsHeroesEquipments", "IsLastAttackToWin", "IsLogo", "IsPlayerDetails", "IsTotalPercentage", "IsTotalStars", "LastAttackToWinLocationX", "LastAttackToWinLocationY", "LastAttackToWinSize", "LogoLocationX", "LogoLocationY", "LogoSize", "MirrorReflection", "PlayerDetailsLocationX", "PlayerDetailsLocationY", "PlayerDetailsSize", "TextColor", "TotalPercentageLocationX", "TotalPercentageLocationY", "TotalPercentageSize", "TotalStarsLocationX", "TotalStarsLocationY", "TotalStarsSize" },
+                columns: new[] { "Id", "AverageDurationLocationX", "AverageDurationLocationY", "AverageDurationSize", "BackgroundColor", "ClanNameLocationX", "ClanNameLocationY", "ClanNameSize", "FontId", "Height", "HeroesEquipmentLocationX", "HeroesEquipmentLocationY", "HeroesEquipmentsSize", "IsAverageDuration", "IsClanName", "IsHeroesEquipments", "IsLastAttackToWin", "IsLogo", "IsPlayerDetails", "IsTotalPercentage", "IsTotalStars", "LastAttackToWinLocationX", "LastAttackToWinLocationY", "LastAttackToWinSize", "LogoLocationX", "LogoLocationY", "LogoSize", "MirrorReflection", "PlayerDetailsLocationX", "PlayerDetailsLocationY", "PlayerDetailsSize", "TextColor", "TotalPercentageLocationX", "TotalPercentageLocationY", "TotalPercentageSize", "TotalStarsLocationX", "TotalStarsLocationY", "TotalStarsSize", "Width" },
                 values: new object[,]
                 {
-                    { new Guid("00000000-0000-0000-0000-000000000000"), 365, 330, 20, 320, 220, 20, new Guid("824a4925-7e82-45a0-ae0c-2e5f4b776fdc"), 320, 495, 120, true, true, true, true, true, true, true, true, 320, 665, 14, 320, 100, 100, true, 320, 495, 120, "#FCFBF4", 365, 280, 20, 270, 305, 50 },
-                    { new Guid("00000000-0000-0000-0000-000000000001"), 365, 150, 20, 320, 215, 20, new Guid("07674fff-ac7f-4504-bf52-0de0702c578a"), null, null, null, true, true, false, true, false, false, true, true, 320, 285, 10, null, null, null, false, null, null, null, "#FCFBF4", 270, 150, 20, 320, 60, 60 },
-                    { new Guid("00000000-0000-0000-0000-000000000002"), 560, 370, 20, 390, 370, 20, new Guid("3bee4154-a692-48aa-8e62-94b2b349069b"), null, null, null, true, true, false, false, true, true, true, true, null, null, null, 390, 220, 120, true, 460, 505, 100, "#FCFBF4", 550, 295, 30, 560, 190, 60 }
+                    { new Guid("00000000-0000-0000-0000-000000000000"), 365, 330, 20, "#00FF00", 320, 220, 20, new Guid("76803f46-8876-4767-97d0-a378c69b4768"), 720, 320, 495, 120, true, true, true, true, true, true, true, true, 320, 665, 14, 320, 100, 100, true, 320, 495, 120, "#FCFBF4", 365, 280, 20, 270, 305, 50, 1280 },
+                    { new Guid("00000000-0000-0000-0000-000000000001"), 100, 150, 20, "#00FF00", 145, 215, 20, new Guid("e7b1e3f0-d1db-466e-9fbc-a88064d82b01"), 330, null, null, null, true, true, false, true, false, false, true, true, 145, 285, 10, null, null, null, false, null, null, null, "#FCFBF4", 195, 150, 20, 145, 60, 60, 580 },
+                    { new Guid("00000000-0000-0000-0000-000000000002"), 280, 260, 20, "#00FF00", 130, 260, 20, new Guid("9ca2d461-0c9f-4c71-bc7f-761cf4635797"), 510, null, null, null, true, true, false, false, true, true, true, true, null, null, null, 110, 110, 120, true, 180, 395, 100, "#FCFBF4", 270, 185, 30, 280, 80, 60, 720 }
                 });
 
             migrationBuilder.CreateIndex(
